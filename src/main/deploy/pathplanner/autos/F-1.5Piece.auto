@@ -1,0 +1,37 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.47025552740564164,
+      "y": 7.367317298737161
+    },
+    "rotation": -90.78376357119375
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "F-Preload"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "F-PickupMid"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ParkFromMid"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

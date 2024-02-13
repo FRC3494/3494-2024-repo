@@ -1,0 +1,25 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.896942369383314,
+      "y": 2.982009382822185
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Complex Path"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "SIDESTUFF",
+  "choreoAuto": false
+}

@@ -1,0 +1,43 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.5053379907329615,
+      "y": 7.3322348354098414
+    },
+    "rotation": 89.11859600341785
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AmpPreload"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Print Command"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AmpPickup"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "SIDESTUFF",
+  "choreoAuto": false
+}
