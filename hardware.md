@@ -1,6 +1,6 @@
-# Can IDs
+# Motor Controllers
 
-- rear left drive = can 30 | port 0
+- rear left drive = can 30 | pdp port 0
 - rear left rotate motor = 2
 - rear right drive = 1
 - rear right rotate = 3
@@ -15,3 +15,5 @@
 - rear left encoder = 1
 - front right encoder = 2
 - front left encoder = 3
+
+#
