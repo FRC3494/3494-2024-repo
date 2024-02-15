@@ -13,7 +13,6 @@ public final class OI {
     private static Joystick rightButtonBoard = new Joystick(Constants.OI.SECONDARY_RIGHT_CONTROLLER_PORT);
     private static double offset = 0;
 
-    
     public static void zeroControls() {
         // offset = -NavX.getYaw() - 90;
         offset = -NavX.getYaw();
@@ -115,10 +114,12 @@ public final class OI {
     public static boolean resetHeadingEventDUMB() {
         return primaryController.getXButtonPressed();
     }
-    public static boolean autoAlign(){
+
+    public static boolean autoAlign() {
         return primaryController.getYButtonPressed();
     }
-    public static boolean isYHeld(){
+
+    public static boolean isYHeld() {
         return primaryController.getYButton();
     }
 
@@ -126,14 +127,17 @@ public final class OI {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getElevatorPower'");
     }
+
     public static double getArmPower() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getElevatorPower'");
     }
+
     public static double getClimberPower() {
         return 0;
     }
-    public static BooleanEvent presetTest(){
+
+    public static BooleanEvent presetTest() {
         return primaryController.a(eventLoop);
     }
 }
