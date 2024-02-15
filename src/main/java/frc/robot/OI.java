@@ -126,8 +126,14 @@ public final class OI {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getElevatorPower'");
     }
-
+    public static double getArmPower() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getElevatorPower'");
+    }
     public static double getClimberPower() {
         return 0;
+    }
+    public static BooleanEvent presetTest(){
+        return primaryController.a(eventLoop);
     }
 }

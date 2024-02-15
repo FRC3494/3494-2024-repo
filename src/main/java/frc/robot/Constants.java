@@ -4,41 +4,46 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 
 public final class Constants {
+  public static final class Presets{
+    public static double testArm = 0;
+    public static double testElevator = 0;
+    public static double testWrist = 0;
+  }
   public static final class Drivetrain {
     public static final class FrontLeftModule {
-      public static int DRIVE_MOTOR_PORT = 19;// 19;
-      public static int STEER_MOTOR_PORT = 17;// 17;
+      public static int DRIVE_MOTOR_PORT = 18 ;// 19;
+      public static int STEER_MOTOR_PORT = 16;// 17;
 
-      public static int ENCODER_MOTOR_PORT = 1;
+      public static int ENCODER_MOTOR_PORT = 3;
 
-      public static double STEER_OFFSET = Math.toRadians(262);
+      public static double STEER_OFFSET = Math.toRadians(28.4+10);
     }
 
     public static final class FrontRightModule {
-      public static int DRIVE_MOTOR_PORT = 16;// 16;
-      public static int STEER_MOTOR_PORT = 18;// 18;
+      public static int DRIVE_MOTOR_PORT = 19;// 16;
+      public static int STEER_MOTOR_PORT = 17;// 18;
 
       public static int ENCODER_MOTOR_PORT = 2;
 
-      public static double STEER_OFFSET = Math.toRadians(20);
+      public static double STEER_OFFSET = Math.toRadians(-91.2+12);
     }
 
     public static final class BackLeftModule {
       public static int DRIVE_MOTOR_PORT = 30;// 14;
       public static int STEER_MOTOR_PORT = 2;// 15;
 
-      public static int ENCODER_MOTOR_PORT = 0;
+      public static int ENCODER_MOTOR_PORT = 1;
 
-      public static double STEER_OFFSET = Math.toRadians(236);
+      public static double STEER_OFFSET = Math.toRadians(-84.50+9);
     }
 
     public static final class BackRightModule {
-      public static int DRIVE_MOTOR_PORT = 3;// 5;
-      public static int STEER_MOTOR_PORT = 1;// 4;
+      public static int DRIVE_MOTOR_PORT = 1;// 5;
+      public static int STEER_MOTOR_PORT = 3;// 4;
 
-      public static int ENCODER_MOTOR_PORT = 3;
+      public static int ENCODER_MOTOR_PORT = 0;
 
-      public static double STEER_OFFSET = Math.toRadians(282);
+      public static double STEER_OFFSET = Math.toRadians(37.67+180);
     }
 
     public static final double TRACKWIDTH_METERS = 0.47625;
@@ -77,5 +82,12 @@ public final class Constants {
     public static int mainMotor = 0;// TODO: add ports
     public static int followerMotor = 0;
 
+  }
+  public static final class Arm {
+    public static int armMotor = 0;
+  }
+  public static final class Wrist {
+    public static float MIN_POSITION = 0f;
+    public static float MAX_POSITION = 0f;
   }
 }

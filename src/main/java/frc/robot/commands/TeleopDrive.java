@@ -33,6 +33,8 @@ public class TeleopDrive extends Command {
         System.out.println("DT inputs ||" + OI.teleopXVelocity());
         drivetrain.drive(OI.teleopXVelocity(), OI.teleopYVelocity(),
                 -OI.teleopTurnVelocity(), true);
+        //  drivetrain.drive(0, 0.1,
+                // 0, false);
         if (OI.resetHeadingEventDUMB()) {
             OI.zeroControls();
         }
