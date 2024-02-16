@@ -8,6 +8,7 @@ public final class Constants {
     public static double testArm = 0;
     public static double testElevator = 0;
     public static double testWrist = 0;
+    public static double testClimber = 0;
   }
 
   public static final class Drivetrain {
@@ -82,8 +83,7 @@ public final class Constants {
     public static final int mainMotor = 15;
   }
   public static final class Elevator {
-    public static int mainMotor = 0;// TODO: add ports
-    public static int followerMotor = 0;
+    public static int mainMotor = 4;// TODO: add ports
     public static int bottomMagnetSensorDIO = 0;
     public static int topMagnetSensorDIO = 1;
 

@@ -74,13 +74,13 @@ public class RobotContainer {
   public RobotContainer() {
     drivetrain = new Drivetrain();
     climber = new Climber();
-    // elevator = new Elevator();
+    elevator = new Elevator();
     // wrist = new Wrist();
     // arm = new Arm();
     // camera = new Camera();
     drivetrain.setDefaultCommand(new TeleopDrive(drivetrain));
     climber.setDefaultCommand(new TeleopClimber(climber));
-    // elevator.setDefaultCommand(new TeleopElevator(elevator));
+    elevator.setDefaultCommand(new TeleopElevator(elevator));
     // arm.setDefaultCommand(new TeleopArm(arm));
     NamedCommands.registerCommand("Print Command",
         new PrintCommand("AUTO HAS TRIGGERED A PRINT COMAND WOOOOOOOOOOOOOOO"));
@@ -103,6 +103,9 @@ public class RobotContainer {
     fieldTab.addDouble("NavX yaw", () -> NavX.getYaw());
     fieldTab.addDouble("OFFFSET", () -> OI.getDriveOffset());
     subsystemTab.addDouble("Clmber Ticks", () -> climber.getTicks());
+    subsystemTab.addDouble("Climber Power",()->climber.getMotorPower());
+    subsystemTab.addDouble("ELevator TIcks", () -> elevator.getTicks());
+    subsystemTab.addString("Current Elevator Sensor State", () -> elevator.getElevatorSensorState().toString());
     // subsystemTab.addDouble("Current Arm Position", () -> arm.getCurrentAngle());
 
     // fieldTab.add(camera.getCamera()).withPosition(1, 5).withSize(4, 4);

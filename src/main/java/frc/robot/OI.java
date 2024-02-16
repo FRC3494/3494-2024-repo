@@ -134,10 +134,13 @@ public final class OI {
     }
 
     public static double getClimberPower() {
-        return 0;
+        return primaryController.getLeftTriggerAxis()-primaryController.getRightTriggerAxis();
     }
 
     public static BooleanEvent presetTest() {
         return primaryController.a(eventLoop);
+    }
+    public static boolean aButton(){
+        return primaryController.getAButtonPressed();
     }
 }
