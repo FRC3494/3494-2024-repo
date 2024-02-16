@@ -4,19 +4,20 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 
 public final class Constants {
-  public static final class Presets{
+  public static final class Presets {
     public static double testArm = 0;
     public static double testElevator = 0;
     public static double testWrist = 0;
   }
+
   public static final class Drivetrain {
     public static final class FrontLeftModule {
-      public static int DRIVE_MOTOR_PORT = 18 ;// 19;
+      public static int DRIVE_MOTOR_PORT = 18;// 19;
       public static int STEER_MOTOR_PORT = 16;// 17;
 
       public static int ENCODER_MOTOR_PORT = 3;
 
-      public static double STEER_OFFSET = Math.toRadians(28.4+10);
+      public static double STEER_OFFSET = Math.toRadians(28.4 + 10);
     }
 
     public static final class FrontRightModule {
@@ -25,7 +26,7 @@ public final class Constants {
 
       public static int ENCODER_MOTOR_PORT = 2;
 
-      public static double STEER_OFFSET = Math.toRadians(-91.2+12);
+      public static double STEER_OFFSET = Math.toRadians(-91.2 + 12);
     }
 
     public static final class BackLeftModule {
@@ -34,7 +35,7 @@ public final class Constants {
 
       public static int ENCODER_MOTOR_PORT = 1;
 
-      public static double STEER_OFFSET = Math.toRadians(-84.50+9);
+      public static double STEER_OFFSET = Math.toRadians(-84.50 + 9);
     }
 
     public static final class BackRightModule {
@@ -43,7 +44,7 @@ public final class Constants {
 
       public static int ENCODER_MOTOR_PORT = 0;
 
-      public static double STEER_OFFSET = Math.toRadians(37.67+180);
+      public static double STEER_OFFSET = Math.toRadians(37.67 + 180);
     }
 
     public static final double TRACKWIDTH_METERS = 0.47625;
@@ -81,14 +82,17 @@ public final class Constants {
     public static final int mainMotor = 15;
   }
   public static final class Elevator {
-
     public static int mainMotor = 0;// TODO: add ports
     public static int followerMotor = 0;
+    public static int bottomMagnetSensorDIO = 0;
+    public static int topMagnetSensorDIO = 1;
 
   }
+
   public static final class Arm {
     public static int armMotor = 0;
   }
+
   public static final class Wrist {
     public static float MIN_POSITION = 0f;
     public static float MAX_POSITION = 0f;

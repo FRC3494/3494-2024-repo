@@ -16,4 +16,7 @@
 - front right encoder = 2
 - front left encoder = 3
 
-#
+# Digital IO
+
+- top magnet sensor = ?
+- bottom magnet sensor = ?
