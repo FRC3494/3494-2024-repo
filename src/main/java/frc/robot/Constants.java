@@ -77,6 +77,9 @@ public final class Constants {
     public static final double DPAD_SPEED = 0.5;
   }
 
+  public static final class Climber{
+    public static final int mainMotor = 15;
+  }
   public static final class Elevator {
 
     public static int mainMotor = 0;// TODO: add ports

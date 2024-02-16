@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Wrist.Wrist;
 import frc.robot.commands.TeleopArm;
+import frc.robot.commands.TeleopClimber;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.commands.TeleopElevator;
 // import frc.robot.subsystems.Camera;
@@ -17,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.NavX;
+import frc.robot.subsystems.Climber.Climber;
 import frc.robot.subsystems.Elevator.Elevator;
 
 import java.util.List;
@@ -49,6 +51,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public final Drivetrain drivetrain;
+  public final Climber climber;
   // public final Arm arm;
   
   // public final Elevator elevator;
@@ -65,11 +68,13 @@ public class RobotContainer {
    */ 
   public RobotContainer() {
     drivetrain = new Drivetrain();
+    climber = new Climber();
     // elevator = new Elevator();
     // wrist = new Wrist();
     // arm = new Arm();
     // camera = new Camera();
     drivetrain.setDefaultCommand(new TeleopDrive(drivetrain));
+    climber.setDefaultCommand(new TeleopClimber(climber));
     // elevator.setDefaultCommand(new TeleopElevator(elevator));
     // arm.setDefaultCommand(new TeleopArm(arm));
     NamedCommands.registerCommand("Print Command",
@@ -90,6 +95,7 @@ public class RobotContainer {
     fieldTab.add(robotPosition).withPosition(1, 0).withSize(7, 4);
     fieldTab.addDouble("NavX yaw", () -> NavX.getYaw());
     fieldTab.addDouble("OFFFSET", () -> OI.getDriveOffset());
+    subsystemTab.addDouble("Clmber Ticks", () -> climber.getTicks());
     // subsystemTab.addDouble("Current Arm Position", () -> arm.getCurrentAngle());
     
 
