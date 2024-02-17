@@ -124,23 +124,49 @@ public final class OI {
     }
 
     public static double getElevatorPower() {
+        double speed = rightButtonBoard.getRawAxis(0);
+        // System.out.println(speed);
+        return speed * Constants.Wrist.manualPowerAdjust;
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getElevatorPower'");
+        // return primaryController.getLeftTriggerAxis()-primaryController.getRightTriggerAxis();
     }
 
     public static double getArmPower() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getElevatorPower'");
+        double speed = leftButtonBoard.getRawAxis(1);
+        if (speed>0){
+            return speed * Constants.Arm.manualPowerAdjustUP;
+        }
+        return speed * Constants.Arm.manualPowerAdjustDOWN;
+        
     }
-
+    public static double getWristPower() {
+        double speed = rightButtonBoard.getRawAxis(1);
+        // System.out.println(speed);
+        return speed * Constants.Wrist.manualPowerAdjust;
+    }
     public static double getClimberPower() {
         return primaryController.getLeftTriggerAxis()-primaryController.getRightTriggerAxis();
     }
-
+    public static double getIntakePower() {
+        // System.out.println(leftButtonBoard.getRawAxis(0)*Constants.Intake.manualPowerAdjust);
+        return leftButtonBoard.getRawAxis(0)*Constants.Intake.manualPowerAdjust;
+    }
     public static BooleanEvent presetTest() {
         return primaryController.a(eventLoop);
     }
     public static boolean aButton(){
         return primaryController.getAButtonPressed();
+    }
+    public static BooleanEvent climbPreset() {
+        return leftButtonBoard.button(4, eventLoop);
+    }
+    public static BooleanEvent liftPreset() {
+        return leftButtonBoard.button(5, eventLoop);
+    }
+    public static BooleanEvent armPreset(){
+        return leftButtonBoard.button(6, eventLoop);
+    }
+    public static BooleanEvent wristPreset(){
+        return leftButtonBoard.button(7, eventLoop);
     }
 }

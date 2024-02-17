@@ -30,7 +30,6 @@ public class TeleopDrive extends Command {
 
     @Override
     public void execute() {
-        System.out.println("DT inputs ||" + OI.teleopXVelocity());
         drivetrain.drive(OI.teleopXVelocity(), OI.teleopYVelocity(),
                 -OI.teleopTurnVelocity(), true);
         //  drivetrain.drive(0, 0.1,

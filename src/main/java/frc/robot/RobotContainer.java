@@ -10,12 +10,16 @@ import frc.robot.commands.TeleopArm;
 import frc.robot.commands.TeleopClimber;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.commands.TeleopElevator;
+import frc.robot.commands.TeleopIntake;
+import frc.robot.commands.TeleopWrist;
 // import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.NavX;
 import frc.robot.subsystems.Climber.Climber;
@@ -33,6 +37,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -42,7 +48,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.commands.TeleopDrive;
-// import frc.robot.subsystems.Camera;
+import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.NavX;
 import frc.robot.subsystems.Elevator.Elevator;
@@ -57,15 +63,15 @@ import frc.robot.subsystems.Elevator.Elevator;
 public class RobotContainer {
   public final Drivetrain drivetrain;
   public final Climber climber;
-  // public final Arm arm;
+  public final Arm arm;
   public final Elevator elevator;
-  // public final Wrist wrist;
+  public final Wrist wrist;
   // public final Camera camera;
+  public final Intake intake;
   private ShuffleboardTab fieldTab;
   private ShuffleboardTab subsystemTab;
   private Field2d robotPosition;
   private final SendableChooser<Command> autoChooser;
-
   // Replace with CommandPS4Controller or CommandJoystick if needed
 
   /**
@@ -75,23 +81,31 @@ public class RobotContainer {
     drivetrain = new Drivetrain();
     climber = new Climber();
     elevator = new Elevator();
-    // wrist = new Wrist();
-    // arm = new Arm();
+    wrist = new Wrist();
+    arm = new Arm();
     // camera = new Camera();
+    intake = new Intake();
+    configureBindings();
+
     drivetrain.setDefaultCommand(new TeleopDrive(drivetrain));
     climber.setDefaultCommand(new TeleopClimber(climber));
     elevator.setDefaultCommand(new TeleopElevator(elevator));
-    // arm.setDefaultCommand(new TeleopArm(arm));
+    arm.setDefaultCommand(new TeleopArm(arm));
+    wrist.setDefaultCommand(new TeleopWrist(wrist));
+    intake.setDefaultCommand(new TeleopIntake(intake));
     NamedCommands.registerCommand("Print Command",
         new PrintCommand("AUTO HAS TRIGGERED A PRINT COMAND WOOOOOOOOOOOOOOO"));
 
     // Configure the trigger bindings
-    configureBindings();
+    
     autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
     SmartDashboard.putData("Auto Mode", autoChooser);
     initShuffleboardObjects();
   }
 
+  // public void periodic() {
+  //   eventLoop.poll();
+  // }
   public void initShuffleboardObjects() {
     fieldTab = Shuffleboard.getTab("Field");
     subsystemTab = Shuffleboard.getTab("Subsystems");
@@ -106,16 +120,36 @@ public class RobotContainer {
     subsystemTab.addDouble("Climber Power",()->climber.getMotorPower());
     subsystemTab.addDouble("ELevator TIcks", () -> elevator.getTicks());
     subsystemTab.addString("Current Elevator Sensor State", () -> elevator.getElevatorSensorState().toString());
+    subsystemTab.addDouble("Arm ABS encoder", () -> arm.getAbsoluteTicks());
+    // subsystemTab.addDouble("Wrist ABS encoder", ()-> wrist.getAbsoluteTicks());
+    subsystemTab.addDouble("Wrist REL encoder", ()-> wrist.getRelativeTicks());
     // subsystemTab.addDouble("Current Arm Position", () -> arm.getCurrentAngle());
 
     // fieldTab.add(camera.getCamera()).withPosition(1, 5).withSize(4, 4);
   }
 
   public void updateShuffleboardObjects() {
+    // System.out.println(OI.presetTest());
     robotPosition.setRobotPose(drivetrain.getPoseCorrected());
   }
 
   private void configureBindings() {
+    OI.climbPreset().ifHigh(()->{
+      climber.setElevatorPosition(Constants.Presets.testClimber, 0);
+    });
+    OI.liftPreset().rising().ifHigh(()->{
+      elevator.setElevatorPosition(Constants.Presets.testElevator, 0);
+    });
+    OI.armPreset().rising().ifHigh(()->{
+      arm.setTargetAngle(0, 0);
+    });
+    OI.wristPreset().rising().ifHigh(() -> {
+      System.out.println("RAAAAAAAAAAAAAAAAAAAAA");
+      wrist.setWristPosition(0.5, 0);
+    });
+    // OI.presetTest().ifHigh(()->{
+    //   System.out.println("PRESET-----------!!!!!!!");
+    // });
     // OI.presetTest().rising().ifHigh(()->{
     // elevator.setElevatorPosition(Constants.Presets.testElevator,0);
     // arm.setTargetAngle(Constants.Presets.testArm);

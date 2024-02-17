@@ -26,7 +26,7 @@ public class Elevator extends SubsystemBase {
         mainMotor.setIdleMode(IdleMode.kBrake);
 
         mainMotor.getPIDController().setOutputRange(-1, 1);
-        mainMotor.getPIDController().setP(0.1);
+        mainMotor.getPIDController().setP(0.05);
 
     }
 
@@ -40,6 +40,16 @@ public class Elevator extends SubsystemBase {
         mainMotor.getPIDController().setReference(voltage, CANSparkMax.ControlType.kVoltage);
     }
 
+    @Override
+    public void periodic(){
+        if(getElevatorSensorState() == ElevatorSensorState.BOTTOM){
+            mainMotor.getEncoder().setPosition(0);
+        }
+        else if (getElevatorSensorState() == ElevatorSensorState.TOP){
+            //THE TOP of TH ELEVATOR IN TICKS
+            mainMotor.getEncoder().setPosition(-62.3);
+        }
+    }
     /**
      * Combines the two Magnet Sensor inputs to generate an enum that can be used
      * for software limiting

@@ -15,22 +15,21 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Wrist extends SubsystemBase {
     public CANSparkMax wristMotor;
+    private double manualPower = 0;
     public Wrist(){
-        wristMotor = new CANSparkMax(Constants.Elevator.mainMotor, MotorType.kBrushless);
-        wristMotor.setIdleMode(IdleMode.kBrake);
+        wristMotor = new CANSparkMax(Constants.Wrist.mainMotor, MotorType.kBrushless);
+        
+        wristMotor.getPIDController().setP(0.5);
         wristMotor.getPIDController().setOutputRange(-1, 1);
-        wristMotor.getPIDController().setFeedbackDevice(wristMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle));
-
-
-        wristMotor.setSoftLimit(SoftLimitDirection.kForward, Constants.Wrist.MAX_POSITION);
-        wristMotor.setSoftLimit(SoftLimitDirection.kReverse, Constants.Wrist.MIN_POSITION);
-
-        wristMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-        wristMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+        // wristMotor.getPIDController().setFeedbackDevice(wristMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle));
+        wristMotor.setIdleMode(IdleMode.kBrake);
+        // wristMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+        // wristMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
     }
     public void setWristPower(double power){
         power = Math.max(Math.min(power, 1), -1);
-        wristMotor.set(power);
+        manualPower = power;
+        wristMotor.set(manualPower);
     }
     public void setWristVoltage(double voltage) {
         wristMotor.getPIDController().setReference(voltage, CANSparkMax.ControlType.kVoltage);
@@ -42,5 +41,14 @@ public class Wrist extends SubsystemBase {
     }
     public void resetPosition(double position) {
         wristMotor.getEncoder().setPosition(position);
+    }
+    public double getManualMotorPower(){
+        return manualPower;
+    }
+    public double getRelativeTicks(){
+        return wristMotor.getEncoder().getPosition();
+    }
+    public double getAbsoluteTicks(){
+        return wristMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle).getPosition();
     }
 }

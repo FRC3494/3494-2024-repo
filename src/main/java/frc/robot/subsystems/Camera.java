@@ -1,37 +1,37 @@
-// package frc.robot.subsystems;
+package frc.robot.subsystems;
 
-// import edu.wpi.first.cameraserver.CameraServer;
-// import edu.wpi.first.cscore.UsbCamera;
-// import edu.wpi.first.wpilibj.Timer;
-// import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-// public class Camera extends SubsystemBase {
-//     public UsbCamera camera;
+public class Camera extends SubsystemBase {
+    public UsbCamera camera;
 
-//     public Timer reconnectTimer;
+    public Timer reconnectTimer;
 
-//     public Camera() {
-//         // camera = CameraServer.startAutomaticCapture(0);
+    public Camera() {
+        camera = CameraServer.startAutomaticCapture(0);
 
         
-//         // reconnectTimer = new Timer();
-//         // reconnectTimer.start();
+        reconnectTimer = new Timer();
+        reconnectTimer.start();
         
-//     }
+    }
 
-//     @Override
-//     public void periodic() {
+    @Override
+    public void periodic() {
         
-//         // if (!camera.isConnected()
-//         // && reconnectTimer.advanceIfElapsed(1)) {
-//         // camera.close();
+        if (!camera.isConnected()
+        && reconnectTimer.advanceIfElapsed(1)) {
+        camera.close();
          
-//         // camera = CameraServer.startAutomaticCapture();
-//         // }
+        camera = CameraServer.startAutomaticCapture();
+        }
          
-//     }
+    }
 
-//     public UsbCamera getCamera() {
-//         return camera;
-//     }
-// }
+    public UsbCamera getCamera() {
+        return camera;
+    }
+}

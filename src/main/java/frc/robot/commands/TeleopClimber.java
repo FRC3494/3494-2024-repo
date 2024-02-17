@@ -18,11 +18,14 @@ public class TeleopClimber extends Command {
         //     System.out.println("PRESET");
         //     climber.setElevatorPosition(Constants.Presets.testClimber, 0);
         // }
-
-        // climberPower = OI.deadband(OI.getClimberPower(), 0.05)*0.1;
-        // if(climberPower != 0 || (climber.getManualMotorPower() != 0 && climberPower == 0)){
-        //     climber.setElevatorPower(climberPower);
-        // }
+        
+        climberPower = OI.deadband(OI.getClimberPower(), 0.05);
+        if(climberPower <= 0){
+            climberPower *= 0.1;
+        }
+        if(climberPower != 0 || (climber.getManualMotorPower() != 0 && climberPower == 0)){
+            climber.setElevatorPower(climberPower);
+        }
 
     }
     
