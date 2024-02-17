@@ -19,9 +19,9 @@ public class Wrist extends SubsystemBase {
     public Wrist(){
         wristMotor = new CANSparkMax(Constants.Wrist.mainMotor, MotorType.kBrushless);
         
-        wristMotor.getPIDController().setP(0.5);
+        wristMotor.getPIDController().setP(2);
         wristMotor.getPIDController().setOutputRange(-1, 1);
-        // wristMotor.getPIDController().setFeedbackDevice(wristMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle));
+        wristMotor.getPIDController().setFeedbackDevice(wristMotor.getAlternateEncoder(8192));
         wristMotor.setIdleMode(IdleMode.kBrake);
         // wristMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
         // wristMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
@@ -49,6 +49,7 @@ public class Wrist extends SubsystemBase {
         return wristMotor.getEncoder().getPosition();
     }
     public double getAbsoluteTicks(){
-        return wristMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle).getPosition();
+        return wristMotor.getAlternateEncoder(8192).getPosition();
+        // return wristMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle).getPosition();
     }
 }

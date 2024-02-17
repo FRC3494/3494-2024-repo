@@ -137,15 +137,17 @@ public final class OI {
             return speed * Constants.Arm.manualPowerAdjustUP;
         }
         return speed * Constants.Arm.manualPowerAdjustDOWN;
-        
     }
     public static double getWristPower() {
-        double speed = rightButtonBoard.getRawAxis(1);
-        // System.out.println(speed);
-        return speed * Constants.Wrist.manualPowerAdjust;
+        // double speed = rightButtonBoard.getRawAxis(1);
+        // // System.out.println(speed);
+        // return speed * Constants.Wrist.manualPowerAdjust;
+        return primaryController.getLeftTriggerAxis()-primaryController.getRightTriggerAxis();
+
     }
     public static double getClimberPower() {
-        return primaryController.getLeftTriggerAxis()-primaryController.getRightTriggerAxis();
+        return 0;
+        // return primaryController.getLeftTriggerAxis()-primaryController.getRightTriggerAxis();
     }
     public static double getIntakePower() {
         // System.out.println(leftButtonBoard.getRawAxis(0)*Constants.Intake.manualPowerAdjust);

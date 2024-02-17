@@ -121,7 +121,7 @@ public class RobotContainer {
     subsystemTab.addDouble("ELevator TIcks", () -> elevator.getTicks());
     subsystemTab.addString("Current Elevator Sensor State", () -> elevator.getElevatorSensorState().toString());
     subsystemTab.addDouble("Arm ABS encoder", () -> arm.getAbsoluteTicks());
-    // subsystemTab.addDouble("Wrist ABS encoder", ()-> wrist.getAbsoluteTicks());
+    subsystemTab.addDouble("Wrist ABS encoder", ()-> wrist.getAbsoluteTicks());
     subsystemTab.addDouble("Wrist REL encoder", ()-> wrist.getRelativeTicks());
     // subsystemTab.addDouble("Current Arm Position", () -> arm.getCurrentAngle());
 
@@ -147,9 +147,11 @@ public class RobotContainer {
       System.out.println("RAAAAAAAAAAAAAAAAAAAAA");
       wrist.setWristPosition(0.5, 0);
     });
-    // OI.presetTest().ifHigh(()->{
-    //   System.out.println("PRESET-----------!!!!!!!");
-    // });
+    OI.presetTest().rising().ifHigh(()->{
+      System.out.println("PRESET-----------!!!!!!!");
+      arm.setTargetAngle(0.2, 0);
+      // wrist.setWristPosition(0.1, 0);
+    });
     // OI.presetTest().rising().ifHigh(()->{
     // elevator.setElevatorPosition(Constants.Presets.testElevator,0);
     // arm.setTargetAngle(Constants.Presets.testArm);

@@ -19,9 +19,11 @@ public class Arm extends SubsystemBase{
         armMotor= new CANSparkMax(Constants.Arm.armMotor, MotorType.kBrushless);
         armMotor.setIdleMode(IdleMode.kBrake);
 
+        armMotor.getPIDController().setP(0.5);
+        armMotor.getPIDController().setFF(0.05);
         armMotor.getPIDController().setOutputRange(-1, 1);
-        // armMotor.getPIDController().setFeedbackDevice(armMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle));
-        armMotor.getPIDController().setP(0.01);
+        armMotor.getPIDController().setFeedbackDevice(armMotor.getAlternateEncoder(8192));
+        
     }
     public void setTargetAngle(double ticks, double arbFFVoltage) {
         // armMotor.getPIDController().setReference(ticks,
@@ -29,9 +31,9 @@ public class Arm extends SubsystemBase{
         armMotor.getPIDController().setReference(ticks, CANSparkMax.ControlType.kPosition, 0, arbFFVoltage,
                 SparkPIDController.ArbFFUnits.kVoltage);
     }
-    public double getCurrentAngle(){
-        return armMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle).getPosition();
-    }
+    // public double getCurrentAngle(){
+    //     return armMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle).getPosition();
+    // }
     public void setMotorPower(double power) {
         power = Math.max(Math.min(power, 1), -1);
         manualPower = power;
@@ -45,6 +47,6 @@ public class Arm extends SubsystemBase{
         return armMotor.getEncoder().getPosition();
     }
     public double getAbsoluteTicks(){
-        return armMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle).getPosition();
+        return armMotor.getAlternateEncoder(8192).getPosition();
     }
 }

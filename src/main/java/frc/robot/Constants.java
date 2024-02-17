@@ -80,7 +80,7 @@ public final class Constants {
   }
 
   public static final class Climber{
-    public static final int mainMotor = 15;
+    public static final int mainMotor = 15;//15
   }
   public static final class Elevator {
     public static int mainMotor = 4;// TODO: add ports
@@ -99,7 +99,7 @@ public final class Constants {
   }
 
   public static final class Wrist {
-    public static int mainMotor = 12;
+    public static int mainMotor = 12;//
     public static float MIN_POSITION = 0f;
     public static float MAX_POSITION = 0f;
     public static double manualPowerAdjust = 0.2;
