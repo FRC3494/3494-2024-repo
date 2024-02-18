@@ -9,13 +9,16 @@ import com.revrobotics.CANSparkBase.IdleMode;
 
 import frc.robot.Constants;
 import frc.robot.Main;
+import frc.robot.subsystems.Elevator.ElevatorSensorState;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
     public CANSparkMax mainMotor;
     public double manualPower = 0 ;
 
+    private DigitalInput bottomMagnetSensor;
     public Climber(){
         mainMotor = new CANSparkMax(Constants.Climber.mainMotor, MotorType.kBrushless);
         
@@ -23,11 +26,23 @@ public class Climber extends SubsystemBase {
 
         mainMotor.getPIDController().setOutputRange(-1, 1);
         mainMotor.getPIDController().setP(0.1);
+        bottomMagnetSensor = new DigitalInput(Constants.Climber.bottomMagnetSensorDIO);
     }
     public void setElevatorPower(double power){
         power = Math.max(Math.min(power, 1), -1);
         manualPower = power;
         mainMotor.set(manualPower);
+    }
+        @Override
+    public void periodic(){
+        if(getClimberSensorState() == ElevatorSensorState.BOTTOM){
+            resetPosition(0);
+        }
+    }
+    public ElevatorSensorState getClimberSensorState() {
+        if (!bottomMagnetSensor.get())
+            return ElevatorSensorState.BOTTOM;
+        return ElevatorSensorState.MIDDLE;
     }
     public void setElevatorVoltage(double voltage) {
         mainMotor.getPIDController().setReference(voltage, CANSparkMax.ControlType.kVoltage);

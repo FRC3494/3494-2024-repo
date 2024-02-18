@@ -139,15 +139,15 @@ public final class OI {
         return speed * Constants.Arm.manualPowerAdjustDOWN;
     }
     public static double getWristPower() {
-        // double speed = rightButtonBoard.getRawAxis(1);
-        // // System.out.println(speed);
-        // return speed * Constants.Wrist.manualPowerAdjust;
-        return primaryController.getLeftTriggerAxis()-primaryController.getRightTriggerAxis();
+        double speed = rightButtonBoard.getRawAxis(1);
+        // System.out.println(speed);
+        return speed * Constants.Wrist.manualPowerAdjust;
+        // return primaryController.getLeftTriggerAxis()-primaryController.getRightTriggerAxis();
 
     }
     public static double getClimberPower() {
-        return 0;
-        // return primaryController.getLeftTriggerAxis()-primaryController.getRightTriggerAxis();
+        // return 0;
+        return primaryController.getLeftTriggerAxis()-primaryController.getRightTriggerAxis();
     }
     public static double getIntakePower() {
         // System.out.println(leftButtonBoard.getRawAxis(0)*Constants.Intake.manualPowerAdjust);
@@ -170,5 +170,11 @@ public final class OI {
     }
     public static BooleanEvent wristPreset(){
         return leftButtonBoard.button(7, eventLoop);
+    }
+    public static BooleanEvent pickupPreset(){
+        return leftButtonBoard.button(1, eventLoop);
+    }
+    public static BooleanEvent ampPreset(){
+        return leftButtonBoard.button(2, eventLoop);
     }
 }

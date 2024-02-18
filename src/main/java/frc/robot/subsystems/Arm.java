@@ -19,8 +19,8 @@ public class Arm extends SubsystemBase{
         armMotor= new CANSparkMax(Constants.Arm.armMotor, MotorType.kBrushless);
         armMotor.setIdleMode(IdleMode.kBrake);
 
-        armMotor.getPIDController().setP(0.5);
-        armMotor.getPIDController().setFF(0.05);
+        armMotor.getPIDController().setP(1.5);
+        armMotor.getPIDController().setFF(0.5);
         armMotor.getPIDController().setOutputRange(-1, 1);
         armMotor.getPIDController().setFeedbackDevice(armMotor.getAlternateEncoder(8192));
         

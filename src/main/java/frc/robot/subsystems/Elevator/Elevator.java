@@ -26,7 +26,7 @@ public class Elevator extends SubsystemBase {
         mainMotor.setIdleMode(IdleMode.kBrake);
 
         mainMotor.getPIDController().setOutputRange(-1, 1);
-        mainMotor.getPIDController().setP(0.05);
+        mainMotor.getPIDController().setP(0.025);
 
     }
 

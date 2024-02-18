@@ -119,6 +119,8 @@ public class RobotContainer {
     subsystemTab.addDouble("Clmber Ticks", () -> climber.getTicks());
     subsystemTab.addDouble("Climber Power",()->climber.getMotorPower());
     subsystemTab.addDouble("ELevator TIcks", () -> elevator.getTicks());
+    
+    subsystemTab.addString("Current Climber Sensor State", () -> climber.getClimberSensorState().toString());
     subsystemTab.addString("Current Elevator Sensor State", () -> elevator.getElevatorSensorState().toString());
     subsystemTab.addDouble("Arm ABS encoder", () -> arm.getAbsoluteTicks());
     subsystemTab.addDouble("Wrist ABS encoder", ()-> wrist.getAbsoluteTicks());
@@ -141,7 +143,7 @@ public class RobotContainer {
       elevator.setElevatorPosition(Constants.Presets.testElevator, 0);
     });
     OI.armPreset().rising().ifHigh(()->{
-      arm.setTargetAngle(0, 0);
+      arm.setTargetAngle(0.2, 0);
     });
     OI.wristPreset().rising().ifHigh(() -> {
       System.out.println("RAAAAAAAAAAAAAAAAAAAAA");
@@ -150,7 +152,19 @@ public class RobotContainer {
     OI.presetTest().rising().ifHigh(()->{
       System.out.println("PRESET-----------!!!!!!!");
       arm.setTargetAngle(0.2, 0);
-      // wrist.setWristPosition(0.1, 0);
+      wrist.setWristPosition(0.1, 0);
+      elevator.setElevatorPosition(Constants.Presets.testElevator, 0);
+      climber.setElevatorPosition(Constants.Presets.testClimber, 0);
+    });
+    OI.pickupPreset().rising().ifHigh(() ->{
+      arm.setTargetAngle(Constants.Presets.pickupArm, 0);
+      wrist.setWristPosition(Constants.Presets.pickupWrist, 0);
+      elevator.setElevatorPosition(Constants.Presets.pickupElevator, 0);
+    });
+    OI.ampPreset().rising().ifHigh(() ->{
+      arm.setTargetAngle(Constants.Presets.ampArm, 0);
+      wrist.setWristPosition(Constants.Presets.ampWrist, 0);
+      elevator.setElevatorPosition(Constants.Presets.ampElevator, 0);
     });
     // OI.presetTest().rising().ifHigh(()->{
     // elevator.setElevatorPosition(Constants.Presets.testElevator,0);
