@@ -21,7 +21,7 @@ public class TeleopClimber extends Command {
         
         climberPower = OI.deadband(OI.getClimberPower(), 0.05);
         if(climberPower <= 0){
-            climberPower *= 0.1;
+            climberPower *= 0.5;
         }
         if(climberPower != 0 || (climber.getManualMotorPower() != 0 && climberPower == 0)){
             climber.setElevatorPower(climberPower);

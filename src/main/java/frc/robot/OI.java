@@ -77,7 +77,7 @@ public final class OI {
         } else {
             return dPadPower;
         }
-
+        // return 0.1;
     }
 
     public static double teleopYVelocity() {
@@ -104,7 +104,8 @@ public final class OI {
     }
 
     public static boolean slowMode() {
-        return ((primaryController.getLeftTriggerAxis() >= 0.1) || (primaryController.getRightTriggerAxis() >= 0.1));
+        return primaryController.getLeftBumper() || primaryController.getRightBumper();
+        // return ((primaryController.getLeftTriggerAxis() >= 0.1) || (primaryController.getRightTriggerAxis() >= 0.1));
     }
 
     public static BooleanEvent resetHeadingEvent() {
@@ -151,7 +152,7 @@ public final class OI {
     }
     public static double getIntakePower() {
         // System.out.println(leftButtonBoard.getRawAxis(0)*Constants.Intake.manualPowerAdjust);
-        return leftButtonBoard.getRawAxis(0)*Constants.Intake.manualPowerAdjust;
+        return leftButtonBoard.getRawAxis(0)*-Constants.Intake.manualPowerAdjust;
     }
     public static BooleanEvent presetTest() {
         return primaryController.a(eventLoop);
@@ -160,21 +161,27 @@ public final class OI {
         return primaryController.getAButtonPressed();
     }
     public static BooleanEvent climbPreset() {
-        return leftButtonBoard.button(4, eventLoop);
+        return leftButtonBoard.button(8, eventLoop);
     }
     public static BooleanEvent liftPreset() {
         return leftButtonBoard.button(5, eventLoop);
     }
     public static BooleanEvent armPreset(){
-        return leftButtonBoard.button(6, eventLoop);
+        return leftButtonBoard.button(10, eventLoop);
     }
     public static BooleanEvent wristPreset(){
         return leftButtonBoard.button(7, eventLoop);
     }
     public static BooleanEvent pickupPreset(){
-        return leftButtonBoard.button(1, eventLoop);
+        return leftButtonBoard.button(2, eventLoop);
     }
     public static BooleanEvent ampPreset(){
-        return leftButtonBoard.button(2, eventLoop);
+        return leftButtonBoard.button(1, eventLoop);
+    }
+    public static BooleanEvent trapPreset(){
+        return rightButtonBoard.button(1, eventLoop);
+    }
+    public static BooleanEvent storePreset(){
+        return leftButtonBoard.button(4, eventLoop);
     }
 }

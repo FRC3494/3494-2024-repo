@@ -21,7 +21,7 @@ public class Arm extends SubsystemBase{
 
         armMotor.getPIDController().setP(1.5);
         armMotor.getPIDController().setFF(0.5);
-        armMotor.getPIDController().setOutputRange(-1, 1);
+        armMotor.getPIDController().setOutputRange(-0.7, 0.7);
         armMotor.getPIDController().setFeedbackDevice(armMotor.getAlternateEncoder(8192));
         
     }

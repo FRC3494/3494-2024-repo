@@ -10,15 +10,25 @@ public final class Constants {
     public static double testWrist = 0;
     public static double testClimber = 0;
 
-    public static double pickupArm = 0.01;
-    public static double pickupElevator = 3;
+    public static double pickupArm = -0.03;
+    public static double pickupElevator = -6.6;
     public static double pickupWrist = 0.0;
 
     public static double ampArm = 0.17;
     public static double ampElevator = -46;
+    
     public static double ampWrist = 0.2;
 
+    public static double storeArm = 0.263;
+    public static double storeElevator = 0;
+    public static double storeWrist = -0.164;
 
+    public static double safeArm = 0.18;
+    public static double safeWrist = 0.08;
+
+    public static double trapArm = 0.254;
+    public static double trapElevator = -62.8;
+    public static double trapWrist = 0.49;
 
   }
 
@@ -38,7 +48,7 @@ public final class Constants {
 
       public static int ENCODER_MOTOR_PORT = 2;
 
-      public static double STEER_OFFSET = Math.toRadians(-91.2 + 12);
+      public static double STEER_OFFSET = Math.toRadians(-91.2 -1.2+3.2 + 12);
     }
 
     public static final class BackLeftModule {
@@ -47,7 +57,7 @@ public final class Constants {
 
       public static int ENCODER_MOTOR_PORT = 1;
 
-      public static double STEER_OFFSET = Math.toRadians(-84.50 + 9);
+      public static double STEER_OFFSET = Math.toRadians(-84.50 + 9+2.8);
     }
 
     public static final class BackRightModule {
@@ -56,7 +66,7 @@ public final class Constants {
 
       public static int ENCODER_MOTOR_PORT = 0;
 
-      public static double STEER_OFFSET = Math.toRadians(37.67 + 180);
+      public static double STEER_OFFSET = Math.toRadians(37.67-3.6 + 180);
     }
 
     public static final double TRACKWIDTH_METERS = 0.47625;
@@ -82,7 +92,7 @@ public final class Constants {
     public static final int SECONDARY_RIGHT_CONTROLLER_PORT = 2;
 
     public static final double DRIVE_SPEED = 3.5; // m/s
-    public static final double TURN_SPEED = 5.5; // rad/s
+    public static final double TURN_SPEED = 3.0; //5.5 rad/s
 
     public static final double SLOW_DRIVE_SPEED = 1.5; // m/s
     public static final double SLOW_TURN_SPEED = 1.925; // rad/s

@@ -17,7 +17,9 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -66,7 +68,7 @@ public class RobotContainer {
   public final Arm arm;
   public final Elevator elevator;
   public final Wrist wrist;
-  // public final Camera camera;
+  public final Camera camera;
   public final Intake intake;
   private ShuffleboardTab fieldTab;
   private ShuffleboardTab subsystemTab;
@@ -83,7 +85,7 @@ public class RobotContainer {
     elevator = new Elevator();
     wrist = new Wrist();
     arm = new Arm();
-    // camera = new Camera();
+    camera = new Camera();
     intake = new Intake();
     configureBindings();
 
@@ -97,14 +99,14 @@ public class RobotContainer {
         new PrintCommand("AUTO HAS TRIGGERED A PRINT COMAND WOOOOOOOOOOOOOOO"));
 
     // Configure the trigger bindings
-    
+
     autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
     SmartDashboard.putData("Auto Mode", autoChooser);
     initShuffleboardObjects();
   }
 
   // public void periodic() {
-  //   eventLoop.poll();
+  // eventLoop.poll();
   // }
   public void initShuffleboardObjects() {
     fieldTab = Shuffleboard.getTab("Field");
@@ -117,14 +119,14 @@ public class RobotContainer {
     fieldTab.addDouble("NavX yaw", () -> NavX.getYaw());
     fieldTab.addDouble("OFFFSET", () -> OI.getDriveOffset());
     subsystemTab.addDouble("Clmber Ticks", () -> climber.getTicks());
-    subsystemTab.addDouble("Climber Power",()->climber.getMotorPower());
+    subsystemTab.addDouble("Climber Power", () -> climber.getMotorPower());
     subsystemTab.addDouble("ELevator TIcks", () -> elevator.getTicks());
-    
+
     subsystemTab.addString("Current Climber Sensor State", () -> climber.getClimberSensorState().toString());
     subsystemTab.addString("Current Elevator Sensor State", () -> elevator.getElevatorSensorState().toString());
     subsystemTab.addDouble("Arm ABS encoder", () -> arm.getAbsoluteTicks());
-    subsystemTab.addDouble("Wrist ABS encoder", ()-> wrist.getAbsoluteTicks());
-    subsystemTab.addDouble("Wrist REL encoder", ()-> wrist.getRelativeTicks());
+    subsystemTab.addDouble("Wrist ABS encoder", () -> wrist.getAbsoluteTicks());
+    subsystemTab.addDouble("Wrist REL encoder", () -> wrist.getRelativeTicks());
     // subsystemTab.addDouble("Current Arm Position", () -> arm.getCurrentAngle());
 
     // fieldTab.add(camera.getCamera()).withPosition(1, 5).withSize(4, 4);
@@ -136,36 +138,54 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    OI.climbPreset().ifHigh(()->{
+    OI.climbPreset().ifHigh(() -> {
       climber.setElevatorPosition(Constants.Presets.testClimber, 0);
     });
-    OI.liftPreset().rising().ifHigh(()->{
+    OI.liftPreset().rising().ifHigh(() -> {
       elevator.setElevatorPosition(Constants.Presets.testElevator, 0);
     });
-    OI.armPreset().rising().ifHigh(()->{
+    OI.armPreset().rising().ifHigh(() -> {
       arm.setTargetAngle(0.2, 0);
     });
     OI.wristPreset().rising().ifHigh(() -> {
       System.out.println("RAAAAAAAAAAAAAAAAAAAAA");
       wrist.setWristPosition(0.5, 0);
     });
-    OI.presetTest().rising().ifHigh(()->{
+    OI.presetTest().rising().ifHigh(() -> {
       System.out.println("PRESET-----------!!!!!!!");
       arm.setTargetAngle(0.2, 0);
       wrist.setWristPosition(0.1, 0);
       elevator.setElevatorPosition(Constants.Presets.testElevator, 0);
       climber.setElevatorPosition(Constants.Presets.testClimber, 0);
     });
-    OI.pickupPreset().rising().ifHigh(() ->{
-      arm.setTargetAngle(Constants.Presets.pickupArm, 0);
-      wrist.setWristPosition(Constants.Presets.pickupWrist, 0);
-      elevator.setElevatorPosition(Constants.Presets.pickupElevator, 0);
-    });
-    OI.ampPreset().rising().ifHigh(() ->{
-      arm.setTargetAngle(Constants.Presets.ampArm, 0);
-      wrist.setWristPosition(Constants.Presets.ampWrist, 0);
-      elevator.setElevatorPosition(Constants.Presets.ampElevator, 0);
-    });
+    OI.pickupPreset().rising().ifHigh(() -> Commands.sequence(
+        new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.safeWrist, 0)),
+        new WaitCommand(0.75),
+        new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.pickupArm, 0)),
+        new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.pickupElevator, 0)),
+        new WaitCommand(0.75),
+        new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.pickupWrist, 0))).schedule());
+    OI.ampPreset().rising().ifHigh(() -> Commands.sequence(
+        new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.safeArm, 0)),
+        new WaitCommand(0.75),
+        new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.ampWrist, 0)),
+        new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.ampElevator, 0)),
+        new WaitCommand(0.75),
+        new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.ampArm, 0))).schedule());
+
+    OI.storePreset().rising().ifHigh(() -> Commands.sequence(
+        new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.safeArm, 0)),
+        new WaitCommand(0.75),
+        new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.storeWrist, 0)),
+        new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.storeElevator, 0)),
+        new WaitCommand(0.75),
+        new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.storeArm, 0))).schedule());
+    OI.trapPreset().rising().ifHigh(() -> Commands.sequence(
+        new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.trapElevator, 0)),
+        new WaitCommand(2.0),
+        new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.trapWrist, 0)),
+        new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.ampArm, 0))).schedule());
+
     // OI.presetTest().rising().ifHigh(()->{
     // elevator.setElevatorPosition(Constants.Presets.testElevator,0);
     // arm.setTargetAngle(Constants.Presets.testArm);

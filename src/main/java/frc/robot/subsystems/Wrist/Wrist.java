@@ -49,8 +49,8 @@ public class Wrist extends SubsystemBase {
             double PIDpower = error*kP;
             PIDpower = Math.min(0.2, PIDpower);
             PIDpower = Math.max(PIDpower, -0.2);
-            
-            System.out.println(PIDpower);
+
+            // System.out.println(PIDpower);
             wristMotor.set(PIDpower);
         }
     }
