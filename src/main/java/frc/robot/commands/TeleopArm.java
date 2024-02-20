@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.OI;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator.Elevator;
@@ -15,9 +16,13 @@ public class TeleopArm extends Command {
     @Override
     public void execute() {
         armPower = OI.deadband(OI.getArmPower(), 0.05);
+        // if(armPower != 0 || (arm.getManualMotorPower() != 0 && armPower == 0)){
+        //     arm.setMotorPower(armPower);
+        // }
         if(armPower != 0 || (arm.getManualMotorPower() != 0 && armPower == 0)){
-            arm.setMotorPower(armPower);
+            arm.setTargetAngle(arm.getTargetPosition()+armPower*Constants.Arm.manualPowerPOS,0);
         }
+        
 
     }
     

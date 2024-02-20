@@ -15,6 +15,7 @@ import frc.robot.Constants;
 public class Arm extends SubsystemBase{
     CANSparkMax armMotor;
     double manualPower = 0;
+    private double targetPosition;
     public Arm(){
         armMotor= new CANSparkMax(Constants.Arm.armMotor, MotorType.kBrushless);
         armMotor.setIdleMode(IdleMode.kBrake);
@@ -23,11 +24,13 @@ public class Arm extends SubsystemBase{
         armMotor.getPIDController().setFF(0.5);
         armMotor.getPIDController().setOutputRange(-0.7, 0.7);
         armMotor.getPIDController().setFeedbackDevice(armMotor.getAlternateEncoder(8192));
+        targetPosition = armMotor.getAlternateEncoder(8192).getPosition();
         
     }
     public void setTargetAngle(double ticks, double arbFFVoltage) {
         // armMotor.getPIDController().setReference(ticks,
         //         ControlType.kPosition);
+        targetPosition = ticks; 
         armMotor.getPIDController().setReference(ticks, CANSparkMax.ControlType.kPosition, 0, arbFFVoltage,
                 SparkPIDController.ArbFFUnits.kVoltage);
     }
@@ -48,5 +51,8 @@ public class Arm extends SubsystemBase{
     }
     public double getAbsoluteTicks(){
         return armMotor.getAlternateEncoder(8192).getPosition();
+    }
+    public double getTargetPosition(){
+        return targetPosition;
     }
 }

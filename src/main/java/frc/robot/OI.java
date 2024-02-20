@@ -134,9 +134,9 @@ public final class OI {
 
     public static double getArmPower() {
         double speed = leftButtonBoard.getRawAxis(1);
-        if (speed>0){
-            return speed * Constants.Arm.manualPowerAdjustUP;
-        }
+        // if (speed>0){
+        //     return speed * Constants.Arm.manualPowerAdjustUP;
+        // }
         return speed * Constants.Arm.manualPowerAdjustDOWN;
     }
     public static double getWristPower() {
@@ -152,13 +152,16 @@ public final class OI {
     }
     public static double getIntakePower() {
         // System.out.println(leftButtonBoard.getRawAxis(0)*Constants.Intake.manualPowerAdjust);
-        return leftButtonBoard.getRawAxis(0)*-Constants.Intake.manualPowerAdjust;
+        return Math.abs(leftButtonBoard.getRawAxis(0)*-Constants.Intake.manualPowerAdjust);
     }
     public static BooleanEvent presetTest() {
         return primaryController.a(eventLoop);
     }
     public static boolean aButton(){
         return primaryController.getAButtonPressed();
+    }
+    public static BooleanEvent intakeReverse(){
+        return leftButtonBoard.button(7, eventLoop);
     }
     public static BooleanEvent climbPreset() {
         return leftButtonBoard.button(8, eventLoop);

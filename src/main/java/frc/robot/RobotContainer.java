@@ -138,19 +138,22 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    OI.climbPreset().ifHigh(() -> {
-      climber.setElevatorPosition(Constants.Presets.testClimber, 0);
+    OI.intakeReverse().ifHigh(()->{
+      intake.setMotorPower(-0.3);
     });
-    OI.liftPreset().rising().ifHigh(() -> {
-      elevator.setElevatorPosition(Constants.Presets.testElevator, 0);
-    });
-    OI.armPreset().rising().ifHigh(() -> {
-      arm.setTargetAngle(0.2, 0);
-    });
-    OI.wristPreset().rising().ifHigh(() -> {
-      System.out.println("RAAAAAAAAAAAAAAAAAAAAA");
-      wrist.setWristPosition(0.5, 0);
-    });
+    // OI.climbPreset().ifHigh(() -> {
+    //   climber.setElevatorPosition(Constants.Presets.testClimber, 0);
+    // });
+    // OI.liftPreset().rising().ifHigh(() -> {
+    //   elevator.setElevatorPosition(Constants.Presets.testElevator, 0);
+    // });
+    // OI.armPreset().rising().ifHigh(() -> {
+    //   arm.setTargetAngle(0.2, 0);
+    // });
+    // OI.wristPreset().rising().ifHigh(() -> {
+    //   System.out.println("RAAAAAAAAAAAAAAAAAAAAA");
+    //   wrist.setWristPosition(0.5, 0);
+    // });
     OI.presetTest().rising().ifHigh(() -> {
       System.out.println("PRESET-----------!!!!!!!");
       arm.setTargetAngle(0.2, 0);
@@ -181,6 +184,7 @@ public class RobotContainer {
         new WaitCommand(0.75),
         new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.storeArm, 0))).schedule());
     OI.trapPreset().rising().ifHigh(() -> Commands.sequence(
+      
         new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.trapElevator, 0)),
         new WaitCommand(2.0),
         new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.trapWrist, 0)),

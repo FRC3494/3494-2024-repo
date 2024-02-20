@@ -65,7 +65,7 @@ public class Wrist extends SubsystemBase {
     }
 
     public void setWristPosition(double position, double arbFFVoltage) {
-        targetPos = position;
+        targetPos = position+Constants.Wrist.globalWristOffset;
         targeting = true;
         // wristMotor.getPIDController().setReference(position, CANSparkMax.ControlType.kPosition, 0, arbFFVoltage,
                 // SparkPIDController.ArbFFUnits.kVoltage);

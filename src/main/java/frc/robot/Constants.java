@@ -10,9 +10,9 @@ public final class Constants {
     public static double testWrist = 0;
     public static double testClimber = 0;
 
-    public static double pickupArm = -0.03;
-    public static double pickupElevator = -6.6;
-    public static double pickupWrist = 0.0;
+    public static double pickupArm = -0.043;
+    public static double pickupElevator = -5.38;
+    public static double pickupWrist = -0.025;
 
     public static double ampArm = 0.17;
     public static double ampElevator = -46;
@@ -113,6 +113,7 @@ public final class Constants {
 
   public static final class Arm {
     public static int armMotor = 10;
+    public static double manualPowerPOS = 0.01;
     public static double manualPowerAdjustUP = 0.3;
     public static double manualPowerAdjustDOWN = 0.2;
 
@@ -125,7 +126,9 @@ public final class Constants {
     public static float MIN_POSITION = 0f;
     public static float MAX_POSITION = 0f;
     public static double manualPowerAdjust = 0.2;
+    public static double globalWristOffset = 0;//-0.34304;
   }
+
   public static final class Intake {
     public static int mainMotor = 11;
     public static double manualPowerAdjust = 1.;
