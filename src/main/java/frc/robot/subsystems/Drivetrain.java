@@ -31,6 +31,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.OI;
 import frc.robot.subsystems.NavX;
 import frc.robot.subsystems.LimelightHelpers;
 import frc.robot.util.Pose2dHelpers;
@@ -45,7 +46,7 @@ public class Drivetrain extends SubsystemBase {
 			Shuffleboard.getTab("Drivetrain").getLayout("Front Left Module", BuiltInLayouts.kList)
 					.withSize(2, 4)
 					.withPosition(0, 0),
-			Mk4iSwerveModuleHelper.GearRatio.L1,
+			Mk4iSwerveModuleHelper.GearRatio.L2,//l1
 			Constants.Drivetrain.FrontLeftModule.DRIVE_MOTOR_PORT,
 			Constants.Drivetrain.FrontLeftModule.STEER_MOTOR_PORT,
 			Constants.Drivetrain.FrontLeftModule.ENCODER_MOTOR_PORT,
@@ -54,7 +55,7 @@ public class Drivetrain extends SubsystemBase {
 			Shuffleboard.getTab("Drivetrain").getLayout("Front Right Module", BuiltInLayouts.kList)
 					.withSize(2, 4)
 					.withPosition(2, 0),
-			Mk4iSwerveModuleHelper.GearRatio.L1,
+			Mk4iSwerveModuleHelper.GearRatio.L2,//L1
 			Constants.Drivetrain.FrontRightModule.DRIVE_MOTOR_PORT,
 			Constants.Drivetrain.FrontRightModule.STEER_MOTOR_PORT,
 			Constants.Drivetrain.FrontRightModule.ENCODER_MOTOR_PORT,
@@ -64,7 +65,7 @@ public class Drivetrain extends SubsystemBase {
 			Shuffleboard.getTab("Drivetrain").getLayout("Back Left Module", BuiltInLayouts.kList)
 					.withSize(2, 4)
 					.withPosition(4, 0),
-			Mk4iSwerveModuleHelper.GearRatio.L1,
+			Mk4iSwerveModuleHelper.GearRatio.L2,//L1
 			Constants.Drivetrain.BackLeftModule.DRIVE_MOTOR_PORT,
 			Constants.Drivetrain.BackLeftModule.STEER_MOTOR_PORT,
 			Constants.Drivetrain.BackLeftModule.ENCODER_MOTOR_PORT,
@@ -74,7 +75,7 @@ public class Drivetrain extends SubsystemBase {
 			Shuffleboard.getTab("Drivetrain").getLayout("Back Right Module", BuiltInLayouts.kList)
 					.withSize(2, 4)
 					.withPosition(6, 0),
-			Mk4iSwerveModuleHelper.GearRatio.L1,
+			Mk4iSwerveModuleHelper.GearRatio.L2,//L1
 			Constants.Drivetrain.BackRightModule.DRIVE_MOTOR_PORT,
 			Constants.Drivetrain.BackRightModule.STEER_MOTOR_PORT,
 			Constants.Drivetrain.BackRightModule.ENCODER_MOTOR_PORT,
@@ -102,7 +103,7 @@ public class Drivetrain extends SubsystemBase {
 				},
 				new HolonomicPathFollowerConfig(
 						// TODO: Move to constants
-						new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+						new PIDConstants(5.0, 0.0, 0.4), // Translation PID constants
 						new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
 						// TODO: Tune these
 						Constants.Drivetrain.MAX_VELOCITY_METERS_PER_SECOND, // Max module speed, in m/s
@@ -146,31 +147,34 @@ public class Drivetrain extends SubsystemBase {
 				limelightBotPoseRight.getRotation());
 
 		// -----------SET MASTER BOT POSE
-		if (rightNeitherXNorYAt0 && leftNeitherXNorYAt0 &&
-				!RobotState.isAutonomous()) {// resetRight && resetLeft
-			averagedPoses = Pose2dHelpers.meanCorrect(limelightBotPoseLeft,
-					limelightBotPoseRight);
+		//ONLY SET while not auto aligning
+		if(!OI.isYHeld()){
+			if (rightNeitherXNorYAt0 && leftNeitherXNorYAt0 &&
+					!RobotState.isAutonomous()) {// resetRight && resetLeft
+				averagedPoses = Pose2dHelpers.meanCorrect(limelightBotPoseLeft,
+						limelightBotPoseRight);
 
-			m_poseEstimator.addVisionMeasurement(new Pose2d(averagedPoses.getY(),
-					-averagedPoses.getX(),
-					averagedPoses.getRotation()),//getGyroscopeRotation()), 
-					Timer.getFPGATimestamp(),
-					VecBuilder.fill(0.9, 0.9, 0.9));// taken from soncis squirrls
-		} else if (rightNeitherXNorYAt0 && !RobotState.isAutonomous()) {
-			m_poseEstimator.addVisionMeasurement(new Pose2d(limelightBotPoseRight.getY(),
-					-limelightBotPoseRight.getX(),
-					limelightBotPoseRight.getRotation()),//getGyroscopeRotation()),
-					Timer.getFPGATimestamp(),
-					VecBuilder.fill(0.9, 0.9, 0.9));// taken from soncis squirrls
-			// resetOdometry(limelightBotPoseRight);
-		} else if (leftNeitherXNorYAt0 && !RobotState.isAutonomous()) {
-			// resetOdometry(limelightBotPoseLeft);
-			m_poseEstimator.addVisionMeasurement(
-					new Pose2d(limelightBotPoseLeft.getY(), -limelightBotPoseLeft.getX(),
-							limelightBotPoseLeft.getRotation()),//getGyroscopeRotation()), // used to be limelightBotPoseLeft.getRotation()
-					// new Rotation2d(getGyroscopeRotation().getRadians() + Math.PI)),
-					Timer.getFPGATimestamp(),
-					VecBuilder.fill(0.9, 0.9, 0.9));// taken from soncis squirrls
+				m_poseEstimator.addVisionMeasurement(new Pose2d(averagedPoses.getY(),
+						-averagedPoses.getX(),
+						averagedPoses.getRotation()),//getGyroscopeRotation()), 
+						Timer.getFPGATimestamp(),
+						VecBuilder.fill(0.9, 0.9, 0.9));// taken from soncis squirrls
+			} else if (rightNeitherXNorYAt0 && !RobotState.isAutonomous()) {
+				m_poseEstimator.addVisionMeasurement(new Pose2d(limelightBotPoseRight.getY(),
+						-limelightBotPoseRight.getX(),
+						limelightBotPoseRight.getRotation()),//getGyroscopeRotation()),
+						Timer.getFPGATimestamp(),
+						VecBuilder.fill(0.9, 0.9, 0.9));// taken from soncis squirrls
+				// resetOdometry(limelightBotPoseRight);
+			} else if (leftNeitherXNorYAt0 && !RobotState.isAutonomous()) {
+				// resetOdometry(limelightBotPoseLeft);
+				m_poseEstimator.addVisionMeasurement(
+						new Pose2d(limelightBotPoseLeft.getY(), -limelightBotPoseLeft.getX(),
+								limelightBotPoseLeft.getRotation()),//getGyroscopeRotation()), // used to be limelightBotPoseLeft.getRotation()
+						// new Rotation2d(getGyroscopeRotation().getRadians() + Math.PI)),
+						Timer.getFPGATimestamp(),
+						VecBuilder.fill(0.9, 0.9, 0.9));// taken from soncis squirrls
+			}
 		}
 
 		SmartDashboard.putBoolean("Averaging", rightNeitherXNorYAt0 &&

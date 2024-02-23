@@ -14,12 +14,11 @@ public final class Constants {
     public static double pickupElevator = -5.38;
     public static double pickupWrist = -0.025;
 
-    public static double ampArm = 0.17;
+    public static double ampArm = 0.21;//0.17
     public static double ampElevator = -46;
-    
-    public static double ampWrist = 0.2;
+    public static double ampWrist = 0.173;//0.2
 
-    public static double storeArm = 0.263;
+    public static double storeArm = 0.243;
     public static double storeElevator = 0;
     public static double storeWrist = -0.164;
 
@@ -69,8 +68,8 @@ public final class Constants {
       public static double STEER_OFFSET = Math.toRadians(37.67-3.6 + 180);
     }
 
-    public static final double TRACKWIDTH_METERS = 0.47625;
-    public static final double TRACKLENGTH_METERS = 0.52705;
+    public static final double TRACKWIDTH_METERS = 0.5222;
+    public static final double TRACKLENGTH_METERS = 0.574675;
 
     public static SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
         // Front left

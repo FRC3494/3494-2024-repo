@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Wrist.Wrist;
+import frc.robot.commands.AutoIntakePower;
 import frc.robot.commands.TeleopArm;
 import frc.robot.commands.TeleopClimber;
 import frc.robot.commands.TeleopDrive;
@@ -97,11 +98,27 @@ public class RobotContainer {
     intake.setDefaultCommand(new TeleopIntake(intake));
     NamedCommands.registerCommand("Print Command",
         new PrintCommand("AUTO HAS TRIGGERED A PRINT COMAND WOOOOOOOOOOOOOOO"));
-
+    NamedCommands.registerCommand("To Amp Pos",
+        Commands.sequence(
+        new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.safeArm, 0)),
+        new WaitCommand(0.75),
+        new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.ampWrist, 0)),
+        new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.ampElevator, 0)),
+        new WaitCommand(0.75),
+        new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.ampArm, 0))));
+    NamedCommands.registerCommand("To Intake Pos", Commands.sequence(
+        new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.safeWrist, 0)),
+        new WaitCommand(0.75),
+        new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.pickupArm, 0)),
+        new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.pickupElevator, 0)),
+        new WaitCommand(0.75),
+        new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.pickupWrist, 0))));
+    NamedCommands.registerCommand("Intake", new AutoIntakePower(intake, 1));
+    NamedCommands.registerCommand("Stop Intake", new AutoIntakePower(intake, 0));
     // Configure the trigger bindings
 
     autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
-    SmartDashboard.putData("Auto Mode", autoChooser);
+    
     initShuffleboardObjects();
   }
 
@@ -111,6 +128,8 @@ public class RobotContainer {
   public void initShuffleboardObjects() {
     fieldTab = Shuffleboard.getTab("Field");
     subsystemTab = Shuffleboard.getTab("Subsystems");
+
+    fieldTab.add("Auto Mode", autoChooser);
 
     robotPosition = new Field2d();
     robotPosition.setRobotPose(new Pose2d());
@@ -184,7 +203,7 @@ public class RobotContainer {
         new WaitCommand(0.75),
         new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.storeArm, 0))).schedule());
     OI.trapPreset().rising().ifHigh(() -> Commands.sequence(
-      
+
         new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.trapElevator, 0)),
         new WaitCommand(2.0),
         new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.trapWrist, 0)),

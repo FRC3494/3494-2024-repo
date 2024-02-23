@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -23,6 +24,7 @@ public class Intake extends SubsystemBase{
         power = Math.max(Math.min(power, 1), -1);
         manualPower = power;
         intakeMotor.set(manualPower);
+        
     }
     public double getManualMotorPower(){
         return manualPower;

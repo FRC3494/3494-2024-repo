@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.OI;
@@ -19,11 +20,13 @@ public class TeleopIntake extends Command {
         //     System.out.println("PRESET");
         //     climber.setElevatorPosition(Constants.Presets.testClimber, 0);
         // }
-
-        intakePower = OI.deadband(OI.getIntakePower(), 0.05);
-        if(intakePower != 0 || (intake.getManualMotorPower() != 0 && intakePower == 0)){
-            intake.setMotorPower(intakePower);
+        if(!RobotState.isAutonomous()){
+            intakePower = OI.deadband(OI.getIntakePower(), 0.05);
+            if(intakePower != 0 || (intake.getManualMotorPower() != 0 && intakePower == 0)){
+                intake.setMotorPower(intakePower);
+            }
         }
+        
 
     }
     

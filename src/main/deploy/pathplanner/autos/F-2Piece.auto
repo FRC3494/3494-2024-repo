@@ -2,19 +2,31 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.47025552740564164,
-      "y": 7.367317298737161
+      "x": 1.2537638750491173,
+      "y": 7.156822518773243
     },
-    "rotation": -90.78376357119375
+    "rotation": 90.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "To Amp Pos"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "F-Preload"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
           }
         },
         {
@@ -24,15 +36,57 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Stop Intake"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "F-PickupMid"
+            "pathName": "F-PickupMidPart1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "To Intake Pos"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "F-PickupMidPart2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "To Amp Pos"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "AmpFromMid"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
           }
         }
       ]
