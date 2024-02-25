@@ -7,12 +7,14 @@ package frc.robot;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Wrist.Wrist;
 import frc.robot.commands.AutoIntakePower;
+import frc.robot.commands.TeleopAinterupptor;
 import frc.robot.commands.TeleopArm;
 import frc.robot.commands.TeleopClimber;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.commands.TeleopElevator;
 import frc.robot.commands.TeleopIntake;
 import frc.robot.commands.TeleopWrist;
+import frc.robot.commands.TeleopYinterupptor;
 // import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
@@ -101,7 +103,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("To Amp Pos",
         Commands.sequence(
         new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.safeArm, 0)),
-        new WaitCommand(0.75),
+        new WaitCommand(0.4),
         new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.ampWrist, 0)),
         new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.ampElevator, 0)),
         new WaitCommand(0.75),
@@ -113,7 +115,16 @@ public class RobotContainer {
         new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.pickupElevator, 0)),
         new WaitCommand(0.75),
         new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.pickupWrist, 0))));
+    NamedCommands.registerCommand("Delayed Intake Pos", Commands.sequence(
+        new WaitCommand(1),
+        new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.safeWrist, 0)),
+        new WaitCommand(0.75),
+        new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.pickupArm, 0)),
+        new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.pickupElevator, 0)),
+        new WaitCommand(0.75),
+        new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.pickupWrist, 0))));
     NamedCommands.registerCommand("Intake", new AutoIntakePower(intake, 1));
+    NamedCommands.registerCommand("Delayed Intake",Commands.sequence(new WaitCommand(1), new AutoIntakePower(intake, 1)));
     NamedCommands.registerCommand("Stop Intake", new AutoIntakePower(intake, 0));
     // Configure the trigger bindings
 
@@ -146,6 +157,7 @@ public class RobotContainer {
     subsystemTab.addDouble("Arm ABS encoder", () -> arm.getAbsoluteTicks());
     subsystemTab.addDouble("Wrist ABS encoder", () -> wrist.getAbsoluteTicks());
     subsystemTab.addDouble("Wrist REL encoder", () -> wrist.getRelativeTicks());
+    subsystemTab.addDouble("NOTE YAW",()-> drivetrain.getNoteRotationPower());
     // subsystemTab.addDouble("Current Arm Position", () -> arm.getCurrentAngle());
 
     // fieldTab.add(camera.getCamera()).withPosition(1, 5).withSize(4, 4);
@@ -158,38 +170,24 @@ public class RobotContainer {
 
   private void configureBindings() {
     OI.intakeReverse().ifHigh(()->{
-      intake.setMotorPower(-0.3);
+      intake.setMotorPower(-1);
     });
-    // OI.climbPreset().ifHigh(() -> {
-    //   climber.setElevatorPosition(Constants.Presets.testClimber, 0);
-    // });
-    // OI.liftPreset().rising().ifHigh(() -> {
-    //   elevator.setElevatorPosition(Constants.Presets.testElevator, 0);
-    // });
-    // OI.armPreset().rising().ifHigh(() -> {
-    //   arm.setTargetAngle(0.2, 0);
-    // });
-    // OI.wristPreset().rising().ifHigh(() -> {
-    //   System.out.println("RAAAAAAAAAAAAAAAAAAAAA");
-    //   wrist.setWristPosition(0.5, 0);
-    // });
-    OI.presetTest().rising().ifHigh(() -> {
-      System.out.println("PRESET-----------!!!!!!!");
-      arm.setTargetAngle(0.2, 0);
-      wrist.setWristPosition(0.1, 0);
-      elevator.setElevatorPosition(Constants.Presets.testElevator, 0);
-      climber.setElevatorPosition(Constants.Presets.testClimber, 0);
+    OI.noteAlign().ifHigh(()->{
+      TeleopDrive.NoteAligning = true;
+    });
+    OI.noteAlign().negate().ifHigh(()->{
+      TeleopDrive.NoteAligning = false;
     });
     OI.pickupPreset().rising().ifHigh(() -> Commands.sequence(
         new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.safeWrist, 0)),
-        new WaitCommand(0.75),
+        new WaitCommand(0.4),
         new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.pickupArm, 0)),
         new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.pickupElevator, 0)),
-        new WaitCommand(0.75),
+        new WaitCommand(0.1),
         new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.pickupWrist, 0))).schedule());
     OI.ampPreset().rising().ifHigh(() -> Commands.sequence(
         new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.safeArm, 0)),
-        new WaitCommand(0.75),
+        new WaitCommand(0.4),
         new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.ampWrist, 0)),
         new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.ampElevator, 0)),
         new WaitCommand(0.75),
@@ -197,10 +195,11 @@ public class RobotContainer {
 
     OI.storePreset().rising().ifHigh(() -> Commands.sequence(
         new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.safeArm, 0)),
-        new WaitCommand(0.75),
+        new WaitCommand(0.4
+        ),
         new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.storeWrist, 0)),
         new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.storeElevator, 0)),
-        new WaitCommand(0.75),
+        new WaitCommand(0.65),
         new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.storeArm, 0))).schedule());
     OI.trapPreset().rising().ifHigh(() -> Commands.sequence(
 
@@ -209,12 +208,20 @@ public class RobotContainer {
         new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.trapWrist, 0)),
         new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.ampArm, 0))).schedule());
 
-    // OI.presetTest().rising().ifHigh(()->{
-    // elevator.setElevatorPosition(Constants.Presets.testElevator,0);
-    // arm.setTargetAngle(Constants.Presets.testArm);
-    // wrist.setWristPosition(Constants.Presets.testWrist, 0);
-    // System.out.println("RANN COMMAND---------------------------------------");
-    // });
+    OI.stageLEFTAlign().rising().ifHigh(()->{
+      Pose2d currentPose = drivetrain.getPose();
+      Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d(Math.PI/2.0));
+      Pose2d endPos = new Pose2d(12.39, 2.88, new Rotation2d(Units.degreesToRadians(120.0)));//currentPose.getTranslation().plus(new Translation2d(1.0, 0.0)), new Rotation2d());
+      List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, endPos);
+      PathPlannerPath path = new PathPlannerPath(
+          bezierPoints,
+          new PathConstraints(
+            3.0, 2,
+            Units.degreesToRadians(360), Units.degreesToRadians(540)),
+          new GoalEndState(0.0, new Rotation2d(Units.degreesToRadians(120.0))));
+      path.preventFlipping = true;
+      new TeleopAinterupptor().deadlineWith(AutoBuilder.followPath(path)).schedule();
+    });
     SmartDashboard.putData("On-the-fly path", Commands.runOnce(() -> {
       Pose2d currentPose = drivetrain.getPose();
 

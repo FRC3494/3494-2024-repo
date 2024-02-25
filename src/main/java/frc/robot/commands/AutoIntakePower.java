@@ -21,7 +21,7 @@ public class AutoIntakePower extends Command {
     }
     @Override
     public boolean isFinished(){
-        if(timer.hasElapsed(1)){
+        if(timer.hasElapsed(0.5)){
             return true;
         }
         return false;

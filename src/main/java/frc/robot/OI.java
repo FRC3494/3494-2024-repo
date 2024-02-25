@@ -116,12 +116,18 @@ public final class OI {
         return primaryController.getXButtonPressed();
     }
 
-    public static boolean autoAlign() {
+    public static boolean autoAlignAMP() {
         return primaryController.getYButtonPressed();
     }
 
     public static boolean isYHeld() {
         return primaryController.getYButton();
+    }
+    public static boolean isAHeld() {
+        return primaryController.getAButton();
+    }
+    public static BooleanEvent noteAlign(){
+        return primaryController.b(eventLoop);
     }
 
     public static double getElevatorPower() {
@@ -186,5 +192,8 @@ public final class OI {
     }
     public static BooleanEvent storePreset(){
         return leftButtonBoard.button(4, eventLoop);
+    }
+    public static BooleanEvent stageLEFTAlign(){
+        return primaryController.a(eventLoop);
     }
 }

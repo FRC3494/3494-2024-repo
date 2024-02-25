@@ -42,27 +42,28 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "F-PickupMidPart1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "To Intake Pos"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Intake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "F-PickupMidPart2"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Delayed Intake Pos"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "F-PickupMid"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Delayed Intake"
+                }
+              }
+            ]
           }
         },
         {

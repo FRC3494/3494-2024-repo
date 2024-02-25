@@ -12,13 +12,13 @@ public final class Constants {
 
     public static double pickupArm = -0.043;
     public static double pickupElevator = -5.38;
-    public static double pickupWrist = -0.025;
+    public static double pickupWrist = 0.01;//-0.025
 
     public static double ampArm = 0.21;//0.17
     public static double ampElevator = -46;
     public static double ampWrist = 0.173;//0.2
 
-    public static double storeArm = 0.243;
+    public static double storeArm = 0.22;
     public static double storeElevator = 0;
     public static double storeWrist = -0.164;
 

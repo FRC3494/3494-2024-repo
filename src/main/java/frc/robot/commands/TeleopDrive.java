@@ -18,7 +18,7 @@ import frc.robot.subsystems.Drivetrain;
 
 public class TeleopDrive extends Command {
     Drivetrain drivetrain;
-
+    public static boolean NoteAligning = false;
     public TeleopDrive(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
         addRequirements(drivetrain);
@@ -30,18 +30,28 @@ public class TeleopDrive extends Command {
 
     @Override
     public void execute() {
-        drivetrain.drive(OI.teleopXVelocity(), OI.teleopYVelocity(),
+        if(!NoteAligning){
+            drivetrain.drive(OI.teleopXVelocity(), OI.teleopYVelocity(),
                 -OI.teleopTurnVelocity(), true);
-        //  drivetrain.drive(0, 0.1,
-        //         0, false);
-        if (OI.resetHeadingEventDUMB()) {
-            OI.zeroControls();
+            //  drivetrain.drive(0, 0.1,
+            //         0, false);
+            if (OI.resetHeadingEventDUMB()) {
+                OI.zeroControls();
+            }
         }
-        if(OI.autoAlign()){
+        else{
+            //WHEN we are NOTE aligning
+            drivetrain.drive(-OI.teleopYVelocity(), -OI.teleopXVelocity(),
+                -drivetrain.getNoteRotationPower(), false);
+            // drivetrain.drive( OI.teleopXVelocity(),OI.teleopYVelocity(),
+            //     -drivetrain.getNoteRotationPower(), false);
+        }
+        
+        if(OI.autoAlignAMP()){
             Pose2d currentPose = drivetrain.getPose();
             // The rotation component in these poses represents the direction of travel
-            Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d());
-            Pose2d endPos = new Pose2d(14.65, 7.7, new Rotation2d());//currentPose.getTranslation().plus(new Translation2d(1.0, 0.0)), new Rotation2d());
+            Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d(Math.PI/2.0));
+            Pose2d endPos = new Pose2d(14.65, 7.8, new Rotation2d(Math.PI/2.0));//currentPose.getTranslation().plus(new Translation2d(1.0, 0.0)), new Rotation2d());
             List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, endPos);
             PathPlannerPath path = new PathPlannerPath(
                 bezierPoints,

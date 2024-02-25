@@ -128,6 +128,7 @@ public class Drivetrain extends SubsystemBase {
 		Pose2d cPose = new Pose2d(-m_poseEstimator.getEstimatedPosition().getY(),m_poseEstimator.getEstimatedPosition().getX(), m_poseEstimator.getEstimatedPosition().getRotation()); 
 		IVEHADENOUGH.resetPosition(getGyroscopeRotation(), getSwerveModulePositions(), cPose );
 		// update limelight position here
+		
 		limelightBotPoseLeft = LimelightHelpers.getBotPose2d_wpiBlue("limelight-left");
 		limelightBotPoseRight = LimelightHelpers.getBotPose2d_wpiBlue("limelight-right");
 		// limelightBotPoseLeft = LimelightHelpers.getBotPose2d("limelight-left");
@@ -183,6 +184,11 @@ public class Drivetrain extends SubsystemBase {
 		SmartDashboard.putNumber("Right Odo", limelightBotPoseRight.getX());
 		SmartDashboard.putNumber("True Odo",
 				m_poseEstimator.getEstimatedPosition().getX());
+	}
+	public double getNoteRotationPower(){
+		double noteYaw =16.0+ LimelightHelpers.getTX("limelight-bottom");
+		noteYaw /= 13.0;
+		return noteYaw;
 	}
 
 	/**
