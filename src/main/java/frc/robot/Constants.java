@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.wpilibj.I2C;
 
 public final class Constants {
   public static final class Presets {
@@ -14,9 +15,9 @@ public final class Constants {
     public static double pickupElevator = -5.38;
     public static double pickupWrist = 0.01;//-0.025
 
-    public static double ampArm = 0.21;//0.17
+    public static double ampArm = 0.21;// 0.17
     public static double ampElevator = -46;
-    public static double ampWrist = 0.173;//0.2
+    public static double ampWrist = 0.173;// 0.2
 
     public static double storeArm = 0.22;
     public static double storeElevator = 0;
@@ -47,7 +48,7 @@ public final class Constants {
 
       public static int ENCODER_MOTOR_PORT = 2;
 
-      public static double STEER_OFFSET = Math.toRadians(-91.2 -1.2+3.2 + 12);
+      public static double STEER_OFFSET = Math.toRadians(-91.2 - 1.2 + 3.2 + 12);
     }
 
     public static final class BackLeftModule {
@@ -56,7 +57,7 @@ public final class Constants {
 
       public static int ENCODER_MOTOR_PORT = 1;
 
-      public static double STEER_OFFSET = Math.toRadians(-84.50 + 9+2.8);
+      public static double STEER_OFFSET = Math.toRadians(-84.50 + 9 + 2.8);
     }
 
     public static final class BackRightModule {
@@ -65,7 +66,7 @@ public final class Constants {
 
       public static int ENCODER_MOTOR_PORT = 0;
 
-      public static double STEER_OFFSET = Math.toRadians(37.67-3.6 + 180);
+      public static double STEER_OFFSET = Math.toRadians(37.67 - 3.6 + 180);
     }
 
     public static final double TRACKWIDTH_METERS = 0.5222;
@@ -91,7 +92,7 @@ public final class Constants {
     public static final int SECONDARY_RIGHT_CONTROLLER_PORT = 2;
 
     public static final double DRIVE_SPEED = 3.5; // m/s
-    public static final double TURN_SPEED = 3.0; //5.5 rad/s
+    public static final double TURN_SPEED = 3.0; // 5.5 rad/s
 
     public static final double SLOW_DRIVE_SPEED = 1.5; // m/s
     public static final double SLOW_TURN_SPEED = 1.925; // rad/s
@@ -99,12 +100,13 @@ public final class Constants {
     public static final double DPAD_SPEED = 0.5;
   }
 
-  public static final class Climber{
-    public static final int mainMotor = 15;//15
+  public static final class Climber {
+    public static final int mainMotor = 15;// 15
     public static int bottomMagnetSensorDIO = 9;
   }
+
   public static final class Elevator {
-    public static int mainMotor = 4;// TODO: add ports
+    public static int mainMotor = 4; // TODO: add ports
     public static int bottomMagnetSensorDIO = 0;
     public static int topMagnetSensorDIO = 1;
 
@@ -125,12 +127,12 @@ public final class Constants {
     public static float MIN_POSITION = 0f;
     public static float MAX_POSITION = 0f;
     public static double manualPowerAdjust = 0.2;
-    public static double globalWristOffset = 0;//-0.34304;
+    public static double globalWristOffset = 0;// -0.34304;
   }
 
   public static final class Intake {
     public static int mainMotor = 11;
     public static double manualPowerAdjust = 1.;
+    public static I2C.Port colorSensorID = I2C.Port.kOnboard;
   }
 }
-
