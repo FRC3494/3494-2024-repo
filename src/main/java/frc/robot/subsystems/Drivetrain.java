@@ -46,7 +46,7 @@ public class Drivetrain extends SubsystemBase {
 			Shuffleboard.getTab("Drivetrain").getLayout("Front Left Module", BuiltInLayouts.kList)
 					.withSize(2, 4)
 					.withPosition(0, 0),
-			Mk4iSwerveModuleHelper.GearRatio.L2,//l1
+			Mk4iSwerveModuleHelper.GearRatio.L2, // l1
 			Constants.Drivetrain.FrontLeftModule.DRIVE_MOTOR_PORT,
 			Constants.Drivetrain.FrontLeftModule.STEER_MOTOR_PORT,
 			Constants.Drivetrain.FrontLeftModule.ENCODER_MOTOR_PORT,
@@ -55,7 +55,7 @@ public class Drivetrain extends SubsystemBase {
 			Shuffleboard.getTab("Drivetrain").getLayout("Front Right Module", BuiltInLayouts.kList)
 					.withSize(2, 4)
 					.withPosition(2, 0),
-			Mk4iSwerveModuleHelper.GearRatio.L2,//L1
+			Mk4iSwerveModuleHelper.GearRatio.L2, // L1
 			Constants.Drivetrain.FrontRightModule.DRIVE_MOTOR_PORT,
 			Constants.Drivetrain.FrontRightModule.STEER_MOTOR_PORT,
 			Constants.Drivetrain.FrontRightModule.ENCODER_MOTOR_PORT,
@@ -65,7 +65,7 @@ public class Drivetrain extends SubsystemBase {
 			Shuffleboard.getTab("Drivetrain").getLayout("Back Left Module", BuiltInLayouts.kList)
 					.withSize(2, 4)
 					.withPosition(4, 0),
-			Mk4iSwerveModuleHelper.GearRatio.L2,//L1
+			Mk4iSwerveModuleHelper.GearRatio.L2, // L1
 			Constants.Drivetrain.BackLeftModule.DRIVE_MOTOR_PORT,
 			Constants.Drivetrain.BackLeftModule.STEER_MOTOR_PORT,
 			Constants.Drivetrain.BackLeftModule.ENCODER_MOTOR_PORT,
@@ -75,7 +75,7 @@ public class Drivetrain extends SubsystemBase {
 			Shuffleboard.getTab("Drivetrain").getLayout("Back Right Module", BuiltInLayouts.kList)
 					.withSize(2, 4)
 					.withPosition(6, 0),
-			Mk4iSwerveModuleHelper.GearRatio.L2,//L1
+			Mk4iSwerveModuleHelper.GearRatio.L2, // L1
 			Constants.Drivetrain.BackRightModule.DRIVE_MOTOR_PORT,
 			Constants.Drivetrain.BackRightModule.STEER_MOTOR_PORT,
 			Constants.Drivetrain.BackRightModule.ENCODER_MOTOR_PORT,
@@ -103,12 +103,12 @@ public class Drivetrain extends SubsystemBase {
 				},
 				new HolonomicPathFollowerConfig(
 						// TODO: Move to constants
-						new PIDConstants(5.0, 0.0, 0.4), // Translation PID constants
+						new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
 						new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
 						// TODO: Tune these
 						Constants.Drivetrain.MAX_VELOCITY_METERS_PER_SECOND, // Max module speed, in m/s
 						Constants.Drivetrain.TRACKWIDTH_METERS / 2,
-						new ReplanningConfig() // Default path 
+						new ReplanningConfig(false, false) // Default path
 				),
 				() -> {
 					Optional<Alliance> alliance = DriverStation.getAlliance();
@@ -124,11 +124,12 @@ public class Drivetrain extends SubsystemBase {
 	public void periodic() {
 		// System.out.println("Drivetrain is running");
 		m_poseEstimator.update(getGyroscopeRotation(), getSwerveModulePositions());
-		
-		Pose2d cPose = new Pose2d(-m_poseEstimator.getEstimatedPosition().getY(),m_poseEstimator.getEstimatedPosition().getX(), m_poseEstimator.getEstimatedPosition().getRotation()); 
-		IVEHADENOUGH.resetPosition(getGyroscopeRotation(), getSwerveModulePositions(), cPose );
+
+		Pose2d cPose = new Pose2d(-m_poseEstimator.getEstimatedPosition().getY(),
+				m_poseEstimator.getEstimatedPosition().getX(), m_poseEstimator.getEstimatedPosition().getRotation());
+		IVEHADENOUGH.resetPosition(getGyroscopeRotation(), getSwerveModulePositions(), cPose);
 		// update limelight position here
-		
+
 		limelightBotPoseLeft = LimelightHelpers.getBotPose2d_wpiBlue("limelight-left");
 		limelightBotPoseRight = LimelightHelpers.getBotPose2d_wpiBlue("limelight-right");
 		// limelightBotPoseLeft = LimelightHelpers.getBotPose2d("limelight-left");
@@ -148,8 +149,8 @@ public class Drivetrain extends SubsystemBase {
 				limelightBotPoseRight.getRotation());
 
 		// -----------SET MASTER BOT POSE
-		//ONLY SET while not auto aligning
-		if(!OI.isYHeld()){
+		// ONLY SET while not auto aligning
+		// if (!OI.isYHeld()) {
 			if (rightNeitherXNorYAt0 && leftNeitherXNorYAt0 &&
 					!RobotState.isAutonomous()) {// resetRight && resetLeft
 				averagedPoses = Pose2dHelpers.meanCorrect(limelightBotPoseLeft,
@@ -157,13 +158,13 @@ public class Drivetrain extends SubsystemBase {
 
 				m_poseEstimator.addVisionMeasurement(new Pose2d(averagedPoses.getY(),
 						-averagedPoses.getX(),
-						averagedPoses.getRotation()),//getGyroscopeRotation()), 
+						averagedPoses.getRotation()), // getGyroscopeRotation()),
 						Timer.getFPGATimestamp(),
 						VecBuilder.fill(0.9, 0.9, 0.9));// taken from soncis squirrls
 			} else if (rightNeitherXNorYAt0 && !RobotState.isAutonomous()) {
 				m_poseEstimator.addVisionMeasurement(new Pose2d(limelightBotPoseRight.getY(),
 						-limelightBotPoseRight.getX(),
-						limelightBotPoseRight.getRotation()),//getGyroscopeRotation()),
+						limelightBotPoseRight.getRotation()), // getGyroscopeRotation()),
 						Timer.getFPGATimestamp(),
 						VecBuilder.fill(0.9, 0.9, 0.9));// taken from soncis squirrls
 				// resetOdometry(limelightBotPoseRight);
@@ -171,12 +172,13 @@ public class Drivetrain extends SubsystemBase {
 				// resetOdometry(limelightBotPoseLeft);
 				m_poseEstimator.addVisionMeasurement(
 						new Pose2d(limelightBotPoseLeft.getY(), -limelightBotPoseLeft.getX(),
-								limelightBotPoseLeft.getRotation()),//getGyroscopeRotation()), // used to be limelightBotPoseLeft.getRotation()
+								limelightBotPoseLeft.getRotation()), // getGyroscopeRotation()), // used to be
+																		// limelightBotPoseLeft.getRotation()
 						// new Rotation2d(getGyroscopeRotation().getRadians() + Math.PI)),
 						Timer.getFPGATimestamp(),
 						VecBuilder.fill(0.9, 0.9, 0.9));// taken from soncis squirrls
 			}
-		}
+		// }
 
 		SmartDashboard.putBoolean("Averaging", rightNeitherXNorYAt0 &&
 				leftNeitherXNorYAt0);
@@ -185,10 +187,19 @@ public class Drivetrain extends SubsystemBase {
 		SmartDashboard.putNumber("True Odo",
 				m_poseEstimator.getEstimatedPosition().getX());
 	}
-	public double getNoteRotationPower(){
-		double noteYaw =16.0+ LimelightHelpers.getTX("limelight-bottom");
-		noteYaw /= 13.0;
-		return noteYaw;
+
+	public double getNoteRotationPower() {
+		double tx = LimelightHelpers.getTX("limelight-bottom");
+		if (tx != 0){
+			double noteYaw = 16.0 + tx;
+			noteYaw /= 18.0;
+			return noteYaw;
+		}
+		return 0;
+		
+	}
+	public boolean seesNote(){
+		return LimelightHelpers.getTX("limelight-bottom") != 0;
 	}
 
 	/**
@@ -204,6 +215,7 @@ public class Drivetrain extends SubsystemBase {
 	public Pose2d getPoseCorrected() {
 		return IVEHADENOUGH.getEstimatedPosition();
 	}
+
 	/**
 	 * Returns the current swerve kinematics.
 	 *
@@ -212,7 +224,6 @@ public class Drivetrain extends SubsystemBase {
 	public SwerveDriveKinematics getKinematics() {
 		return Constants.Drivetrain.SWERVE_KINEMATICS;
 	}
-
 
 	/**
 	 * Returns the relative speeds of the robot as a chassis speed
@@ -227,13 +238,14 @@ public class Drivetrain extends SubsystemBase {
 
 		return swerveDriveWheelStates.toList();
 	}
+
 	/**
 	 * Resets the odometry to the specified pose.
 	 *
 	 * @param pose The pose to which to set the odometry.
 	 */
 	public void resetPose(Pose2d pose) {
-		Pose2d poseT = new Pose2d(pose.getY(),-pose.getX(),pose.getRotation());
+		Pose2d poseT = new Pose2d(pose.getY(), -pose.getX(), pose.getRotation());
 		m_poseEstimator.resetPosition(getGyroscopeRotation(), getSwerveModulePositions(), poseT);
 	}
 
@@ -271,12 +283,13 @@ public class Drivetrain extends SubsystemBase {
 	}
 
 	public void drive(ChassisSpeeds speeds) {
-		ChassisSpeeds newSpeeds = new ChassisSpeeds(speeds.vyMetersPerSecond, -speeds.vxMetersPerSecond, speeds.omegaRadiansPerSecond);
+		ChassisSpeeds newSpeeds = new ChassisSpeeds(speeds.vyMetersPerSecond, -speeds.vxMetersPerSecond,
+				speeds.omegaRadiansPerSecond);
 		SwerveModuleState[] swerveModuleStates = Constants.Drivetrain.SWERVE_KINEMATICS
 				.toSwerveModuleStates(newSpeeds);
 		SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates,
 				Constants.Drivetrain.MAX_VELOCITY_METERS_PER_SECOND);
-		
+
 		setModuleStates(swerveModuleStates);
 	}
 
@@ -324,7 +337,7 @@ public class Drivetrain extends SubsystemBase {
 
 	public SwerveModulePosition[] getSwerveModulePositions() {
 		return new SwerveModulePosition[] {
-			
+
 				frontLeft.getState(),
 				frontRight.getState(),
 				backLeft.getState(),
@@ -344,7 +357,7 @@ public class Drivetrain extends SubsystemBase {
 		}
 		return Rotation2d.fromDegrees(360.0 - NavX.getYaw());
 	}
-	
+
 	private ChassisSpeeds getRobotRelativeSpeeds() {
 		var states = getSwerveDriveStates().iterator();
 

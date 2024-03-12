@@ -11,22 +11,22 @@ public final class Constants {
     public static double testWrist = 0;
     public static double testClimber = 0;
 
-    public static double pickupArm = -0.043;
+    public static double pickupArm = -0.043 + Arm.globalArmOffset;
     public static double pickupElevator = -5.38;
     public static double pickupWrist = 0.01;//-0.025
 
-    public static double ampArm = 0.21;// 0.17
+    public static double ampArm = 0.21 + + Arm.globalArmOffset;// 0.17
     public static double ampElevator = -46;
-    public static double ampWrist = 0.173;// 0.2
+    public static double ampWrist = 0.15;// 0.2
 
-    public static double storeArm = 0.22;
+    public static double storeArm = 0.22 + Arm.globalArmOffset;//0.22
     public static double storeElevator = 0;
     public static double storeWrist = -0.164;
 
-    public static double safeArm = 0.18;
+    public static double safeArm = 0.18 + Arm.globalArmOffset;
     public static double safeWrist = 0.08;
 
-    public static double trapArm = 0.254;
+    public static double trapArm = 0.254 + + Arm.globalArmOffset;
     public static double trapElevator = -62.8;
     public static double trapWrist = 0.49;
 
@@ -120,6 +120,7 @@ public final class Constants {
 
     public static double max_position = 0;
     public static double min_position = 0;
+    public static double globalArmOffset = 0.043+0.036-0.036;
   }
 
   public static final class Wrist {
@@ -127,7 +128,7 @@ public final class Constants {
     public static float MIN_POSITION = 0f;
     public static float MAX_POSITION = 0f;
     public static double manualPowerAdjust = 0.2;
-    public static double globalWristOffset = 0;// -0.34304;
+    public static double globalWristOffset = 0.0;// -0.34304;
   }
 
   public static final class Intake {

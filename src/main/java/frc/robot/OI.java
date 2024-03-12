@@ -13,6 +13,9 @@ public final class OI {
     private static Joystick rightButtonBoard = new Joystick(Constants.OI.SECONDARY_RIGHT_CONTROLLER_PORT);
     private static double offset = 0;
 
+    public static XboxController getPrimaryController(){
+        return primaryController;
+    }
     public static void zeroControls() {
         // offset = -NavX.getYaw() - 90;
         offset = -NavX.getYaw();
@@ -105,7 +108,8 @@ public final class OI {
 
     public static boolean slowMode() {
         return primaryController.getLeftBumper() || primaryController.getRightBumper();
-        // return ((primaryController.getLeftTriggerAxis() >= 0.1) || (primaryController.getRightTriggerAxis() >= 0.1));
+        // return ((primaryController.getLeftTriggerAxis() >= 0.1) ||
+        // (primaryController.getRightTriggerAxis() >= 0.1));
     }
 
     public static BooleanEvent resetHeadingEvent() {
@@ -123,10 +127,14 @@ public final class OI {
     public static boolean isYHeld() {
         return primaryController.getYButton();
     }
+
     public static boolean isAHeld() {
         return primaryController.getAButton();
     }
-    public static BooleanEvent noteAlign(){
+    public static boolean isBackHeld() {
+        return primaryController.getBackButton();
+    }
+    public static BooleanEvent noteAlign() {
         return primaryController.b(eventLoop);
     }
 
@@ -135,65 +143,93 @@ public final class OI {
         // System.out.println(speed);
         return speed * Constants.Wrist.manualPowerAdjust;
         // TODO Auto-generated method stub
-        // return primaryController.getLeftTriggerAxis()-primaryController.getRightTriggerAxis();
+        // return
+        // primaryController.getLeftTriggerAxis()-primaryController.getRightTriggerAxis();
     }
 
     public static double getArmPower() {
         double speed = leftButtonBoard.getRawAxis(1);
         // if (speed>0){
-        //     return speed * Constants.Arm.manualPowerAdjustUP;
+        // return speed * Constants.Arm.manualPowerAdjustUP;
         // }
         return speed * Constants.Arm.manualPowerAdjustDOWN;
     }
+
     public static double getWristPower() {
         double speed = rightButtonBoard.getRawAxis(1);
         // System.out.println(speed);
         return speed * Constants.Wrist.manualPowerAdjust;
-        // return primaryController.getLeftTriggerAxis()-primaryController.getRightTriggerAxis();
+        // return
+        // primaryController.getLeftTriggerAxis()-primaryController.getRightTriggerAxis();
 
     }
+
     public static double getClimberPower() {
         // return 0;
-        return primaryController.getLeftTriggerAxis()-primaryController.getRightTriggerAxis();
+        return primaryController.getLeftTriggerAxis() - primaryController.getRightTriggerAxis();
     }
+
     public static double getIntakePower() {
         // System.out.println(leftButtonBoard.getRawAxis(0)*Constants.Intake.manualPowerAdjust);
-        return Math.abs(leftButtonBoard.getRawAxis(0)*-Constants.Intake.manualPowerAdjust);
+        return Math.abs(leftButtonBoard.getRawAxis(0) * -Constants.Intake.manualPowerAdjust) +(leftButtonBoard.getRawButton(7) ? -0.75 : 0) ;
     }
+
     public static BooleanEvent presetTest() {
         return primaryController.a(eventLoop);
     }
-    public static boolean aButton(){
+
+    public static boolean aButton() {
         return primaryController.getAButtonPressed();
     }
-    public static BooleanEvent intakeReverse(){
+
+    public static BooleanEvent intakeReverse() {
         return leftButtonBoard.button(7, eventLoop);
     }
+
     public static BooleanEvent climbPreset() {
         return leftButtonBoard.button(8, eventLoop);
     }
+
     public static BooleanEvent liftPreset() {
         return leftButtonBoard.button(5, eventLoop);
     }
-    public static BooleanEvent armPreset(){
+
+    public static BooleanEvent armPreset() {
         return leftButtonBoard.button(10, eventLoop);
     }
-    public static BooleanEvent wristPreset(){
+
+    public static BooleanEvent wristPreset() {
         return leftButtonBoard.button(7, eventLoop);
     }
-    public static BooleanEvent pickupPreset(){
+
+    public static BooleanEvent pickupPreset() {
         return leftButtonBoard.button(2, eventLoop);
     }
-    public static BooleanEvent ampPreset(){
+
+    public static BooleanEvent ampPreset() {
         return leftButtonBoard.button(1, eventLoop);
     }
-    public static BooleanEvent trapPreset(){
+
+    public static BooleanEvent trapPreset() {
         return rightButtonBoard.button(1, eventLoop);
     }
-    public static BooleanEvent storePreset(){
+    public static BooleanEvent trapPreset2() {
+        return rightButtonBoard.button(2, eventLoop);
+    }
+    public static BooleanEvent storePreset() {
         return leftButtonBoard.button(4, eventLoop);
     }
-    public static BooleanEvent stageLEFTAlign(){
+
+    public static BooleanEvent stageLEFTAlign() {
         return primaryController.a(eventLoop);
+    }
+    public static BooleanEvent stageRIGHTAlign() {
+        return primaryController.start(eventLoop);
+    }
+    public static BooleanEvent stageBACKAlign() {
+        return primaryController.back(eventLoop);
+    }
+    public static EventLoop getEventLoop() {
+        return eventLoop;
     }
 }

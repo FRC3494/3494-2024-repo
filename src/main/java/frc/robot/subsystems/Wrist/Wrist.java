@@ -41,7 +41,7 @@ public class Wrist extends SubsystemBase {
     public void periodic(){
         double error = targetPos - wristMotor.getAlternateEncoder(8192).getPosition();
         error *= 100;
-        double kP = 0.08;
+        double kP = 0.04;
 
 
 

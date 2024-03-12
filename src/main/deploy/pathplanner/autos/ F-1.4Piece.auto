@@ -1,0 +1,92 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.2537638750491173,
+      "y": 7.156822518773243
+    },
+    "rotation": 90.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "To Amp Pos"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "F-Preload"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Intake"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Delayed Intake Pos"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "F-PickupMid"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Delayed Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "To Amp Pos"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "WaitFromMid"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

@@ -7,6 +7,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.PathPoint;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -19,6 +20,7 @@ import frc.robot.subsystems.Drivetrain;
 public class TeleopDrive extends Command {
     Drivetrain drivetrain;
     public static boolean NoteAligning = false;
+
     public TeleopDrive(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
         addRequirements(drivetrain);
@@ -30,39 +32,45 @@ public class TeleopDrive extends Command {
 
     @Override
     public void execute() {
-        if(!NoteAligning){
+        if (!NoteAligning) {
             drivetrain.drive(OI.teleopXVelocity(), OI.teleopYVelocity(),
-                -OI.teleopTurnVelocity(), true);
-            //  drivetrain.drive(0, 0.1,
-            //         0, false);
+                    -OI.teleopTurnVelocity(), true);
+            // drivetrain.drive(0, 0.1,
+            // 0, false);
             if (OI.resetHeadingEventDUMB()) {
                 OI.zeroControls();
             }
-        }
-        else{
-            //WHEN we are NOTE aligning
-            drivetrain.drive(-OI.teleopYVelocity(), -OI.teleopXVelocity(),
-                -drivetrain.getNoteRotationPower(), false);
+        } else {
+            // WHEN we are NOTE aligning
+            // drivetrain.drive(-OI.teleopYVelocity(), -OI.teleopXVelocity(),
+            //         -drivetrain.getNoteRotationPower(), false);
             // drivetrain.drive( OI.teleopXVelocity(),OI.teleopYVelocity(),
-            //     -drivetrain.getNoteRotationPower(), false);
+            // -drivetrain.getNoteRotationPower(), false);
+            drivetrain.drive( 0.0,OI.teleopYVelocity(),
+            -drivetrain.getNoteRotationPower(), false);
         }
-        
-        if(OI.autoAlignAMP()){
+
+        if (OI.autoAlignAMP()) {
             Pose2d currentPose = drivetrain.getPose();
             // The rotation component in these poses represents the direction of travel
-            Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d(Math.PI/2.0));
-            Pose2d endPos = new Pose2d(14.65, 7.8, new Rotation2d(Math.PI/2.0));//currentPose.getTranslation().plus(new Translation2d(1.0, 0.0)), new Rotation2d());
+            Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d(Math.PI / 2.0));
+            Pose2d endPos = new Pose2d(14.64, 7.8, new Rotation2d(Math.PI / 2.0));// currentPose.getTranslation().plus(new
+                                                                                  // Translation2d(1.0, 0.0)), new
+                                                                                  // Rotation2d());
             List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, endPos);
             PathPlannerPath path = new PathPlannerPath(
-                bezierPoints,
-                new PathConstraints(
-                    3.0, 2,
-                    Units.degreesToRadians(360), Units.degreesToRadians(540)),
-                new GoalEndState(0.0, new Rotation2d(Math.PI/2.0)));
+                    bezierPoints,
+                    new PathConstraints(
+                            1.5, 2.0,
+                            Units.degreesToRadians(360), Units.degreesToRadians(540)),
+                    new GoalEndState(0.0, new Rotation2d(Math.PI / 2.0)));
             path.preventFlipping = true;
+
             new TeleopYinterupptor().deadlineWith(AutoBuilder.followPath(path)).schedule();
-            //AutoBuilder.followPath(path).deadlineWith(new TeleopYinterupptor()).schedule();
+            // AutoBuilder.followPath(path).deadlineWith(new
+            // TeleopYinterupptor()).schedule();
         }
+
     }
 
     @Override

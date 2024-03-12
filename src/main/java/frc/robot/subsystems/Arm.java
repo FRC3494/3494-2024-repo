@@ -8,6 +8,7 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.SparkAbsoluteEncoder.Type;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -23,14 +24,16 @@ public class Arm extends SubsystemBase{
         armMotor.getPIDController().setP(2);//1.5
         armMotor.getPIDController().setFF(0.5);
         armMotor.getPIDController().setOutputRange(-0.7, 0.7);
-        armMotor.getPIDController().setFeedbackDevice(armMotor.getAlternateEncoder(8192));
-        targetPosition = armMotor.getAlternateEncoder(8192).getPosition();
+        // armMotor.getPIDController().setFeedbackDevice(armMotor.getAlternateEncoder(8192));
+        armMotor.getPIDController().setFeedbackDevice(armMotor.getAbsoluteEncoder(Type.kDutyCycle));
+        // targetPosition = armMotor.getAlternateEncoder(8192).getPosition();
+        targetPosition = armMotor.getAbsoluteEncoder(Type.kDutyCycle).getPosition();
         
     }
     public void setTargetAngle(double ticks, double arbFFVoltage) {
         // armMotor.getPIDController().setReference(ticks,
         //         ControlType.kPosition);
-        targetPosition = ticks; 
+        targetPosition = ticks  + Constants.Arm.globalArmOffset; 
         armMotor.getPIDController().setReference(ticks, CANSparkMax.ControlType.kPosition, 0, arbFFVoltage,
                 SparkPIDController.ArbFFUnits.kVoltage);
     }
@@ -50,7 +53,8 @@ public class Arm extends SubsystemBase{
         return armMotor.getEncoder().getPosition();
     }
     public double getAbsoluteTicks(){
-        return armMotor.getAlternateEncoder(8192).getPosition();
+        // return armMotor.getAlternateEncoder(8192).getPosition();
+        return armMotor.getAbsoluteEncoder(Type.kDutyCycle).getPosition();
     }
     public double getTargetPosition(){
         return targetPosition;
