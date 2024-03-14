@@ -20,7 +20,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "F-Preload"
+            "pathName": "F-PreloadBlue"
           }
         },
         {
@@ -54,7 +54,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "F-PickupMid"
+                  "pathName": "F-PickupMidBlue"
                 }
               },
               {
@@ -79,15 +79,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "To Amp Pos"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "AmpFromMid"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "To Amp Pos"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "AmpFromMidBlue"
+                }
+              }
+            ]
           }
         },
         {

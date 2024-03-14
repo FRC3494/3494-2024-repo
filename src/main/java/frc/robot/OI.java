@@ -16,6 +16,9 @@ public final class OI {
     public static XboxController getPrimaryController(){
         return primaryController;
     }
+    public static XboxController getDiannaRumbler(){
+        return new XboxController(Constants.OI.DIANNA_RUMBLER_PORT);
+    }
     public static void zeroControls() {
         // offset = -NavX.getYaw() - 90;
         offset = -NavX.getYaw();
@@ -216,6 +219,10 @@ public final class OI {
     public static BooleanEvent trapPreset2() {
         return rightButtonBoard.button(2, eventLoop);
     }
+    public static BooleanEvent autoTrap() {
+        return rightButtonBoard.button(3, eventLoop);
+    }
+
     public static BooleanEvent storePreset() {
         return leftButtonBoard.button(4, eventLoop);
     }

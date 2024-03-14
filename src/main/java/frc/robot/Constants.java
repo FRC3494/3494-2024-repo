@@ -11,8 +11,9 @@ public final class Constants {
     public static double testWrist = 0;
     public static double testClimber = 0;
 
-    public static double pickupArm = -0.043 + Arm.globalArmOffset;
-    public static double pickupElevator = -5.38;
+    public static double pickupArm = -0.043
+     + Arm.globalArmOffset;
+    public static double pickupElevator = -6.5;
     public static double pickupWrist = 0.01;//-0.025
 
     public static double ampArm = 0.21 + + Arm.globalArmOffset;// 0.17
@@ -24,11 +25,12 @@ public final class Constants {
     public static double storeWrist = -0.164;
 
     public static double safeArm = 0.18 + Arm.globalArmOffset;
-    public static double safeWrist = 0.08;
+    public static double safeWrist = 0.12;
 
     public static double trapArm = 0.254 + + Arm.globalArmOffset;
     public static double trapElevator = -62.8;
     public static double trapWrist = 0.49;
+    public static double trapWrist2 = 0.115;
 
   }
 
@@ -48,7 +50,7 @@ public final class Constants {
 
       public static int ENCODER_MOTOR_PORT = 2;
 
-      public static double STEER_OFFSET = Math.toRadians(-91.2 - 1.2 + 3.2 + 12);
+      public static double STEER_OFFSET = Math.toRadians(-91.2 - 1.2 + 3.2 + 12-7.2+8.4-5.6);
     }
 
     public static final class BackLeftModule {
@@ -66,7 +68,7 @@ public final class Constants {
 
       public static int ENCODER_MOTOR_PORT = 0;
 
-      public static double STEER_OFFSET = Math.toRadians(37.67 - 3.6 + 180);
+      public static double STEER_OFFSET = Math.toRadians(37.67 - 3.6 + 180-2+3.597-1.436);
     }
 
     public static final double TRACKWIDTH_METERS = 0.5222;
@@ -90,7 +92,7 @@ public final class Constants {
     public static final int PRIMARY_CONTROLLER_PORT = 0;
     public static final int SECONDARY_LEFT_CONTROLLER_PORT = 1;
     public static final int SECONDARY_RIGHT_CONTROLLER_PORT = 2;
-
+    public static final int DIANNA_RUMBLER_PORT = 3;
     public static final double DRIVE_SPEED = 3.5; // m/s
     public static final double TURN_SPEED = 3.0; // 5.5 rad/s
 
@@ -120,7 +122,7 @@ public final class Constants {
 
     public static double max_position = 0;
     public static double min_position = 0;
-    public static double globalArmOffset = 0.043+0.036-0.036;
+    public static double globalArmOffset = 0.0;//0.043+0.036-0.036;
   }
 
   public static final class Wrist {

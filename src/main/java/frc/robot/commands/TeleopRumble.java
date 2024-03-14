@@ -8,10 +8,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class TeleopRumble extends Command {
     private XboxController rumbler;
     private Timer timer;
-    public TeleopRumble(XboxController rumbler){
+    private double length;
+    public TeleopRumble(XboxController rumbler, double length){
         this.rumbler = rumbler;
         this.timer =  new Timer();
         this.timer.start();
+        this.length = length;
     }
     @Override
     public void execute(){
@@ -19,7 +21,7 @@ public class TeleopRumble extends Command {
     }
     @Override
     public boolean isFinished(){
-        if(timer.hasElapsed(0.1)){return true;}
+        if(timer.hasElapsed(this.length)){rumbler.setRumble(RumbleType.kBothRumble, 0.0);return true;}
         return false;
     } 
 }

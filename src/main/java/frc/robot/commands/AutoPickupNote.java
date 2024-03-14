@@ -33,7 +33,7 @@ public class AutoPickupNote extends Command {
     @Override
     public boolean isFinished(){
         if(timer.hasElapsed(time)){return true;}
-        else if(intake.JustgotNote()){return true;}
+        // else if(intake.JustgotNote()){return true;}
         return false;
         
     } 

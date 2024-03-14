@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import java.sql.Driver;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -28,6 +31,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    // m_robotContainer.intake.distOnboard.setAutomaticMode(true);
   }
 
   /**
@@ -50,7 +54,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    // m_robotContainer.intake.distOnboard.setAutomaticMode(false);
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -76,8 +82,16 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
+    }
+    // m_robotContainer.intake.distOnboard.setAutomaticMode(true);
+    if(DriverStation.getAlliance().equals(DriverStation.Alliance.Red)){
+      OI.setRedOffset();
+    }
+    else if(DriverStation.getAlliance().equals(DriverStation.Alliance.Blue)){
+      OI.setBlueOffset();
     }
   }
 

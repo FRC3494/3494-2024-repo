@@ -24,10 +24,10 @@ public class Arm extends SubsystemBase{
         armMotor.getPIDController().setP(2);//1.5
         armMotor.getPIDController().setFF(0.5);
         armMotor.getPIDController().setOutputRange(-0.7, 0.7);
-        // armMotor.getPIDController().setFeedbackDevice(armMotor.getAlternateEncoder(8192));
-        armMotor.getPIDController().setFeedbackDevice(armMotor.getAbsoluteEncoder(Type.kDutyCycle));
-        // targetPosition = armMotor.getAlternateEncoder(8192).getPosition();
-        targetPosition = armMotor.getAbsoluteEncoder(Type.kDutyCycle).getPosition();
+        armMotor.getPIDController().setFeedbackDevice(armMotor.getAlternateEncoder(8192));
+        // armMotor.getPIDController().setFeedbackDevice(armMotor.getAbsoluteEncoder(Type.kDutyCycle));
+        targetPosition = armMotor.getAlternateEncoder(8192).getPosition();
+        // targetPosition = armMotor.getAbsoluteEncoder(Type.kDutyCycle).getPosition();
         
     }
     public void setTargetAngle(double ticks, double arbFFVoltage) {
@@ -53,8 +53,8 @@ public class Arm extends SubsystemBase{
         return armMotor.getEncoder().getPosition();
     }
     public double getAbsoluteTicks(){
-        // return armMotor.getAlternateEncoder(8192).getPosition();
-        return armMotor.getAbsoluteEncoder(Type.kDutyCycle).getPosition();
+        return armMotor.getAlternateEncoder(8192).getPosition();
+        // return armMotor.getAbsoluteEncoder(Type.kDutyCycle).getPosition();
     }
     public double getTargetPosition(){
         return targetPosition;

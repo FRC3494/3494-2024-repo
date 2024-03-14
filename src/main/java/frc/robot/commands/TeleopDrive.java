@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.OI;
 import frc.robot.subsystems.Drivetrain;
@@ -51,20 +52,39 @@ public class TeleopDrive extends Command {
         }
 
         if (OI.autoAlignAMP()) {
-            Pose2d currentPose = drivetrain.getPose();
-            // The rotation component in these poses represents the direction of travel
-            Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d(Math.PI / 2.0));
-            Pose2d endPos = new Pose2d(14.64, 7.8, new Rotation2d(Math.PI / 2.0));// currentPose.getTranslation().plus(new
-                                                                                  // Translation2d(1.0, 0.0)), new
-                                                                                  // Rotation2d());
-            List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, endPos);
-            PathPlannerPath path = new PathPlannerPath(
-                    bezierPoints,
-                    new PathConstraints(
-                            1.5, 2.0,
-                            Units.degreesToRadians(360), Units.degreesToRadians(540)),
-                    new GoalEndState(0.0, new Rotation2d(Math.PI / 2.0)));
-            path.preventFlipping = true;
+            if(DriverStation.getAlliance().equals(DriverStation.Alliance.Red)){
+                Pose2d currentPose = drivetrain.getPose();
+                // The rotation component in these poses represents the direction of travel
+                Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d(Math.PI / 2.0));
+                Pose2d endPos = new Pose2d(14.64, 7.8, new Rotation2d(Math.PI / 2.0));// currentPose.getTranslation().plus(new
+                                                                                    // Translation2d(1.0, 0.0)), new
+                                                                                    // Rotation2d());
+                List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, endPos);
+                PathPlannerPath path = new PathPlannerPath(
+                        bezierPoints,
+                        new PathConstraints(
+                                1.5, 2.0,
+                                Units.degreesToRadians(360), Units.degreesToRadians(540)),
+                        new GoalEndState(0.0, new Rotation2d(Math.PI / 2.0)));
+                path.preventFlipping = true;
+            }
+            else if (DriverStation.getAlliance().equals(DriverStation.Alliance.Blue){
+                Pose2d currentPose = drivetrain.getPose();
+                // The rotation component in these poses represents the direction of travel
+                Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d(Math.PI / 2.0));
+                Pose2d endPos = new Pose2d(1.8, 7.8, new Rotation2d(Math.PI / 2.0));// currentPose.getTranslation().plus(new
+                                                                                    // Translation2d(1.0, 0.0)), new
+                                                                                    // Rotation2d());
+                List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, endPos);
+                PathPlannerPath path = new PathPlannerPath(
+                        bezierPoints,
+                        new PathConstraints(
+                                1.5, 2.0,
+                                Units.degreesToRadians(360), Units.degreesToRadians(540)),
+                        new GoalEndState(0.0, new Rotation2d(Math.PI / 2.0)));
+                path.preventFlipping = true;
+            }
+            
 
             new TeleopYinterupptor().deadlineWith(AutoBuilder.followPath(path)).schedule();
             // AutoBuilder.followPath(path).deadlineWith(new
