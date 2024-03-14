@@ -20,6 +20,7 @@ import frc.robot.subsystems.Drivetrain;
 
 public class TeleopDrive extends Command {
     Drivetrain drivetrain;
+    PathPlannerPath path;
     public static boolean NoteAligning = false;
 
     public TeleopDrive(Drivetrain drivetrain) {
@@ -68,7 +69,7 @@ public class TeleopDrive extends Command {
                         new GoalEndState(0.0, new Rotation2d(Math.PI / 2.0)));
                 path.preventFlipping = true;
             }
-            else if (DriverStation.getAlliance().equals(DriverStation.Alliance.Blue){
+            else if (DriverStation.getAlliance().equals(DriverStation.Alliance.Blue)){
                 Pose2d currentPose = drivetrain.getPose();
                 // The rotation component in these poses represents the direction of travel
                 Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d(Math.PI / 2.0));
