@@ -5,9 +5,11 @@
 package frc.robot;
 
 import java.sql.Driver;
+import java.util.Optional;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -86,12 +88,14 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    // m_robotContainer.intake.distOnboard.setAutomaticMode(true);
-    if(DriverStation.getAlliance().equals(DriverStation.Alliance.Red)){
-      OI.setRedOffset();
-    }
-    else if(DriverStation.getAlliance().equals(DriverStation.Alliance.Blue)){
-      OI.setBlueOffset();
+    Optional<Alliance> teamColor = DriverStation.getAlliance();
+    if(teamColor.isPresent()){
+      if(teamColor.get() == Alliance.Red){
+        OI.setRedOffset();
+      }
+      else if(teamColor.get() == Alliance.Blue){
+        OI.setBlueOffset();
+      }
     }
   }
 

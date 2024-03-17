@@ -38,6 +38,12 @@
         {
           "type": "named",
           "data": {
+            "name": "Move Wrist"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "Stop Intake"
           }
         },

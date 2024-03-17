@@ -13,7 +13,7 @@ public final class Constants {
 
     public static double pickupArm = -0.043
      + Arm.globalArmOffset;
-    public static double pickupElevator = -6.5;
+    public static double pickupElevator = 0.0;
     public static double pickupWrist = 0.01;//-0.025
 
     public static double ampArm = 0.21 + + Arm.globalArmOffset;// 0.17
@@ -31,6 +31,7 @@ public final class Constants {
     public static double trapElevator = -62.8;
     public static double trapWrist = 0.49;
     public static double trapWrist2 = 0.115;
+    public static double trapWrist3 = 0.0;
 
   }
 
@@ -94,7 +95,7 @@ public final class Constants {
     public static final int SECONDARY_RIGHT_CONTROLLER_PORT = 2;
     public static final int DIANNA_RUMBLER_PORT = 3;
     public static final double DRIVE_SPEED = 3.5; // m/s
-    public static final double TURN_SPEED = 3.0; // 5.5 rad/s
+    public static final double TURN_SPEED = 4.0;//1st match was 3.0 // 5.5 rad/s
 
     public static final double SLOW_DRIVE_SPEED = 1.5; // m/s
     public static final double SLOW_TURN_SPEED = 1.925; // rad/s

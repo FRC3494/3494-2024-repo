@@ -2,6 +2,7 @@
 package frc.robot.commands;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.GoalEndState;
@@ -14,6 +15,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.OI;
 import frc.robot.subsystems.Drivetrain;
@@ -48,46 +50,50 @@ public class TeleopDrive extends Command {
             //         -drivetrain.getNoteRotationPower(), false);
             // drivetrain.drive( OI.teleopXVelocity(),OI.teleopYVelocity(),
             // -drivetrain.getNoteRotationPower(), false);
-            drivetrain.drive( 0.0,OI.teleopYVelocity(),
+            drivetrain.drive( 0.0,3.0*OI.teleopYVelocity(),
             -drivetrain.getNoteRotationPower(), false);
         }
 
         if (OI.autoAlignAMP()) {
-            if(DriverStation.getAlliance().equals(DriverStation.Alliance.Red)){
-                Pose2d currentPose = drivetrain.getPose();
-                // The rotation component in these poses represents the direction of travel
-                Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d(Math.PI / 2.0));
-                Pose2d endPos = new Pose2d(14.64, 7.8, new Rotation2d(Math.PI / 2.0));// currentPose.getTranslation().plus(new
-                                                                                    // Translation2d(1.0, 0.0)), new
-                                                                                    // Rotation2d());
-                List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, endPos);
-                PathPlannerPath path = new PathPlannerPath(
-                        bezierPoints,
-                        new PathConstraints(
-                                1.5, 2.0,
-                                Units.degreesToRadians(360), Units.degreesToRadians(540)),
-                        new GoalEndState(0.0, new Rotation2d(Math.PI / 2.0)));
-                path.preventFlipping = true;
-            }
-            else if (DriverStation.getAlliance().equals(DriverStation.Alliance.Blue)){
-                Pose2d currentPose = drivetrain.getPose();
-                // The rotation component in these poses represents the direction of travel
-                Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d(Math.PI / 2.0));
-                Pose2d endPos = new Pose2d(1.8, 7.8, new Rotation2d(Math.PI / 2.0));// currentPose.getTranslation().plus(new
-                                                                                    // Translation2d(1.0, 0.0)), new
-                                                                                    // Rotation2d());
-                List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, endPos);
-                PathPlannerPath path = new PathPlannerPath(
-                        bezierPoints,
-                        new PathConstraints(
-                                1.5, 2.0,
-                                Units.degreesToRadians(360), Units.degreesToRadians(540)),
-                        new GoalEndState(0.0, new Rotation2d(Math.PI / 2.0)));
-                path.preventFlipping = true;
+            Optional<Alliance> teamColor = DriverStation.getAlliance();
+            if(teamColor.isPresent()){
+                if (teamColor.get() == Alliance.Red) {
+                    Pose2d currentPose = drivetrain.getPose();
+                    // The rotation component in these poses represents the direction of travel
+                    Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d(Math.PI / 2.0));
+                    Pose2d endPos = new Pose2d(14.64, 7.8, new Rotation2d(Math.PI / 2.0));// currentPose.getTranslation().plus(new
+                                                                                        // Translation2d(1.0, 0.0)), new
+                                                                                        // Rotation2d());
+                    List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, endPos);
+                    PathPlannerPath path = new PathPlannerPath(
+                            bezierPoints,
+                            new PathConstraints(
+                                    1.5, 2.0,
+                                    Units.degreesToRadians(360), Units.degreesToRadians(540)),
+                            new GoalEndState(0.0, new Rotation2d(Math.PI / 2.0)));
+                    path.preventFlipping = true;
+                    new TeleopYinterupptor().deadlineWith(AutoBuilder.followPath(path)).schedule();
+                }
+                else {//(teamColor.get() == Alliance.Blue){
+                    Pose2d currentPose = drivetrain.getPose();
+                    // The rotation component in these poses represents the direction of travel
+                    Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d(Math.PI / 2.0));
+                    Pose2d endPos = new Pose2d(1.8, 7.8, new Rotation2d(Math.PI / 2.0));// currentPose.getTranslation().plus(new
+                                                                                        // Translation2d(1.0, 0.0)), new
+                                                                                        // Rotation2d());
+                    List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, endPos);
+                    PathPlannerPath path = new PathPlannerPath(
+                            bezierPoints,
+                            new PathConstraints(
+                                    1.5, 2.0,
+                                    Units.degreesToRadians(360), Units.degreesToRadians(540)),
+                            new GoalEndState(0.0, new Rotation2d(Math.PI / 2.0)));
+                    path.preventFlipping = true;
+                    new TeleopYinterupptor().deadlineWith(AutoBuilder.followPath(path)).schedule();
+                }
+                
             }
             
-
-            new TeleopYinterupptor().deadlineWith(AutoBuilder.followPath(path)).schedule();
             // AutoBuilder.followPath(path).deadlineWith(new
             // TeleopYinterupptor()).schedule();
         }

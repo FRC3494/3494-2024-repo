@@ -29,11 +29,11 @@ public final class OI {
     }
 
     public static void setRedOffset() {
-        offset = 95.05;
+        offset = 91.6+180.0;
     }
 
     public static void setBlueOffset() {
-        offset = -83.72;
+        offset = 91.6;//2.23;//-83.72;
     }
 
     public static double deadband(double value, double deadband) {
@@ -221,6 +221,9 @@ public final class OI {
     }
     public static BooleanEvent autoTrap() {
         return rightButtonBoard.button(3, eventLoop);
+    }
+    public static BooleanEvent autoDownClimb() {
+        return rightButtonBoard.button(4, eventLoop);
     }
 
     public static BooleanEvent storePreset() {

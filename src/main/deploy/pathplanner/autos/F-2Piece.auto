@@ -38,6 +38,12 @@
         {
           "type": "named",
           "data": {
+            "name": "Move Wrist"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "Stop Intake"
           }
         },
@@ -87,7 +93,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "AmpFromMid"
+            "pathName": "AmpFromMidv2"
           }
         },
         {

@@ -100,8 +100,10 @@ public class RobotContainer {
     arm.setDefaultCommand(new TeleopArm(arm));
     wrist.setDefaultCommand(new TeleopWrist(wrist));
     intake.setDefaultCommand(new TeleopIntake(intake));
-        NamedCommands.registerCommand("Confirm Note",
+    NamedCommands.registerCommand("Confirm Note",
         new AutoNoteConfirm(intake));
+    NamedCommands.registerCommand("Move Wrist",
+        new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.trapWrist, 0)));
     NamedCommands.registerCommand("Print Command",
         new PrintCommand("AUTO HAS TRIGGERED A PRINT COMAND WOOOOOOOOOOOOOOO"));
     NamedCommands.registerCommand("To Amp Pos",
@@ -152,7 +154,7 @@ public class RobotContainer {
 
     robotPosition = new Field2d();
     robotPosition.setRobotPose(new Pose2d());
-    
+
     fieldTab.add(robotPosition).withPosition(1, 0).withSize(7, 4);
     fieldTab.addDouble("NavX yaw", () -> NavX.getYaw());
     fieldTab.addDouble("OFFFSET", () -> OI.getDriveOffset());
@@ -266,8 +268,13 @@ public class RobotContainer {
       //After in trap POS, CLIMB
       new InstantCommand(() -> climber.setElevatorPosition(0, 0)),
       new WaitCommand(1.5),
-      new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.trapWrist2, 0))).schedule()
+      new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.trapWrist3, 0))).schedule()
     );
+    OI.autoDownClimb().rising().ifHigh(()-> Commands.sequence(
+      new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.trapWrist, 0)),
+      new WaitCommand(0.1),
+      new InstantCommand(() -> climber.setElevatorPosition(-72.0, 0))
+    ).schedule());
     
     SmartDashboard.putData("On-the-fly path", Commands.runOnce(() -> {
       Pose2d currentPose = drivetrain.getPose();
