@@ -34,6 +34,7 @@ public class Arm extends SubsystemBase{
         // armMotor.getPIDController().setReference(ticks,
         //         ControlType.kPosition);
         targetPosition = ticks  + Constants.Arm.globalArmOffset; 
+        //if (targetPosition > 0.0){ targetPosition = 0.0;}
         armMotor.getPIDController().setReference(ticks, CANSparkMax.ControlType.kPosition, 0, arbFFVoltage,
                 SparkPIDController.ArbFFUnits.kVoltage);
     }

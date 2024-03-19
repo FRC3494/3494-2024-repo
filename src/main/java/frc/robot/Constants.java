@@ -51,7 +51,7 @@ public final class Constants {
 
       public static int ENCODER_MOTOR_PORT = 2;
 
-      public static double STEER_OFFSET = Math.toRadians(-91.2 - 1.2 + 3.2 + 12-7.2+8.4-5.6);
+      public static double STEER_OFFSET = Math.toRadians(-91.2 - 1.2 + 3.2 + 12-7.2+8.4-5.6+25.1+4.0);
     }
 
     public static final class BackLeftModule {

@@ -36,6 +36,7 @@ public final class OI {
         offset = 91.6;//2.23;//-83.72;
     }
 
+
     public static double deadband(double value, double deadband) {
         if (Math.abs(value) > deadband) {
             if (value > 0.0) {
@@ -174,7 +175,10 @@ public final class OI {
 
     public static double getIntakePower() {
         // System.out.println(leftButtonBoard.getRawAxis(0)*Constants.Intake.manualPowerAdjust);
-        return Math.abs(leftButtonBoard.getRawAxis(0) * -Constants.Intake.manualPowerAdjust) +(leftButtonBoard.getRawButton(7) ? -0.75 : 0) ;
+        return Math.abs(leftButtonBoard.getRawAxis(0) * -Constants.Intake.manualPowerAdjust) 
+        +(leftButtonBoard.getRawButton(7) ? -0.75 : 0)
+        +(leftButtonBoard.getRawButton(9) ? -0.3 : 0) 
+        +(leftButtonBoard.getRawButton(10) ? 0.3 : 0);
     }
 
     public static BooleanEvent presetTest() {
