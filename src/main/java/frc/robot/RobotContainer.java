@@ -13,6 +13,7 @@ import frc.robot.commands.TeleopArm;
 import frc.robot.commands.TeleopBackinterupptor;
 import frc.robot.commands.TeleopClimber;
 import frc.robot.commands.TeleopDrive;
+import frc.robot.commands.TeleopDriveAutomated;
 import frc.robot.commands.TeleopElevator;
 import frc.robot.commands.TeleopIntake;
 import frc.robot.commands.TeleopWrist;
@@ -246,7 +247,8 @@ public class RobotContainer {
       new TeleopBackinterupptor().deadlineWith(Commands.sequence(
         new InstantCommand(() -> climber.setElevatorPosition(-80, 0)),
         new WaitCommand(0.5),
-        AutoBuilder.followPath(PathPlannerPath.fromPathFile("ChainEngage")),
+        //AutoBuilder.followPath(PathPlannerPath.fromPathFile("ChainEngage")),
+        new TeleopDriveAutomated(drivetrain, 0.0, 0.2, 1.0),
         new InstantCommand(() -> climber.setElevatorPosition(-74, 0))
 
 
