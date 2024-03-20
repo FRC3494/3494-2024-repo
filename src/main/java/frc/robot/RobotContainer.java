@@ -218,8 +218,10 @@ public class RobotContainer {
         new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.storeArm, 0))).schedule());
     OI.trapPreset().rising().ifHigh(() -> Commands.sequence(
         new InstantCommand(() -> intake.inIntake = false),
+        new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.ampWrist, 0)),
+        new WaitCommand(0.5),
         new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.trapElevator, 0)),
-        new WaitCommand(1.0),
+        new WaitCommand(0.5),
         new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.trapWrist, 0)),
         new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.ampArm, 0))).schedule());
     OI.trapPreset2().rising().ifHigh(()->Commands.sequence(
@@ -250,8 +252,6 @@ public class RobotContainer {
         //AutoBuilder.followPath(PathPlannerPath.fromPathFile("ChainEngage")),
         new TeleopDriveAutomated(drivetrain, 0.0, 0.2, 1.0),
         new InstantCommand(() -> climber.setElevatorPosition(-74, 0))
-
-
       )).schedule();
     });
     OI.autoTrap().rising().ifHigh(() -> Commands.sequence(
