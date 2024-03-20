@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkAbsoluteEncoder.Type;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -19,7 +20,7 @@ public class Arm extends SubsystemBase{
     private double targetPosition;
     public Arm(){
         armMotor= new CANSparkMax(Constants.Arm.armMotor, MotorType.kBrushless);
-        armMotor.setIdleMode(IdleMode.kBrake);
+        armMotor.setIdleMode(IdleMode.kCoast);//was kBrake
 
         armMotor.getPIDController().setP(2);//1.5
         armMotor.getPIDController().setFF(0.5);
@@ -29,6 +30,9 @@ public class Arm extends SubsystemBase{
         targetPosition = armMotor.getAlternateEncoder(8192).getPosition();
         // targetPosition = armMotor.getAbsoluteEncoder(Type.kDutyCycle).getPosition();
         
+    }
+    public void setBrakes(IdleMode neutralMode) {
+        this.armMotor.setIdleMode(neutralMode);
     }
     public void setTargetAngle(double ticks, double arbFFVoltage) {
         // armMotor.getPIDController().setReference(ticks,
@@ -41,6 +45,11 @@ public class Arm extends SubsystemBase{
     // public double getCurrentAngle(){
     //     return armMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle).getPosition();
     // }
+    @Override
+    public void periodic(){
+        if (DriverStation.isEnabled()) this.setBrakes(IdleMode.kBrake);
+    }
+
     public void setMotorPower(double power) {
         power = Math.max(Math.min(power, 1), -1);
         manualPower = power;

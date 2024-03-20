@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -23,7 +24,7 @@ public class Elevator extends SubsystemBase {
         bottomMagnetSensor = new DigitalInput(Constants.Elevator.bottomMagnetSensorDIO);
         topMagnetSensor = new DigitalInput(Constants.Elevator.topMagnetSensorDIO);
 
-        mainMotor.setIdleMode(IdleMode.kBrake);
+        mainMotor.setIdleMode(IdleMode.kCoast);//was kBrake
 
         mainMotor.getPIDController().setOutputRange(-0.75, 0.75);
         mainMotor.getPIDController().setP(0.05);
@@ -39,9 +40,15 @@ public class Elevator extends SubsystemBase {
     public void setElevatorVoltage(double voltage) {
         mainMotor.getPIDController().setReference(voltage, CANSparkMax.ControlType.kVoltage);
     }
+    public void setBrakes(IdleMode neutralMode) {
+        this.mainMotor.setIdleMode(neutralMode);
+    }
 
     @Override
     public void periodic(){
+        if (DriverStation.isEnabled()) this.setBrakes(IdleMode.kBrake);
+        
+
         if(getElevatorSensorState() == ElevatorSensorState.BOTTOM){
             mainMotor.getEncoder().setPosition(0);
         }

@@ -29,11 +29,11 @@ public final class OI {
     }
 
     public static void setRedOffset() {
-        offset = 91.6+180.0;
+        //offset = 91.6+180.0;
     }
 
     public static void setBlueOffset() {
-        offset = 91.6;//2.23;//-83.72;
+        //offset = 91.6;//2.23;//-83.72;
     }
 
 

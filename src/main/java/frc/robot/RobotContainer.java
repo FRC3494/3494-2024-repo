@@ -243,21 +243,14 @@ public class RobotContainer {
       new TeleopAinterupptor().deadlineWith(AutoBuilder.followPath(path)).schedule();
     });
     OI.stageBACKAlign().rising().ifHigh(() -> {
-      Pose2d currentPose = drivetrain.getPose();
-      Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d(Math.PI / 2.0));
-      Pose2d endPos = new Pose2d(10.52, 4.0, new Rotation2d(Units.degreesToRadians(0)));// currentPose.getTranslation().plus(new
-                                                                                             // Translation2d(1.0,
-                                                                                             // 0.0)), new
-                                                                                             // Rotation2d());
-      List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, endPos);
-      PathPlannerPath path = new PathPlannerPath(
-          bezierPoints,
-          new PathConstraints(
-              3.0, 2,
-              Units.degreesToRadians(360), Units.degreesToRadians(540)),
-          new GoalEndState(0.0, new Rotation2d(Units.degreesToRadians(0))));
-      path.preventFlipping = true;
-      new TeleopBackinterupptor().deadlineWith(AutoBuilder.followPath(path)).schedule();
+      new TeleopBackinterupptor().deadlineWith(Commands.sequence(
+        new InstantCommand(() -> climber.setElevatorPosition(-80, 0)),
+        new WaitCommand(0.5),
+        AutoBuilder.followPath(PathPlannerPath.fromPathFile("ChainEngage")),
+        new InstantCommand(() -> climber.setElevatorPosition(-74, 0))
+
+
+      )).schedule();
     });
     OI.autoTrap().rising().ifHigh(() -> Commands.sequence(
       new InstantCommand(() -> intake.inIntake = false),
