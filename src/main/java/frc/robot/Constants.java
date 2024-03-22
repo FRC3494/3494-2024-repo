@@ -42,6 +42,7 @@ public final class Constants {
 
       public static int ENCODER_MOTOR_PORT = 3;
 
+      //ON ARRIVAL OFFSET: 266.00
       public static double STEER_OFFSET = Math.toRadians(266.00);
     }
 
@@ -51,6 +52,7 @@ public final class Constants {
 
       public static int ENCODER_MOTOR_PORT = 2;
 
+      //ON ARRIVAL OFFSET: 55.501
       public static double STEER_OFFSET = Math.toRadians(55.501);
     }
 
@@ -60,6 +62,7 @@ public final class Constants {
 
       public static int ENCODER_MOTOR_PORT = 1;
 
+      //ON ARRIVAL OFFSET: 16.809
       public static double STEER_OFFSET = Math.toRadians(16.809);
     }
 
@@ -69,7 +72,8 @@ public final class Constants {
 
       public static int ENCODER_MOTOR_PORT = 0;
 
-      public static double STEER_OFFSET = Math.toRadians(-65.203+180.0);
+      //ON ARRIVAL OFFSET: -65.203+180.0
+      public static double STEER_OFFSET = Math.toRadians(0.0);
     }
 
     public static final double TRACKWIDTH_METERS = 0.5222;

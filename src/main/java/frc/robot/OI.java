@@ -108,6 +108,15 @@ public final class OI {
     public static double teleopTurnVelocity() {
         double turnSpeed = slowMode() ? Constants.OI.SLOW_TURN_SPEED : Constants.OI.TURN_SPEED;
         return modifyAxis(primaryController.getRightX()) * turnSpeed;
+
+    }
+    public static double rawTeleopYVelocity(){
+        double driveSpeed = slowMode() ? Constants.OI.SLOW_DRIVE_SPEED : Constants.OI.DRIVE_SPEED;
+        double forward = primaryController.getLeftY();
+        
+        return forward*driveSpeed;
+
+        
     }
 
     public static boolean slowMode() {
@@ -137,6 +146,12 @@ public final class OI {
     }
     public static boolean isBackHeld() {
         return primaryController.getBackButton();
+    }
+    public static boolean isStartHeld() {
+        return primaryController.getStartButton();
+    }
+    public static boolean isBumperHeld() {
+        return primaryController.getLeftBumper();
     }
     public static BooleanEvent noteAlign() {
         return primaryController.b(eventLoop);
@@ -234,7 +249,7 @@ public final class OI {
         return leftButtonBoard.button(4, eventLoop);
     }
 
-    public static BooleanEvent stageLEFTAlign() {
+    public static BooleanEvent autoTrapDrive() {
         return primaryController.a(eventLoop);
     }
     public static BooleanEvent stageRIGHTAlign() {
@@ -242,6 +257,11 @@ public final class OI {
     }
     public static BooleanEvent stageBACKAlign() {
         return primaryController.back(eventLoop);
+    }
+    
+    public static BooleanEvent stageLEFTAlign(){
+        //return primaryController.start(eventLoop);
+        return primaryController.leftBumper(eventLoop);
     }
     public static EventLoop getEventLoop() {
         return eventLoop;
