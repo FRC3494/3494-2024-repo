@@ -107,6 +107,8 @@ public class RobotContainer {
     arm.setDefaultCommand(new TeleopArm(arm));
     wrist.setDefaultCommand(new TeleopWrist(wrist));
     intake.setDefaultCommand(new TeleopIntake(intake));
+    NamedCommands.registerCommand("SwerveZero",
+        new TeleopDriveAutomated(drivetrain, 0, -0.3, 10.0));
     NamedCommands.registerCommand("Confirm Note",
         new AutoNoteConfirm(intake));
     NamedCommands.registerCommand("Move Wrist",
