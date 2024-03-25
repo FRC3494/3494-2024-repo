@@ -278,7 +278,7 @@ public class RobotContainer {
       if (teamColor.get() == Alliance.Red) {
         Pose2d currentPose = drivetrain.getPose();
         Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d(Math.PI / 2.0));
-        Pose2d endPos = new Pose2d(12.25, 2.8, new Rotation2d(Units.degreesToRadians(120.0)));// currentPose.getTranslation().plus(new
+        Pose2d endPos = new Pose2d(12.34, 2.8, new Rotation2d(Units.degreesToRadians(120.0)));// currentPose.getTranslation().plus(new
                                                                                               // Translation2d(1.0,
                                                                                               // 0.0)), new
                                                                                               // Rotation2d());
