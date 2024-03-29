@@ -31,7 +31,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.NavX;
+import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.Climber.Climber;
 import frc.robot.subsystems.Elevator.Elevator;
 
@@ -64,7 +64,7 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.NavX;
+import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.Elevator.Elevator;
 
 /**
@@ -165,7 +165,7 @@ public class RobotContainer {
     robotPosition.setRobotPose(new Pose2d());
 
     fieldTab.add(robotPosition).withPosition(1, 0).withSize(7, 4);
-    fieldTab.addDouble("NavX yaw", () -> NavX.getYaw());
+    fieldTab.addDouble("NavX yaw", () -> Pigeon.getYaw());
     fieldTab.addDouble("OFFFSET", () -> OI.getDriveOffset());
     subsystemTab.addDouble("Clmber Ticks", () -> climber.getTicks());
     subsystemTab.addDouble("Climber Power", () -> climber.getMotorPower());

@@ -32,7 +32,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.OI;
-import frc.robot.subsystems.NavX;
+import frc.robot.subsystems.Pigeon;
 import frc.robot.subsystems.LimelightHelpers;
 import frc.robot.util.Pose2dHelpers;
 
@@ -82,7 +82,7 @@ public class Drivetrain extends SubsystemBase {
 			Constants.Drivetrain.BackRightModule.STEER_OFFSET);
 	private SwerveModule[] m_modules = new SwerveModule[] { frontRight, frontLeft, backLeft, backRight };
 
-	NavX navX;
+	Pigeon navX;
 
 	// Odometry class for tracking robot pose
 	private final SwerveDrivePoseEstimator m_poseEstimator;
@@ -351,11 +351,7 @@ public class Drivetrain extends SubsystemBase {
 	 * @return The current heading of the chassis.
 	 */
 	public Rotation2d getGyroscopeRotation() {
-		if (NavX.getNavX().isMagnetometerCalibrated()) {
-			// We will only get valid fused headings if the magnetometer is calibrated
-			return Rotation2d.fromDegrees(NavX.getYaw());
-		}
-		return Rotation2d.fromDegrees(360.0 - NavX.getYaw());
+		return Rotation2d.fromDegrees(360.0 - Pigeon.getYaw());
 	}
 
 	private ChassisSpeeds getRobotRelativeSpeeds() {

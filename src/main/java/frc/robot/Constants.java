@@ -36,6 +36,7 @@ public final class Constants {
   }
 
   public static final class Drivetrain {
+    public static final int PigeonID = 52;//FIX ME: id is wrong
     public static final class FrontLeftModule {
       public static int DRIVE_MOTOR_PORT = 18;// 19;
       public static int STEER_MOTOR_PORT = 16;// 17;
@@ -55,8 +56,9 @@ public final class Constants {
       public static int ENCODER_MOTOR_PORT = 2;
 
       //ON ARRIVAL OFFSET: 55.501
+      //Onarrival module tweak (3/29/24): 5.2-4.809
       //THE REPLACEMENT:  -297.887-23.204
-      public static double STEER_OFFSET = Math.toRadians(55.501+5.2-4.809);
+      public static double STEER_OFFSET = Math.toRadians(-297.887-23.204);
     }
 
     public static final class BackLeftModule {
@@ -68,7 +70,6 @@ public final class Constants {
       //ON ARRIVAL OFFSET: 16.809
       public static double STEER_OFFSET = Math.toRadians(16.809+0.3998-1.2);
     }
-
     public static final class BackRightModule {
       public static int DRIVE_MOTOR_PORT = 1;// 5;
       public static int STEER_MOTOR_PORT = 3;// 4;
@@ -76,8 +77,9 @@ public final class Constants {
       public static int ENCODER_MOTOR_PORT = 0;
 
       //ON ARRIVAL OFFSET: -65.203+180.0
+      //ON Arrvial module Tweak (3/29/24):-65.203+180.0-1.2-2
       //THE REPLACEMENT: 180.0-4.8
-      public static double STEER_OFFSET = Math.toRadians(-65.203+180.0-1.2-2);
+      public static double STEER_OFFSET = Math.toRadians(180.0-4.8);
     }
 
     public static final double TRACKWIDTH_METERS = 0.5222;
@@ -92,7 +94,7 @@ public final class Constants {
         new Translation2d(TRACKLENGTH_METERS / 2.0, TRACKWIDTH_METERS / 2.0),
         // Back right
         new Translation2d(-TRACKLENGTH_METERS / 2.0, TRACKWIDTH_METERS / 2.0));
-    public static final double MAX_VELOCITY_METERS_PER_SECOND = 3.6576f;
+    public static final double MAX_VELOCITY_METERS_PER_SECOND = 5.36448f;//3.6576f;
     public static final double MAX_VOLTAGE = 12.0;
     public static final double MAX_STANDARD_DEVIATION_LIMELIGHT = 0.01;
   }
@@ -102,7 +104,7 @@ public final class Constants {
     public static final int SECONDARY_LEFT_CONTROLLER_PORT = 1;
     public static final int SECONDARY_RIGHT_CONTROLLER_PORT = 2;
     public static final int DIANNA_RUMBLER_PORT = 3;
-    public static final double DRIVE_SPEED = 3.5; // m/s
+    public static final double DRIVE_SPEED = 5.36448; // m/s//3.5
     public static final double TURN_SPEED = 4.0;//1st match was 3.0 // 5.5 rad/s
 
     public static final double SLOW_DRIVE_SPEED = 1.5; // m/s
@@ -112,6 +114,7 @@ public final class Constants {
   }
 
   public static final class Climber {
+    public static final int pwmServoPort = 6; //FIX ME: wrong number
     public static final int mainMotor = 15;// 15
     public static int bottomMagnetSensorDIO = 9;
   }

@@ -1,6 +1,6 @@
 {
-  "robotWidth": 0.9,
-  "robotLength": 0.9,
+  "robotWidth": 0.813,
+  "robotLength": 0.864,
   "holonomicMode": true,
   "pathFolders": [
     "DisplaceCenteres",
@@ -9,6 +9,7 @@
     "SIDESTUFF"
   ],
   "autoFolders": [
+    "Choreo",
     "SIDESTUFF"
   ],
   "defaultMaxVel": 3.0,

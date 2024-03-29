@@ -58,6 +58,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     // m_robotContainer.intake.distOnboard.setAutomaticMode(false);
+    m_robotContainer.climber.engageRachet(true);
   }
 
   @Override
