@@ -374,10 +374,14 @@ public class RobotContainer {
         new TeleopDriveAutomated(drivetrain, 0, 0.0, 0.5),
         new InstantCommand(() -> climber.setElevatorPosition(-70, 0))
 
-
-
       )).schedule();
     });
+    
+    OI.engageRachet().rising().ifHigh(() -> {
+      climber.engageRachet();
+      System.out.println("RACHHETING LMAO LOSERLSELKRJLEKJ");
+    });
+
     OI.autoTrap().rising().ifHigh(() -> Commands.sequence(
       new InstantCommand(() -> intake.inIntake = false),
       new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.trapElevator, 0)),
