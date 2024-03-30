@@ -4,40 +4,8 @@
 
 package frc.robot;
 
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Wrist.Wrist;
-import frc.robot.commands.AutoIntakePower;
-import frc.robot.commands.AutoNoteConfirm;
-import frc.robot.commands.TeleopAinterupptor;
-import frc.robot.commands.TeleopArm;
-import frc.robot.commands.TeleopBackinterupptor;
-import frc.robot.commands.TeleopBumperinterupptor;
-import frc.robot.commands.TeleopClimber;
-import frc.robot.commands.TeleopDrive;
-import frc.robot.commands.TeleopDriveAutomated;
-import frc.robot.commands.TeleopElevator;
-import frc.robot.commands.TeleopIntake;
-import frc.robot.commands.TeleopStartinterupptor;
-import frc.robot.commands.TeleopWrist;
-import frc.robot.commands.TeleopYinterupptor;
-// import frc.robot.subsystems.Camera;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Intake;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.Pigeon;
-import frc.robot.subsystems.Climber.Climber;
-import frc.robot.subsystems.Elevator.Elevator;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.Delayed;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -51,8 +19,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -60,12 +26,30 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.AutoIntakePower;
+import frc.robot.commands.AutoNoteConfirm;
+import frc.robot.commands.TeleopAinterupptor;
+import frc.robot.commands.TeleopArm;
+import frc.robot.commands.TeleopBackinterupptor;
+import frc.robot.commands.TeleopBumperinterupptor;
+import frc.robot.commands.TeleopClimber;
 import frc.robot.commands.TeleopDrive;
-import frc.robot.subsystems.Camera;
+import frc.robot.commands.TeleopDriveAutomated;
+import frc.robot.commands.TeleopElevator;
+import frc.robot.commands.TeleopIntake;
+import frc.robot.commands.TeleopStartinterupptor;
+import frc.robot.commands.TeleopWrist;
+import frc.robot.subsystems.Arm;
+// import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pigeon;
+import frc.robot.subsystems.Climber.Climber;
 import frc.robot.subsystems.Elevator.Elevator;
+import frc.robot.subsystems.Wrist.Wrist;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -125,7 +109,7 @@ public class RobotContainer {
             new WaitCommand(0.75),
             new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.ampArm, 0))));
     NamedCommands.registerCommand("To Intake Pos", Commands.sequence(
-      new InstantCommand(() -> intake.inIntake = true),
+        new InstantCommand(() -> intake.inIntake = true),
         new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.safeWrist, 0)),
         new WaitCommand(0.75),
         new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.pickupArm, 0)),
@@ -191,7 +175,7 @@ public class RobotContainer {
 
   private void configureBindings() {
     // OI.intakeReverse().ifHigh(() -> {
-    //   intake.setMotorPower(-1);
+    // intake.setMotorPower(-1);
     // });
     OI.noteAlign().ifHigh(() -> {
       TeleopDrive.NoteAligning = true;
@@ -208,7 +192,7 @@ public class RobotContainer {
         new WaitCommand(0.1),
         new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.pickupWrist, 0))).schedule());
     OI.ampPreset().rising().ifHigh(() -> Commands.sequence(
-      new InstantCommand(() -> intake.inIntake = false),
+        new InstantCommand(() -> intake.inIntake = false),
         // new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.safeArm, 0)),
         // new WaitCommand(0.4),
         new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.ampWrist, 0)),
@@ -232,19 +216,18 @@ public class RobotContainer {
         new WaitCommand(0.5),
         new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.trapWrist, 0)),
         new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.ampArm, 0))).schedule());
-    OI.trapPreset2().rising().ifHigh(()->Commands.sequence(
-      new InstantCommand(() -> intake.inIntake = false),
-      new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.trapWrist2, 0))).schedule()
-    );
+    OI.trapPreset2().rising().ifHigh(() -> Commands.sequence(
+        new InstantCommand(() -> intake.inIntake = false),
+        new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.trapWrist2, 0))).schedule());
     OI.stageBACKAlign().rising().ifHigh(() -> {
       Optional<Alliance> teamColor = DriverStation.getAlliance();
       if (teamColor.get() == Alliance.Red) {
         Pose2d currentPose = drivetrain.getPose();
-        Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d(Math.PI / 2.0));//10.52, 4.0
+        Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d(Math.PI / 2.0));// 10.52, 4.0
         Pose2d endPos = new Pose2d(10.45, 4.0100, new Rotation2d(Units.degreesToRadians(0)));// currentPose.getTranslation().plus(new
-                                                                                            // Translation2d(1.0,
-                                                                                              // 0.0)), new
-                                                                                              // Rotation2d());
+                                                                                             // Translation2d(1.0,
+                                                                                             // 0.0)), new
+                                                                                             // Rotation2d());
         List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, endPos);
         PathPlannerPath path = new PathPlannerPath(
             bezierPoints,
@@ -254,14 +237,13 @@ public class RobotContainer {
             new GoalEndState(0.0, new Rotation2d(Units.degreesToRadians(0))));
         path.preventFlipping = true;
         new TeleopBackinterupptor().deadlineWith(AutoBuilder.followPath(path)).schedule();
-      }
-      else{
+      } else {
         Pose2d currentPose = drivetrain.getPose();
-        Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d(Math.PI / 2.0));//10.52, 4.0
+        Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d(Math.PI / 2.0));// 10.52, 4.0
         Pose2d endPos = new Pose2d(6.10, 4.0100, new Rotation2d(Units.degreesToRadians(0)));// currentPose.getTranslation().plus(new
                                                                                             // Translation2d(1.0,
-                                                                                              // 0.0)), new
-                                                                                              // Rotation2d());
+                                                                                            // 0.0)), new
+                                                                                            // Rotation2d());
         List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, endPos);
         PathPlannerPath path = new PathPlannerPath(
             bezierPoints,
@@ -291,11 +273,10 @@ public class RobotContainer {
             new GoalEndState(0.0, new Rotation2d(Units.degreesToRadians(120.0))));
         path.preventFlipping = true;
         new TeleopBumperinterupptor().deadlineWith(AutoBuilder.followPath(path)).schedule();
-      }
-      else{
+      } else {
         Pose2d currentPose = drivetrain.getPose();
         Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d(Math.PI / 2.0));
-        Pose2d endPos = new Pose2d(4.21,5.13, new Rotation2d(Units.degreesToRadians(120.0)));// currentPose.getTranslation().plus(new
+        Pose2d endPos = new Pose2d(4.21, 5.13, new Rotation2d(Units.degreesToRadians(120.0)));// currentPose.getTranslation().plus(new
                                                                                               // Translation2d(1.0,
                                                                                               // 0.0)), new
                                                                                               // Rotation2d());
@@ -305,7 +286,7 @@ public class RobotContainer {
             new PathConstraints(
                 3.0, 2,
                 Units.degreesToRadians(360), Units.degreesToRadians(540)),
-            new GoalEndState(0.0, new Rotation2d(Units.degreesToRadians(30.0+90.0+180))));
+            new GoalEndState(0.0, new Rotation2d(Units.degreesToRadians(30.0 + 90.0 + 180))));
         path.preventFlipping = true;
         new TeleopBumperinterupptor().deadlineWith(AutoBuilder.followPath(path)).schedule();
       }
@@ -313,92 +294,89 @@ public class RobotContainer {
     OI.stageRIGHTAlign().rising().ifHigh(() -> {
       Optional<Alliance> teamColor = DriverStation.getAlliance();
       if (teamColor.get() == Alliance.Red) {
-      Pose2d currentPose = drivetrain.getPose();
-      Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d(Math.PI / 2.0));//10.52, 4.0
-      Pose2d endPos = new Pose2d(12.25, 5.0100, new Rotation2d(Units.degreesToRadians(45)));// currentPose.getTranslation().plus(new
-                                                                                          // Translation2d(1.0,
-                                                                                             // 0.0)), new
-                                                                                             // Rotation2d());
-      List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, endPos);
-      PathPlannerPath path = new PathPlannerPath(
-          bezierPoints,
-          new PathConstraints(
-              3.0, 2,
-              Units.degreesToRadians(360), Units.degreesToRadians(540)),
-          new GoalEndState(0.0, new Rotation2d(Units.degreesToRadians(60+180))));
-      path.preventFlipping = true;
-      new TeleopStartinterupptor().deadlineWith(AutoBuilder.followPath(path)).schedule();
-      }
-      else{
         Pose2d currentPose = drivetrain.getPose();
-      Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d(Math.PI / 2.0));//10.52, 4.0
-      Pose2d endPos = new Pose2d(4.27, 3.0, new Rotation2d(Units.degreesToRadians(45)));// currentPose.getTranslation().plus(new
+        Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d(Math.PI / 2.0));// 10.52, 4.0
+        Pose2d endPos = new Pose2d(12.25, 5.0100, new Rotation2d(Units.degreesToRadians(45)));// currentPose.getTranslation().plus(new
+        // Translation2d(1.0,
+        // 0.0)), new
+        // Rotation2d());
+        List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, endPos);
+        PathPlannerPath path = new PathPlannerPath(
+            bezierPoints,
+            new PathConstraints(
+                3.0, 2,
+                Units.degreesToRadians(360), Units.degreesToRadians(540)),
+            new GoalEndState(0.0, new Rotation2d(Units.degreesToRadians(60 + 180))));
+        path.preventFlipping = true;
+        new TeleopStartinterupptor().deadlineWith(AutoBuilder.followPath(path)).schedule();
+      } else {
+        Pose2d currentPose = drivetrain.getPose();
+        Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d(Math.PI / 2.0));// 10.52, 4.0
+        Pose2d endPos = new Pose2d(4.27, 3.0, new Rotation2d(Units.degreesToRadians(45)));// currentPose.getTranslation().plus(new
                                                                                           // Translation2d(1.0,
-                                                                                             // 0.0)), new
-                                                                                             // Rotation2d());
-      List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, endPos);
-      PathPlannerPath path = new PathPlannerPath(
-          bezierPoints,
-          new PathConstraints(
-              3.0, 2,
-              Units.degreesToRadians(360), Units.degreesToRadians(540)),
-          new GoalEndState(0.0, new Rotation2d(Units.degreesToRadians(60))));
-      path.preventFlipping = true;
-      new TeleopStartinterupptor().deadlineWith(AutoBuilder.followPath(path)).schedule();
+                                                                                          // 0.0)), new
+                                                                                          // Rotation2d());
+        List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, endPos);
+        PathPlannerPath path = new PathPlannerPath(
+            bezierPoints,
+            new PathConstraints(
+                3.0, 2,
+                Units.degreesToRadians(360), Units.degreesToRadians(540)),
+            new GoalEndState(0.0, new Rotation2d(Units.degreesToRadians(60))));
+        path.preventFlipping = true;
+        new TeleopStartinterupptor().deadlineWith(AutoBuilder.followPath(path)).schedule();
       }
     });
-    
+
     OI.autoTrapDrive().rising().ifHigh(() -> {
       new TeleopAinterupptor().deadlineWith(Commands.sequence(
-        new InstantCommand(() -> climber.setElevatorPosition(-80, 0)),
-        new WaitCommand(0.5),
-        //AutoBuilder.followPath(PathPlannerPath.fromPathFile("ChainEngage")),
-        new TeleopDriveAutomated(drivetrain, 0, -0.7, 0.5),
-        new WaitCommand(0.6),
-        new TeleopDriveAutomated(drivetrain, 0, 0.0, 1.0),
-        new InstantCommand(() -> climber.setElevatorPosition(-74, 0)),
-        new WaitCommand(0.5),
-        new TeleopDriveAutomated(drivetrain, 0, 0.6, 0.5),
-        new WaitCommand(0.6),
-        new TeleopDriveAutomated(drivetrain, 0, 0.0, 0.5),
-        new InstantCommand(() -> intake.inIntake = false),
-        new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.ampWrist, 0)),
-        new WaitCommand(0.5),
-        new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.trapElevator, 0)),
-        new WaitCommand(0.5),
-        new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.trapWrist, 0)),
-        new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.ampArm, 0)),
-        new WaitCommand(0.5),
-        new TeleopDriveAutomated(drivetrain, 0, -0.6, 0.5),
-        new WaitCommand(0.5),
-        new TeleopDriveAutomated(drivetrain, 0, 0.0, 0.5),
-        new InstantCommand(() -> climber.setElevatorPosition(-70, 0))
+          new InstantCommand(() -> climber.setElevatorPosition(-80, 0)),
+          new WaitCommand(0.5),
+          // AutoBuilder.followPath(PathPlannerPath.fromPathFile("ChainEngage")),
+          new TeleopDriveAutomated(drivetrain, 0, -0.7, 0.5),
+          new WaitCommand(0.6),
+          new TeleopDriveAutomated(drivetrain, 0, 0.0, 1.0),
+          new InstantCommand(() -> climber.setElevatorPosition(-74, 0)),
+          new WaitCommand(0.5),
+          new TeleopDriveAutomated(drivetrain, 0, 0.6, 0.5),
+          new WaitCommand(0.6),
+          new TeleopDriveAutomated(drivetrain, 0, 0.0, 0.5),
+          new InstantCommand(() -> intake.inIntake = false),
+          new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.ampWrist, 0)),
+          new WaitCommand(0.5),
+          new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.trapElevator, 0)),
+          new WaitCommand(0.5),
+          new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.trapWrist, 0)),
+          new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.ampArm, 0)),
+          new WaitCommand(0.5),
+          new TeleopDriveAutomated(drivetrain, 0, -0.6, 0.5),
+          new WaitCommand(0.5),
+          new TeleopDriveAutomated(drivetrain, 0, 0.0, 0.5),
+          new InstantCommand(() -> climber.setElevatorPosition(-70, 0))
 
       )).schedule();
     });
-    
+
     OI.engageRachet().rising().ifHigh(() -> {
       climber.engageRachet();
       System.out.println("RACHHETING LMAO LOSERLSELKRJLEKJ");
     });
 
     OI.autoTrap().rising().ifHigh(() -> Commands.sequence(
-      new InstantCommand(() -> intake.inIntake = false),
-      new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.trapElevator, 0)),
-      //new WaitCommand(1.0),//Waiting is for losers
-      new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.trapWrist, 0)),
-      new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.ampArm, 0)),
-      //After in trap POS, CLIMB
-      new InstantCommand(() -> climber.setElevatorPosition(0, 0)),
-      new WaitCommand(1.5),
-      new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.trapWrist3, 0))).schedule()
-    );
-    OI.autoDownClimb().rising().ifHigh(()-> Commands.sequence(
-      new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.trapWrist, 0)),
-      new WaitCommand(0.1),
-      new InstantCommand(() -> climber.setElevatorPosition(-72.0, 0))
-    ).schedule());
-    
+        new InstantCommand(() -> intake.inIntake = false),
+        new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.trapElevator, 0)),
+        // new WaitCommand(1.0),//Waiting is for losers
+        new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.trapWrist, 0)),
+        new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.ampArm, 0)),
+        // After in trap POS, CLIMB
+        new InstantCommand(() -> climber.setElevatorPosition(0, 0)),
+        new WaitCommand(1.5),
+        new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.trapWrist3, 0))).schedule());
+    OI.autoDownClimb().rising().ifHigh(() -> Commands.sequence(
+        new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.trapWrist, 0)),
+        new WaitCommand(0.1),
+        new InstantCommand(() -> climber.setElevatorPosition(-72.0, 0))).schedule());
+
     SmartDashboard.putData("On-the-fly path", Commands.runOnce(() -> {
       Pose2d currentPose = drivetrain.getPose();
 

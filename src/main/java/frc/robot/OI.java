@@ -13,12 +13,14 @@ public final class OI {
     private static Joystick rightButtonBoard = new Joystick(Constants.OI.SECONDARY_RIGHT_CONTROLLER_PORT);
     private static double offset = 0;
 
-    public static XboxController getPrimaryController(){
+    public static XboxController getPrimaryController() {
         return primaryController;
     }
-    public static XboxController getDiannaRumbler(){
+
+    public static XboxController getDiannaRumbler() {
         return new XboxController(Constants.OI.DIANNA_RUMBLER_PORT);
     }
+
     public static void zeroControls() {
         // offset = -NavX.getYaw() - 90;
         offset = -Pigeon.getYaw();
@@ -29,13 +31,12 @@ public final class OI {
     }
 
     public static void setRedOffset() {
-        offset = 91.6+180.0;
+        offset = 91.6 + 180.0;
     }
 
     public static void setBlueOffset() {
-        offset = 91.6;//2.23;//-83.72;
+        offset = 91.6;// 2.23;//-83.72;
     }
-
 
     public static double deadband(double value, double deadband) {
         if (Math.abs(value) > deadband) {
@@ -110,13 +111,13 @@ public final class OI {
         return modifyAxis(primaryController.getRightX()) * turnSpeed;
 
     }
-    public static double rawTeleopYVelocity(){
+
+    public static double rawTeleopYVelocity() {
         double driveSpeed = slowMode() ? Constants.OI.SLOW_DRIVE_SPEED : Constants.OI.DRIVE_SPEED;
         double forward = primaryController.getLeftY();
-        
-        return forward*driveSpeed;
 
-        
+        return forward * driveSpeed;
+
     }
 
     public static boolean slowMode() {
@@ -144,15 +145,19 @@ public final class OI {
     public static boolean isAHeld() {
         return primaryController.getAButton();
     }
+
     public static boolean isBackHeld() {
         return primaryController.getBackButton();
     }
+
     public static boolean isStartHeld() {
         return primaryController.getStartButton();
     }
+
     public static boolean isBumperHeld() {
         return primaryController.getLeftBumper();
     }
+
     public static BooleanEvent noteAlign() {
         return primaryController.b(eventLoop);
     }
@@ -190,10 +195,10 @@ public final class OI {
 
     public static double getIntakePower() {
         // System.out.println(leftButtonBoard.getRawAxis(0)*Constants.Intake.manualPowerAdjust);
-        return Math.abs(leftButtonBoard.getRawAxis(0) * -Constants.Intake.manualPowerAdjust) 
-        +(leftButtonBoard.getRawButton(7) ? -0.75 : 0)
-        +(leftButtonBoard.getRawButton(9) ? -0.3 : 0) 
-        +(leftButtonBoard.getRawButton(10) ? 0.3 : 0);
+        return Math.abs(leftButtonBoard.getRawAxis(0) * -Constants.Intake.manualPowerAdjust)
+                + (leftButtonBoard.getRawButton(7) ? -0.75 : 0)
+                + (leftButtonBoard.getRawButton(9) ? -0.3 : 0)
+                + (leftButtonBoard.getRawButton(10) ? 0.3 : 0);
     }
 
     public static BooleanEvent presetTest() {
@@ -235,12 +240,15 @@ public final class OI {
     public static BooleanEvent trapPreset() {
         return rightButtonBoard.button(1, eventLoop);
     }
+
     public static BooleanEvent trapPreset2() {
         return rightButtonBoard.button(2, eventLoop);
     }
+
     public static BooleanEvent autoTrap() {
         return rightButtonBoard.button(3, eventLoop);
     }
+
     public static BooleanEvent autoDownClimb() {
         return rightButtonBoard.button(4, eventLoop);
     }
@@ -252,21 +260,25 @@ public final class OI {
     public static BooleanEvent autoTrapDrive() {
         return primaryController.a(eventLoop);
     }
+
     public static BooleanEvent stageRIGHTAlign() {
         return primaryController.start(eventLoop);
     }
+
     public static BooleanEvent stageBACKAlign() {
         return primaryController.back(eventLoop);
     }
-    
-    public static BooleanEvent stageLEFTAlign(){
-        //return primaryController.start(eventLoop);
+
+    public static BooleanEvent stageLEFTAlign() {
+        // return primaryController.start(eventLoop);
         return primaryController.leftBumper(eventLoop);
     }
+
     public static EventLoop getEventLoop() {
         return eventLoop;
     }
-    public static BooleanEvent engageRachet(){
+
+    public static BooleanEvent engageRachet() {
         return rightButtonBoard.button(5, eventLoop);
     }
 }

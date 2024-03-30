@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import java.lang.reflect.Array;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -11,19 +10,17 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 import com.swervedrivespecialties.swervelib.Mk4iSwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SwerveModule;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics.SwerveDriveWheelStates;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
+
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-//import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
@@ -31,9 +28,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.OI;
-import frc.robot.subsystems.Pigeon;
-import frc.robot.subsystems.LimelightHelpers;
 import frc.robot.util.Pose2dHelpers;
 
 public class Drivetrain extends SubsystemBase {
@@ -151,33 +145,33 @@ public class Drivetrain extends SubsystemBase {
 		// -----------SET MASTER BOT POSE
 		// ONLY SET while not auto aligning
 		// if (!OI.isYHeld()) {
-			if (rightNeitherXNorYAt0 && leftNeitherXNorYAt0 &&
-					!RobotState.isAutonomous()) {// resetRight && resetLeft
-				averagedPoses = Pose2dHelpers.meanCorrect(limelightBotPoseLeft,
-						limelightBotPoseRight);
+		if (rightNeitherXNorYAt0 && leftNeitherXNorYAt0 &&
+				!RobotState.isAutonomous()) {// resetRight && resetLeft
+			averagedPoses = Pose2dHelpers.meanCorrect(limelightBotPoseLeft,
+					limelightBotPoseRight);
 
-				m_poseEstimator.addVisionMeasurement(new Pose2d(averagedPoses.getY(),
-						-averagedPoses.getX(),
-						averagedPoses.getRotation()), // getGyroscopeRotation()),
-						Timer.getFPGATimestamp(),
-						VecBuilder.fill(0.9, 0.9, 0.9));// taken from soncis squirrls
-			} else if (rightNeitherXNorYAt0 && !RobotState.isAutonomous()) {
-				m_poseEstimator.addVisionMeasurement(new Pose2d(limelightBotPoseRight.getY(),
-						-limelightBotPoseRight.getX(),
-						limelightBotPoseRight.getRotation()), // getGyroscopeRotation()),
-						Timer.getFPGATimestamp(),
-						VecBuilder.fill(0.9, 0.9, 0.9));// taken from soncis squirrls
-				// resetOdometry(limelightBotPoseRight);
-			} else if (leftNeitherXNorYAt0 && !RobotState.isAutonomous()) {
-				// resetOdometry(limelightBotPoseLeft);
-				m_poseEstimator.addVisionMeasurement(
-						new Pose2d(limelightBotPoseLeft.getY(), -limelightBotPoseLeft.getX(),
-								limelightBotPoseLeft.getRotation()), // getGyroscopeRotation()), // used to be
-																		// limelightBotPoseLeft.getRotation()
-						// new Rotation2d(getGyroscopeRotation().getRadians() + Math.PI)),
-						Timer.getFPGATimestamp(),
-						VecBuilder.fill(0.9, 0.9, 0.9));// taken from soncis squirrls
-			}
+			m_poseEstimator.addVisionMeasurement(new Pose2d(averagedPoses.getY(),
+					-averagedPoses.getX(),
+					averagedPoses.getRotation()), // getGyroscopeRotation()),
+					Timer.getFPGATimestamp(),
+					VecBuilder.fill(0.9, 0.9, 0.9));// taken from soncis squirrls
+		} else if (rightNeitherXNorYAt0 && !RobotState.isAutonomous()) {
+			m_poseEstimator.addVisionMeasurement(new Pose2d(limelightBotPoseRight.getY(),
+					-limelightBotPoseRight.getX(),
+					limelightBotPoseRight.getRotation()), // getGyroscopeRotation()),
+					Timer.getFPGATimestamp(),
+					VecBuilder.fill(0.9, 0.9, 0.9));// taken from soncis squirrls
+			// resetOdometry(limelightBotPoseRight);
+		} else if (leftNeitherXNorYAt0 && !RobotState.isAutonomous()) {
+			// resetOdometry(limelightBotPoseLeft);
+			m_poseEstimator.addVisionMeasurement(
+					new Pose2d(limelightBotPoseLeft.getY(), -limelightBotPoseLeft.getX(),
+							limelightBotPoseLeft.getRotation()), // getGyroscopeRotation()), // used to be
+																	// limelightBotPoseLeft.getRotation()
+					// new Rotation2d(getGyroscopeRotation().getRadians() + Math.PI)),
+					Timer.getFPGATimestamp(),
+					VecBuilder.fill(0.9, 0.9, 0.9));// taken from soncis squirrls
+		}
 		// }
 
 		SmartDashboard.putBoolean("Averaging", rightNeitherXNorYAt0 &&
@@ -190,15 +184,16 @@ public class Drivetrain extends SubsystemBase {
 
 	public double getNoteRotationPower() {
 		double tx = LimelightHelpers.getTX("limelight-bottom");
-		if (tx != 0){
-			double noteYaw = 11.0 + tx;//wass 16+
+		if (tx != 0) {
+			double noteYaw = 11.0 + tx;// wass 16+
 			noteYaw /= 16.0;
 			return noteYaw;
 		}
 		return 0;
-		
+
 	}
-	public boolean seesNote(){
+
+	public boolean seesNote() {
 		return LimelightHelpers.getTX("limelight-bottom") != 0;
 	}
 

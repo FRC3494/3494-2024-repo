@@ -6,9 +6,9 @@ import frc.robot.OI;
 public class TeleopBackinterupptor extends Command {
 	@Override
 	public boolean isFinished() {
-		if (OI.isBackHeld()){
+		if (OI.isBackHeld()) {
 			return false;
-        }
+		}
 
 		return true;
 	}

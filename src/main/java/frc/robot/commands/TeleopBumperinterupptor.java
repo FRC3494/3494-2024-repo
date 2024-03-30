@@ -6,9 +6,9 @@ import frc.robot.OI;
 public class TeleopBumperinterupptor extends Command {
 	@Override
 	public boolean isFinished() {
-		if (OI.isBumperHeld()){
+		if (OI.isBumperHeld()) {
 			return false;
-        }
+		}
 
 		return true;
 	}
