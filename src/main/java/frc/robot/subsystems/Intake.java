@@ -16,20 +16,18 @@ import frc.robot.OI;
 import frc.robot.commands.TeleopRumble;
 
 public class Intake extends SubsystemBase {
-    CANSparkMax intakeMotor;
-    double manualPower = 0;
-    ColorSensorV3 leftIntakeColorSensor;
-    ArrayList<Double> currents = new ArrayList<Double>();
+    private CANSparkMax intakeMotor;
+    private double manualPower = 0;
+    private ColorSensorV3 leftIntakeColorSensor;
+    private ArrayList<Double> currents = new ArrayList<Double>();
 
-    boolean hadNote = false;
-    boolean hasNoteNow = false;
+    private boolean hadNote = false;
+    private boolean hasNoteNow = false;
 
-    boolean stopIntake = false;
-    EventLoop eventLoop;
+    private boolean stopIntake = false;
     public boolean inIntake = false;
 
     public Intake(EventLoop eventloop) {
-        this.eventLoop = eventloop;
         intakeMotor = new CANSparkMax(Constants.Intake.mainMotor, MotorType.kBrushless);
         intakeMotor.setIdleMode(IdleMode.kBrake);
 
@@ -63,9 +61,6 @@ public class Intake extends SubsystemBase {
 
     @Override
     public void periodic() {
-        Logger.recordOutput("Intake/Power", intakeMotor.get());
-        Logger.recordOutput("Intake/HasNote", hasNoteNow);
-
         hasNoteNow = (currentAverage(intakeMotor.getOutputCurrent()) > 12.5);// (distOnboard.getRange()<= 8.0 &&
                                                                              // distOnboard.getRange() != -1);
         if (hasNoteNow && !hadNote && inIntake) {
@@ -75,6 +70,10 @@ public class Intake extends SubsystemBase {
         }
 
         hadNote = hasNoteNow;
+
+        Logger.recordOutput("Intake/Power", intakeMotor.get());
+        Logger.recordOutput("Intake/HasNote", hasNoteNow);
+        Logger.recordOutput("Intake/StopIntake", stopIntake);
     }
 
     public double getManualMotorPower() {
@@ -88,14 +87,6 @@ public class Intake extends SubsystemBase {
         // return leftIntakeColorSensor.getProximity();
     }
 
-    // public boolean JustgotNote() {
-    // hasNoteNow = (distOnboard.getRange()<= 9.0 && distOnboard.getRange() != -1);
-    // if(hasNoteNow && !hadNote){
-    // return true;
-    // }
-    // return false;
-
-    // }
     public boolean hasNote() {
         return hasNoteNow;
     }

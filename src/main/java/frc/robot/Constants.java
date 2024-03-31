@@ -5,8 +5,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.I2C;
 
 public final class Constants {
-  // TODO: Set PDH CAN ID
-  public static int PDH_CAN_ID = 1;
+  public static int PDH_CAN_ID = 24;
 
   public static final class Presets {
     public static double testArm = 0;
@@ -115,10 +114,11 @@ public final class Constants {
   }
 
   public static final class Elevator {
-    public static int mainMotor = 4; // TODO: add ports
+    public static int mainMotor = 4;
+
+    // TODO: add ports
     public static int bottomMagnetSensorDIO = 0;
     public static int topMagnetSensorDIO = 1;
-
   }
 
   public static final class Arm {
@@ -130,6 +130,8 @@ public final class Constants {
     public static double max_position = 0;
     public static double min_position = 0;
     public static double globalArmOffset = 0.0;// 0.043+0.036-0.036;
+
+    public static final int alternateEncoderTickPerRev = 8192;
   }
 
   public static final class Wrist {

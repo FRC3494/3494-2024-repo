@@ -60,7 +60,7 @@ public class Robot extends LoggedRobot {
       Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
       Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
 
-      new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
+      new PowerDistribution(Constants.PDH_CAN_ID, ModuleType.kRev); // Enables power distribution logging
     } else {
       setUseTiming(false); // Run as fast as possible
       String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
@@ -69,12 +69,7 @@ public class Robot extends LoggedRobot {
       Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
     }
 
-    // Logger.disableDeterministicTimestamps() // See "Deterministic Timestamps" in
-    // the "Understanding Data Flow" page
     Logger.start();
-
-    // Start logging! No more data receivers, replay sources, or metadata values may
-    // be added.
   }
 
   /**
@@ -105,7 +100,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void disabledInit() {
     // m_robotContainer.intake.distOnboard.setAutomaticMode(false);
-    m_robotContainer.climber.engageRachet();
+    m_robotContainer.climber.engageRatchet();
   }
 
   @Override

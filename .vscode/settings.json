@@ -18,16 +18,32 @@
     {
       "name": "WPIlibUnitTests",
       "workingDirectory": "${workspaceFolder}/build/jni/release",
-      "vmargs": [ "-Djava.library.path=${workspaceFolder}/build/jni/release" ],
+      "vmargs": ["-Djava.library.path=${workspaceFolder}/build/jni/release"],
       "env": {
-        "LD_LIBRARY_PATH": "${workspaceFolder}/build/jni/release" ,
+        "LD_LIBRARY_PATH": "${workspaceFolder}/build/jni/release",
         "DYLD_LIBRARY_PATH": "${workspaceFolder}/build/jni/release"
       }
-    },
+    }
   ],
   "java.test.defaultConfig": "WPIlibUnitTests",
   "cSpell.words": [
+    "bezier",
+    "botpose",
+    "Brushless",
+    "camerapose",
+    "deadband",
+    "DPAD",
+    "eventloop",
+    "Fiducials",
+    "getpipe",
     "Odometry",
-    "TRACKWIDTH"
+    "RIOFPGA",
+    "teleop",
+    "teleoperated",
+    "TRACKLENGTH",
+    "TRACKWIDTH",
+    "wpiblue",
+    "WPILOG",
+    "wpired"
   ]
 }

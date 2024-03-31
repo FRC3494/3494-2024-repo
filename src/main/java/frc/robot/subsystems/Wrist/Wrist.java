@@ -1,5 +1,7 @@
 package frc.robot.subsystems.Wrist;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
@@ -38,13 +40,14 @@ public class Wrist extends SubsystemBase {
         double kP = 0.04;
 
         if (targeting) {
-            double PIDpower = error * kP;
-            PIDpower = Math.min(0.2, PIDpower);
-            PIDpower = Math.max(PIDpower, -0.2);
+            double PIDPower = error * kP;
+            PIDPower = Math.min(0.2, PIDPower);
+            PIDPower = Math.max(PIDPower, -0.2);
 
-            // System.out.println(PIDpower);
-            wristMotor.set(PIDpower);
+            wristMotor.set(PIDPower);
         }
+
+        Logger.recordOutput("Wrist/Power", wristMotor.get());
     }
 
     public void setWristPower(double power) {
@@ -80,7 +83,5 @@ public class Wrist extends SubsystemBase {
 
     public double getAbsoluteTicks() {
         return wristMotor.getAlternateEncoder(8192).getPosition();
-        // return
-        // wristMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle).getPosition();
     }
 }

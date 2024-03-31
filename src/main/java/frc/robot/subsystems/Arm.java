@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Arm extends SubsystemBase {
-    CANSparkMax armMotor;
-    double manualPower = 0;
+    private CANSparkMax armMotor;
+    private double manualPower = 0;
     private double targetPosition;
 
     public Arm() {
@@ -45,6 +45,8 @@ public class Arm extends SubsystemBase {
             this.setBrakes(IdleMode.kBrake);
 
         Logger.recordOutput("Arm/TargetPosition", targetPosition);
+        Logger.recordOutput("Arm/RelativeTicks", getRelativeTicks());
+        Logger.recordOutput("Arm/AbsoluteTicks", getAbsoluteTicks());
     }
 
     public void setMotorPower(double power) {
@@ -63,7 +65,7 @@ public class Arm extends SubsystemBase {
     }
 
     public double getAbsoluteTicks() {
-        return armMotor.getAlternateEncoder(8192).getPosition();
+        return armMotor.getAlternateEncoder(frc.robot.Constants.Arm.alternateEncoderTickPerRev).getPosition();
         // return armMotor.getAbsoluteEncoder(Type.kDutyCycle).getPosition();
     }
 

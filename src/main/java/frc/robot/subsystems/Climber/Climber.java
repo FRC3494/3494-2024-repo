@@ -1,28 +1,29 @@
 package frc.robot.subsystems.Climber;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
+
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Elevator.ElevatorSensorState;
 
 public class Climber extends SubsystemBase {
-    public CANSparkMax mainMotor;
-    public RatchetServo rachetServo = new RatchetServo(Constants.Climber.pwmServoPort);
-    public double manualPower = 0;
-    public boolean rachetEngaged = false;
+    private CANSparkMax mainMotor;
+    private RatchetServo ratchetServo = new RatchetServo(Constants.Climber.pwmServoPort);
+    private double manualPower = 0;
+    private boolean ratchetEngaged = false;
 
     private DigitalInput bottomMagnetSensor;
 
     public Climber() {
-        System.out.println("rachet to 0");
-        rachetServo.set(0.0);
+        ratchetServo.set(0.0);
 
-        rachetEngaged = false;
+        ratchetEngaged = false;
         mainMotor = new CANSparkMax(Constants.Climber.mainMotor, MotorType.kBrushless);
 
         mainMotor.setIdleMode(IdleMode.kBrake);
@@ -32,15 +33,13 @@ public class Climber extends SubsystemBase {
         bottomMagnetSensor = new DigitalInput(Constants.Climber.bottomMagnetSensorDIO);
     }
 
-    public void engageRachet() {
-        System.out.println("rachet to 0.5");
-        rachetServo.set(0.5);
-        rachetEngaged = true;
+    public void engageRatchet() {
+        ratchetServo.set(0.5);
+        ratchetEngaged = true;
     }
 
-    public void disangageRachet() {
-        System.out.println("rachet to 0");
-        rachetServo.set(0.0);
+    public void disengageRatchet() {
+        ratchetServo.set(0.0);
 
         double currentPosition = mainMotor.getEncoder().getPosition();
         mainMotor.getPIDController().setReference(currentPosition - 2.0, CANSparkMax.ControlType.kPosition, 0);
@@ -57,6 +56,8 @@ public class Climber extends SubsystemBase {
         if (getClimberSensorState() == ElevatorSensorState.BOTTOM) {
             resetPosition(0);
         }
+
+        Logger.recordOutput("Climber/RatchetEngaged", ratchetEngaged);
     }
 
     public ElevatorSensorState getClimberSensorState() {

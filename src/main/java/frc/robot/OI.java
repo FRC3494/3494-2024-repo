@@ -164,11 +164,8 @@ public final class OI {
 
     public static double getElevatorPower() {
         double speed = rightButtonBoard.getRawAxis(0);
-        // System.out.println(speed);
+
         return speed * Constants.Wrist.manualPowerAdjust;
-        // TODO Auto-generated method stub
-        // return
-        // primaryController.getLeftTriggerAxis()-primaryController.getRightTriggerAxis();
     }
 
     public static double getArmPower() {
@@ -278,11 +275,11 @@ public final class OI {
         return eventLoop;
     }
 
-    public static BooleanEvent engageRachet() {
+    public static BooleanEvent engageRatchet() {
         return rightButtonBoard.button(5, eventLoop);
     }
 
-    public static BooleanEvent disengageRachet() {
+    public static BooleanEvent disengageRatchet() {
         return rightButtonBoard.button(6, eventLoop);
     }
 
