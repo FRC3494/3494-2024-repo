@@ -4,40 +4,10 @@
 
 package frc.robot;
 
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Wrist.Wrist;
-import frc.robot.commands.AutoIntakePower;
-import frc.robot.commands.AutoNoteConfirm;
-import frc.robot.commands.TeleopAinterupptor;
-import frc.robot.commands.TeleopArm;
-import frc.robot.commands.TeleopBackinterupptor;
-import frc.robot.commands.TeleopBumperinterupptor;
-import frc.robot.commands.TeleopClimber;
-import frc.robot.commands.TeleopDrive;
-import frc.robot.commands.TeleopDriveAutomated;
-import frc.robot.commands.TeleopElevator;
-import frc.robot.commands.TeleopIntake;
-import frc.robot.commands.TeleopStartinterupptor;
-import frc.robot.commands.TeleopWrist;
-import frc.robot.commands.TeleopYinterupptor;
-// import frc.robot.subsystems.Camera;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Intake;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.Pigeon;
-import frc.robot.subsystems.Climber.Climber;
-import frc.robot.subsystems.Elevator.Elevator;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.Delayed;
+
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -51,21 +21,35 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.AutoIntakePower;
+import frc.robot.commands.AutoNoteConfirm;
+import frc.robot.commands.TeleopAinterupptor;
+import frc.robot.commands.TeleopArm;
+import frc.robot.commands.TeleopBackinterupptor;
+import frc.robot.commands.TeleopBumperinterupptor;
+import frc.robot.commands.TeleopClimber;
 import frc.robot.commands.TeleopDrive;
-import frc.robot.subsystems.Camera;
+import frc.robot.commands.TeleopDriveAutomated;
+import frc.robot.commands.TeleopElevator;
+import frc.robot.commands.TeleopIntake;
+import frc.robot.commands.TeleopStartinterupptor;
+import frc.robot.commands.TeleopWrist;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pigeon;
+import frc.robot.subsystems.Climber.Climber;
 import frc.robot.subsystems.Elevator.Elevator;
+import frc.robot.subsystems.Wrist.Wrist;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -80,13 +64,11 @@ public class RobotContainer {
   public final Arm arm;
   public final Elevator elevator;
   public final Wrist wrist;
-  // public final Camera camera;
   public final Intake intake;
   private ShuffleboardTab fieldTab;
   private ShuffleboardTab subsystemTab;
   private Field2d robotPosition;
-  private final SendableChooser<Command> autoChooser;
-  // Replace with CommandPS4Controller or CommandJoystick if needed
+  private final LoggedDashboardChooser<Command> autoChooser;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -107,14 +89,19 @@ public class RobotContainer {
     arm.setDefaultCommand(new TeleopArm(arm));
     wrist.setDefaultCommand(new TeleopWrist(wrist));
     intake.setDefaultCommand(new TeleopIntake(intake));
+
     NamedCommands.registerCommand("SwerveZero",
         new TeleopDriveAutomated(drivetrain, 0, -0.3, 10.0));
+
     NamedCommands.registerCommand("Confirm Note",
         new AutoNoteConfirm(intake));
+
     NamedCommands.registerCommand("Move Wrist",
         new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.trapWrist, 0)));
+
     NamedCommands.registerCommand("Print Command",
         new PrintCommand("AUTO HAS TRIGGERED A PRINT COMAND WOOOOOOOOOOOOOOO"));
+
     NamedCommands.registerCommand("To Amp Pos",
         Commands.sequence(
             new InstantCommand(() -> intake.inIntake = false),
@@ -124,6 +111,7 @@ public class RobotContainer {
             new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.ampElevator, 0)),
             new WaitCommand(0.75),
             new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.ampArm, 0))));
+
     NamedCommands.registerCommand("To Intake Pos", Commands.sequence(
         new InstantCommand(() -> intake.inIntake = true),
         new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.safeWrist, 0)),
@@ -132,6 +120,7 @@ public class RobotContainer {
         new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.pickupElevator, 0)),
         new WaitCommand(0.75),
         new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.pickupWrist, 0))));
+
     NamedCommands.registerCommand("Delayed Intake Pos", Commands.sequence(
         new WaitCommand(1),
         new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.safeWrist, 0)),
@@ -141,20 +130,20 @@ public class RobotContainer {
         new WaitCommand(0.75),
         new InstantCommand(() -> intake.inIntake = true),
         new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.pickupWrist, 0))));
+
     NamedCommands.registerCommand("Intake", new AutoIntakePower(intake, 1));
+
     NamedCommands.registerCommand("Delayed Intake",
         Commands.sequence(new WaitCommand(1), new AutoIntakePower(intake, 1)));
-    NamedCommands.registerCommand("Stop Intake", new AutoIntakePower(intake, 0));
-    // Configure the trigger bindings
 
-    autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
+    NamedCommands.registerCommand("Stop Intake", new AutoIntakePower(intake, 0));
+
+    // Configure the trigger bindings
+    autoChooser = new LoggedDashboardChooser<>("Auto Routine", AutoBuilder.buildAutoChooser());
 
     initShuffleboardObjects();
   }
 
-  // public void periodic() {
-  // eventLoop.poll();
-  // }
   public void initShuffleboardObjects() {
     fieldTab = Shuffleboard.getTab("Field");
     subsystemTab = Shuffleboard.getTab("Subsystems");
@@ -424,7 +413,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
+    return autoChooser.get();
   }
-
 }

@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import java.util.ArrayList;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
@@ -17,7 +19,7 @@ public class Intake extends SubsystemBase {
     CANSparkMax intakeMotor;
     double manualPower = 0;
     ColorSensorV3 leftIntakeColorSensor;
-    ArrayList currents = new ArrayList<>();
+    ArrayList<Double> currents = new ArrayList<Double>();
 
     boolean hadNote = false;
     boolean hasNoteNow = false;
@@ -54,21 +56,16 @@ public class Intake extends SubsystemBase {
 
     public void setMotorPower(double power) {
         power = Math.max(Math.min(power, 1), -1);
-        // if (Math.abs(power) <= 0.1) {
-        // stopIntake = false;
-        // }
-        // if(stopIntake){
-        // intakeMotor.set(0);
-        // }
-        // else{
+
         manualPower = power;
         intakeMotor.set(manualPower);
-        // }
-
     }
 
     @Override
     public void periodic() {
+        Logger.recordOutput("Intake/Power", intakeMotor.get());
+        Logger.recordOutput("Intake/HasNote", hasNoteNow);
+
         hasNoteNow = (currentAverage(intakeMotor.getOutputCurrent()) > 12.5);// (distOnboard.getRange()<= 8.0 &&
                                                                              // distOnboard.getRange() != -1);
         if (hasNoteNow && !hadNote && inIntake) {
