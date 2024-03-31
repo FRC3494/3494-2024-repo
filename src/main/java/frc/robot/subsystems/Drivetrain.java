@@ -185,6 +185,7 @@ public class Drivetrain extends SubsystemBase {
 				m_poseEstimator.getEstimatedPosition().getX());
 
 		Logger.recordOutput("Drivetrain/EstimatedPose", cPose);
+		Logger.recordOutput("Drivetrain/States", getSwerveDriveStates().toArray(new SwerveModuleState[0]));
 	}
 
 	public double getNoteRotationPower() {

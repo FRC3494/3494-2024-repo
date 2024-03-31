@@ -19,23 +19,28 @@ public final class Mk4iSwerveModuleHelper {
         return new NeoDriveControllerFactoryBuilder()
                 .withVoltageCompensation(configuration.getNominalVoltage())
                 .withCurrentLimit(configuration.getDriveCurrentLimit())
-                //.withRampRate(0.25)
+                // .withRampRate(0.25)
                 .build();
     }
 
-    private static SteerControllerFactory<?, NeoSteerConfiguration<SparkMAXEncoderAbsoluteConfiguration>> getNeoSteerFactory(Mk4ModuleConfiguration configuration) {
+    private static SteerControllerFactory<?, NeoSteerConfiguration<SparkMAXEncoderAbsoluteConfiguration>> getNeoSteerFactory(
+            Mk4ModuleConfiguration configuration) {
         return new NeoSteerControllerFactoryBuilder()
                 .withVoltageCompensation(configuration.getNominalVoltage())
                 .withPidConstants(1.0, 0.0, 0.1)
                 .withCurrentLimit(configuration.getSteerCurrentLimit())
-                .build((CANSparkMax parentMotorController) -> new SparkMAXEncoderFactoryBuilder().build(parentMotorController));
+                .build((CANSparkMax parentMotorController) -> new SparkMAXEncoderFactoryBuilder()
+                        .build(parentMotorController));
     }
-    private static SteerControllerFactory<?, NeoSteerConfiguration<AnalogEncoderAbsoluteConfiguration>> getNeoAnalogSteerFactory(Mk4ModuleConfiguration configuration) {
+
+    private static SteerControllerFactory<?, NeoSteerConfiguration<AnalogEncoderAbsoluteConfiguration>> getNeoAnalogSteerFactory(
+            Mk4ModuleConfiguration configuration) {
         return new NeoSteerControllerFactoryBuilder()
                 .withVoltageCompensation(configuration.getNominalVoltage())
                 .withPidConstants(1.0, 0.0, 0.1)
                 .withCurrentLimit(configuration.getSteerCurrentLimit())
-                .build((CANSparkMax parentMotorController) -> new AnalogEncoderFactoryBuilder().build(parentMotorController));
+                .build((CANSparkMax parentMotorController) -> new AnalogEncoderFactoryBuilder()
+                        .build(parentMotorController));
     }
 
     /**
@@ -56,20 +61,19 @@ public final class Mk4iSwerveModuleHelper {
             GearRatio gearRatio,
             int driveMotorPort,
             int steerMotorPort,
-            int steerEncoderPort
-    ) {
+            int steerEncoderPort) {
         return new SwerveModuleFactory<>(
                 gearRatio.getConfiguration(),
                 getNeoDriveFactory(configuration),
-                getNeoSteerFactory(configuration)
-        ).create(
-                container,
-                driveMotorPort,
-                new NeoSteerConfiguration<>(
-                        steerMotorPort,
-                        new SparkMAXEncoderAbsoluteConfiguration(steerEncoderPort, gearRatio.getConfiguration().isSteerEncoderInverted())
-                )
-        );
+                getNeoSteerFactory(configuration)).create(
+                        container,
+                        driveMotorPort,
+                        new NeoSteerConfiguration<>(
+                                steerMotorPort,
+                                new SparkMAXEncoderAbsoluteConfiguration(
+                                        steerEncoderPort,
+                                        gearRatio.getConfiguration()
+                                                .isSteerEncoderInverted())));
     }
 
     /**
@@ -91,20 +95,19 @@ public final class Mk4iSwerveModuleHelper {
             int driveMotorPort,
             int steerMotorPort,
             int steerEncoderPort,
-            double offset
-    ) {
+            double offset) {
         return new SwerveModuleFactory<>(
                 gearRatio.getConfiguration(),
                 getNeoDriveFactory(configuration),
-                getNeoAnalogSteerFactory(configuration)
-        ).create(
-                container,
-                driveMotorPort,
-                new NeoSteerConfiguration<>(
-                        steerMotorPort,
-                        new AnalogEncoderAbsoluteConfiguration(steerEncoderPort, gearRatio.getConfiguration().isSteerEncoderInverted(), offset)
-                )
-        );
+                getNeoAnalogSteerFactory(configuration)).create(
+                        container,
+                        driveMotorPort,
+                        new NeoSteerConfiguration<>(
+                                steerMotorPort,
+                                new AnalogEncoderAbsoluteConfiguration(steerEncoderPort,
+                                        gearRatio.getConfiguration()
+                                                .isSteerEncoderInverted(),
+                                        offset)));
     }
 
     /**
@@ -123,9 +126,9 @@ public final class Mk4iSwerveModuleHelper {
             GearRatio gearRatio,
             int driveMotorPort,
             int steerMotorPort,
-            int steerEncoderPort
-    ) {
-        return createNeo(container, new Mk4ModuleConfiguration(), gearRatio, driveMotorPort, steerMotorPort, steerEncoderPort);
+            int steerEncoderPort) {
+        return createNeo(container, new Mk4ModuleConfiguration(), gearRatio, driveMotorPort, steerMotorPort,
+                steerEncoderPort);
     }
 
     /**
@@ -145,9 +148,9 @@ public final class Mk4iSwerveModuleHelper {
             int driveMotorPort,
             int steerMotorPort,
             int steerEncoderPort,
-            double offset
-    ) {
-        return createAnalogNeo(container, new Mk4ModuleConfiguration(), gearRatio, driveMotorPort, steerMotorPort, steerEncoderPort, offset);
+            double offset) {
+        return createAnalogNeo(container, new Mk4ModuleConfiguration(), gearRatio, driveMotorPort,
+                steerMotorPort, steerEncoderPort, offset);
     }
 
     /**
@@ -165,19 +168,18 @@ public final class Mk4iSwerveModuleHelper {
             GearRatio gearRatio,
             int driveMotorPort,
             int steerMotorPort,
-            int steerEncoderPort
-    ) {
+            int steerEncoderPort) {
         return new SwerveModuleFactory<>(
                 gearRatio.getConfiguration(),
                 getNeoDriveFactory(configuration),
-                getNeoSteerFactory(configuration)
-        ).create(
-                driveMotorPort,
-                new NeoSteerConfiguration<>(
-                        steerMotorPort,
-                        new SparkMAXEncoderAbsoluteConfiguration(steerEncoderPort, gearRatio.getConfiguration().isSteerEncoderInverted())
-                )
-        );
+                getNeoSteerFactory(configuration)).create(
+                        driveMotorPort,
+                        new NeoSteerConfiguration<>(
+                                steerMotorPort,
+                                new SparkMAXEncoderAbsoluteConfiguration(
+                                        steerEncoderPort,
+                                        gearRatio.getConfiguration()
+                                                .isSteerEncoderInverted())));
     }
 
     /**
@@ -196,19 +198,18 @@ public final class Mk4iSwerveModuleHelper {
             int driveMotorPort,
             int steerMotorPort,
             int steerEncoderPort,
-            double offset
-    ) {
+            double offset) {
         return new SwerveModuleFactory<>(
                 gearRatio.getConfiguration(),
                 getNeoDriveFactory(configuration),
-                getNeoAnalogSteerFactory(configuration)
-        ).create(
-                driveMotorPort,
-                new NeoSteerConfiguration<>(
-                        steerMotorPort,
-                        new AnalogEncoderAbsoluteConfiguration(steerEncoderPort, gearRatio.getConfiguration().isSteerEncoderInverted(), offset)
-                )
-        );
+                getNeoAnalogSteerFactory(configuration)).create(
+                        driveMotorPort,
+                        new NeoSteerConfiguration<>(
+                                steerMotorPort,
+                                new AnalogEncoderAbsoluteConfiguration(steerEncoderPort,
+                                        gearRatio.getConfiguration()
+                                                .isSteerEncoderInverted(),
+                                        offset)));
     }
 
     /**
@@ -224,9 +225,9 @@ public final class Mk4iSwerveModuleHelper {
             GearRatio gearRatio,
             int driveMotorPort,
             int steerMotorPort,
-            int steerEncoderPort
-    ) {
-        return createNeo(new Mk4ModuleConfiguration(), gearRatio, driveMotorPort, steerMotorPort, steerEncoderPort);
+            int steerEncoderPort) {
+        return createNeo(new Mk4ModuleConfiguration(), gearRatio, driveMotorPort, steerMotorPort,
+                steerEncoderPort);
     }
 
     /**
@@ -243,9 +244,9 @@ public final class Mk4iSwerveModuleHelper {
             int driveMotorPort,
             int steerMotorPort,
             int steerEncoderPort,
-            double offset
-    ) {
-        return createAnalogNeo(new Mk4ModuleConfiguration(), gearRatio, driveMotorPort, steerMotorPort, steerEncoderPort, offset);
+            double offset) {
+        return createAnalogNeo(new Mk4ModuleConfiguration(), gearRatio, driveMotorPort, steerMotorPort,
+                steerEncoderPort, offset);
     }
 
     public enum GearRatio {

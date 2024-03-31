@@ -2,14 +2,13 @@ package com.swervedrivespecialties.swervelib;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 
 public class SwerveModuleFactory<DriveConfiguration, SteerConfiguration> {
   private final ModuleConfiguration moduleConfiguration;
-  private final DriveControllerFactory<?, DriveConfiguration>
-      driveControllerFactory;
-  private final SteerControllerFactory<?, SteerConfiguration>
-      steerControllerFactory;
+  private final DriveControllerFactory<?, DriveConfiguration> driveControllerFactory;
+  private final SteerControllerFactory<?, SteerConfiguration> steerControllerFactory;
 
   public SwerveModuleFactory(
       ModuleConfiguration moduleConfiguration,
@@ -21,18 +20,16 @@ public class SwerveModuleFactory<DriveConfiguration, SteerConfiguration> {
   }
 
   public SwerveModule create(DriveConfiguration driveConfiguration,
-                             SteerConfiguration steerConfiguration) {
-    DriveController driveController =
-        driveControllerFactory.create(driveConfiguration, moduleConfiguration);
-    SteerController steerController =
-        steerControllerFactory.create(steerConfiguration, moduleConfiguration);
+      SteerConfiguration steerConfiguration) {
+    DriveController driveController = driveControllerFactory.create(driveConfiguration, moduleConfiguration);
+    SteerController steerController = steerControllerFactory.create(steerConfiguration, moduleConfiguration);
 
     return new ModuleImplementation(driveController, steerController);
   }
 
   public SwerveModule create(ShuffleboardLayout container,
-                             DriveConfiguration driveConfiguration,
-                             SteerConfiguration steerConfiguration) {
+      DriveConfiguration driveConfiguration,
+      SteerConfiguration steerConfiguration) {
     var driveController = driveControllerFactory.create(
         container, driveConfiguration, moduleConfiguration);
     var steerContainer = steerControllerFactory.create(
@@ -41,12 +38,13 @@ public class SwerveModuleFactory<DriveConfiguration, SteerConfiguration> {
     return new ModuleImplementation(driveController, steerContainer);
   }
 
+  // ! Kennan: Actual module implementation
   private static class ModuleImplementation implements SwerveModule {
     private final DriveController driveController;
     private final SteerController steerController;
 
     private ModuleImplementation(DriveController driveController,
-                                 SteerController steerController) {
+        SteerController steerController) {
       this.driveController = driveController;
       this.steerController = steerController;
     }
@@ -103,6 +101,7 @@ public class SwerveModuleFactory<DriveConfiguration, SteerConfiguration> {
           driveController.getDistanceTravelled(),
           new Rotation2d(steerController.getStateAngle()));
     }
+
     @Override
     public double getVelocity() {
       return driveController.getVelocity();
