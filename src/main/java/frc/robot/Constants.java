@@ -42,49 +42,39 @@ public final class Constants {
     public static final int PigeonID = 52;// FIX ME: id is wrong
 
     public static final class FrontLeftModule {
-      public static int DRIVE_MOTOR_PORT = 18;// 19;
-      public static int STEER_MOTOR_PORT = 16;// 17;
+      public static int DRIVE_MOTOR_PORT = 18;
+      public static int STEER_MOTOR_PORT = 16;
 
       public static int ENCODER_MOTOR_PORT = 3;
 
-      // ON ARRIVAL OFFSET: 266.00
-      // on arivla 1st fix: 266.00+2-1.2-3.0
-      // New Module OFFSET:
-      public static double STEER_OFFSET = Math.toRadians(180.0 - 30.8 + 2.401 - 1.2);
+      public static double STEER_OFFSET = Math.toRadians(150.4);
     }
 
     public static final class FrontRightModule {
-      public static int DRIVE_MOTOR_PORT = 19;// 16;
-      public static int STEER_MOTOR_PORT = 17;// 18;
+      public static int DRIVE_MOTOR_PORT = 19;
+      public static int STEER_MOTOR_PORT = 17;
 
       public static int ENCODER_MOTOR_PORT = 2;
 
-      // ON ARRIVAL OFFSET: 55.501
-      // Onarrival module tweak (3/29/24): 5.2-4.809
-      // THE REPLACEMENT: -297.887-23.204
-      public static double STEER_OFFSET = Math.toRadians(-55.501 + 3.2 + 90.0 + 4.0);
+      public static double STEER_OFFSET = Math.toRadians(41);
     }
 
     public static final class BackLeftModule {
-      public static int DRIVE_MOTOR_PORT = 30;// 14;
-      public static int STEER_MOTOR_PORT = 2;// 15;
+      public static int DRIVE_MOTOR_PORT = 30;
+      public static int STEER_MOTOR_PORT = 2;
 
       public static int ENCODER_MOTOR_PORT = 1;
 
-      // ON ARRIVAL OFFSET: 16.809 //+0.3998-1.2
-      public static double STEER_OFFSET = Math.toRadians(16.809 - 194.003 + 180 + 0.8);
+      public static double STEER_OFFSET = Math.toRadians(3.606);
     }
 
     public static final class BackRightModule {
-      public static int DRIVE_MOTOR_PORT = 1;// 5;
-      public static int STEER_MOTOR_PORT = 3;// 4;
+      public static int DRIVE_MOTOR_PORT = 1;
+      public static int STEER_MOTOR_PORT = 3;
 
       public static int ENCODER_MOTOR_PORT = 0;
 
-      // ON ARRIVAL OFFSET: -65.203+180.0
-      // ON Arrvial module Tweak (3/29/24):-65.203+180.0-1.2-2
-      // THE REPLACEMENT: 180.0-4.8
-      public static double STEER_OFFSET = Math.toRadians(180.0 - 4.8 - 1.19999);
+      public static double STEER_OFFSET = Math.toRadians(174);
     }
 
     public static final double TRACKWIDTH_METERS = 0.5222;

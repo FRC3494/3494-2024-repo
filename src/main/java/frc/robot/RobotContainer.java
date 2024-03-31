@@ -148,7 +148,7 @@ public class RobotContainer {
     fieldTab = Shuffleboard.getTab("Field");
     subsystemTab = Shuffleboard.getTab("Subsystems");
 
-    subsystemTab.add("Auto Mode", autoChooser);
+    subsystemTab.add("Auto Mode", autoChooser.getSendableChooser());
 
     robotPosition = new Field2d();
     robotPosition.setRobotPose(new Pose2d());

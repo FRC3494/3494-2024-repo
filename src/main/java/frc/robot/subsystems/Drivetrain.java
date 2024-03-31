@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -19,7 +18,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-//import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -78,9 +76,9 @@ public class Drivetrain extends SubsystemBase {
 			Constants.Drivetrain.BackRightModule.STEER_MOTOR_PORT,
 			Constants.Drivetrain.BackRightModule.ENCODER_MOTOR_PORT,
 			Constants.Drivetrain.BackRightModule.STEER_OFFSET);
-	private SwerveModule[] m_modules = new SwerveModule[] { frontRight, frontLeft, backLeft, backRight };
 
-	Pigeon navX;
+	private SwerveModule[] m_modules = new SwerveModule[] { frontLeft, frontRight, backLeft, backRight };
+	private boolean isLocked = false;
 
 	// Odometry class for tracking robot pose
 	private final SwerveDrivePoseEstimator m_poseEstimator;
@@ -184,8 +182,10 @@ public class Drivetrain extends SubsystemBase {
 		SmartDashboard.putNumber("True Odo",
 				m_poseEstimator.getEstimatedPosition().getX());
 
-		Logger.recordOutput("Drivetrain/EstimatedPose", cPose);
-		Logger.recordOutput("Drivetrain/States", getSwerveDriveStates().toArray(new SwerveModuleState[0]));
+		Logger.recordOutput("Drivetrain/IsLocked", isLocked);
+		Logger.recordOutput("Drivetrain/EstimatedPose", getPose());
+		Logger.recordOutput("Drivetrain/RobotRotation", getPose().getRotation().getRadians());
+		Logger.recordOutput("Drivetrain/States", getSwerveDriveStates().toArray(SwerveModuleState[]::new));
 	}
 
 	public double getNoteRotationPower() {
@@ -209,7 +209,6 @@ public class Drivetrain extends SubsystemBase {
 	 */
 	public Pose2d getPose() {
 		return IVEHADENOUGH.getEstimatedPosition();
-		// return m_poseEstimator.getEstimatedPosition();
 	}
 
 	public Pose2d getPoseCorrected() {
@@ -230,13 +229,13 @@ public class Drivetrain extends SubsystemBase {
 	 * 
 	 * @return Relative speeds of the robot as a chassis speed
 	 */
-	public List<SwerveModuleState> getSwerveDriveStates() {
+	public Stream<SwerveModuleState> getSwerveDriveStates() {
 		Stream<SwerveModuleState> swerveDriveWheelStates = Stream.of(m_modules).map(
 				(module) -> new SwerveModuleState(
 						module.getVelocity(),
 						Rotation2d.fromRadians(module.getSteerAngle())));
 
-		return swerveDriveWheelStates.toList();
+		return swerveDriveWheelStates;
 	}
 
 	/**
@@ -260,7 +259,7 @@ public class Drivetrain extends SubsystemBase {
 	 */
 	@SuppressWarnings("ParameterName")
 	public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-		if (locked)
+		if (isLocked)
 			return;
 
 		var swerveModuleStates = Constants.Drivetrain.SWERVE_KINEMATICS.toSwerveModuleStates(
@@ -272,11 +271,11 @@ public class Drivetrain extends SubsystemBase {
 				Constants.Drivetrain.MAX_VELOCITY_METERS_PER_SECOND);
 
 		if (Math.abs(xSpeed) < .001 && Math.abs(ySpeed) < .001 && Math.abs(rot) < .001) {
-			frontLeft.set(0, frontLeft.getState().angle.getRadians());
-			frontRight.set(0, frontRight.getState().angle.getRadians());
-			backLeft.set(0, backLeft.getState().angle.getRadians());
-			backRight.set(0, backRight.getState().angle.getRadians());
-			return;
+			swerveModuleStates = getSwerveDriveStates()
+					.map(moduleState -> new SwerveModuleState(
+							0,
+							moduleState.angle))
+					.toArray(size -> new SwerveModuleState[size]);
 		}
 
 		setModuleStates(swerveModuleStates);
@@ -293,19 +292,25 @@ public class Drivetrain extends SubsystemBase {
 		setModuleStates(swerveModuleStates);
 	}
 
-	boolean locked = false;
-
+	/**
+	 * Lock Swerve module in a "X" shape, making pushing us as hard as possible
+	 */
 	public void lock() {
-		frontLeft.set(0, Math.toRadians(45));
-		frontRight.set(0, -Math.toRadians(45));
-		backLeft.set(0, -Math.toRadians(45));
-		backRight.set(0, Math.toRadians(45));
+		setModuleStates(new SwerveModuleState[] {
+				new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
+				new SwerveModuleState(0, Rotation2d.fromDegrees(-45)),
+				new SwerveModuleState(0, Rotation2d.fromDegrees(-45)),
+				new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
+		});
 
-		locked = true;
+		isLocked = true;
 	}
 
+	/**
+	 * @see lock
+	 */
 	public void unlock() {
-		locked = false;
+		isLocked = false;
 	}
 
 	/**
@@ -316,6 +321,8 @@ public class Drivetrain extends SubsystemBase {
 	public void setModuleStates(SwerveModuleState[] desiredStates) {
 		SwerveDriveKinematics.desaturateWheelSpeeds(
 				desiredStates, Constants.Drivetrain.MAX_VELOCITY_METERS_PER_SECOND);
+
+		Logger.recordOutput("Drivetrain/TargetStates", desiredStates);
 
 		frontLeft.set(
 				desiredStates[0].speedMetersPerSecond / Constants.Drivetrain.MAX_VELOCITY_METERS_PER_SECOND
@@ -337,7 +344,6 @@ public class Drivetrain extends SubsystemBase {
 
 	public SwerveModulePosition[] getSwerveModulePositions() {
 		return new SwerveModulePosition[] {
-
 				frontLeft.getState(),
 				frontRight.getState(),
 				backLeft.getState(),
@@ -356,6 +362,9 @@ public class Drivetrain extends SubsystemBase {
 
 	private ChassisSpeeds getRobotRelativeSpeeds() {
 		var states = getSwerveDriveStates().iterator();
+
+		if (getSwerveDriveStates().count() != 4)
+			return new ChassisSpeeds();
 
 		return Constants.Drivetrain.SWERVE_KINEMATICS.toChassisSpeeds(
 				states.next(),
