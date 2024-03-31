@@ -19,6 +19,7 @@ public class Climber extends SubsystemBase {
     private DigitalInput bottomMagnetSensor;
 
     public Climber() {
+        System.out.println("rachet to 0");
         rachetServo.set(0.0);
 
         rachetEngaged = false;
@@ -32,11 +33,13 @@ public class Climber extends SubsystemBase {
     }
 
     public void engageRachet() {
+        System.out.println("rachet to 0.5");
         rachetServo.set(0.5);
         rachetEngaged = true;
     }
 
     public void disangageRachet() {
+        System.out.println("rachet to 0");
         rachetServo.set(0.0);
 
         double currentPosition = mainMotor.getEncoder().getPosition();
