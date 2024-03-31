@@ -45,6 +45,7 @@ public class Drivetrain extends SubsystemBase {
 			Constants.Drivetrain.FrontLeftModule.STEER_MOTOR_PORT,
 			Constants.Drivetrain.FrontLeftModule.ENCODER_MOTOR_PORT,
 			Constants.Drivetrain.FrontLeftModule.STEER_OFFSET);
+
 	SwerveModule frontRight = Mk4iSwerveModuleHelper.createAnalogNeo(
 			Shuffleboard.getTab("Drivetrain").getLayout("Front Right Module", BuiltInLayouts.kList)
 					.withSize(2, 4)
@@ -74,6 +75,7 @@ public class Drivetrain extends SubsystemBase {
 			Constants.Drivetrain.BackRightModule.STEER_MOTOR_PORT,
 			Constants.Drivetrain.BackRightModule.ENCODER_MOTOR_PORT,
 			Constants.Drivetrain.BackRightModule.STEER_OFFSET);
+
 	private SwerveModule[] m_modules = new SwerveModule[] { frontRight, frontLeft, backLeft, backRight };
 
 	Pigeon navX;
@@ -121,6 +123,7 @@ public class Drivetrain extends SubsystemBase {
 
 		Pose2d cPose = new Pose2d(-m_poseEstimator.getEstimatedPosition().getY(),
 				m_poseEstimator.getEstimatedPosition().getX(), m_poseEstimator.getEstimatedPosition().getRotation());
+
 		IVEHADENOUGH.resetPosition(getGyroscopeRotation(), getSwerveModulePositions(), cPose);
 		// update limelight position here
 
