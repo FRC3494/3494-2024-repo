@@ -46,15 +46,28 @@ public class Robot extends LoggedRobot {
     // Instantiate our RobotContainer. This will perform all our button bindings,
     // and put our autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    // m_robotContainer.intake.distOnboard.setAutomaticMode(true);
   }
 
   /**
    * Initializes AdvantageKit logging
    */
-  @SuppressWarnings({ "resource" })
+  // We need to suppress all warnings because this shitty fucking
+  // language doesn't support suppressing identical comparison warnings
+  // which arise because the compiler doesn't understand that BuildConstants
+  // varies between builds
+  @SuppressWarnings({ "all", "resource" })
   public void loggingInit() {
-    Logger.recordMetadata("ProjectName", "3494-2024"); // Set a metadata value
+    Logger.recordMetadata("Project Name", "3494-2024"); // Set a metadata value
+
+    Logger.recordMetadata("Build Time", BuildConstants.BUILD_DATE);
+    Logger.recordMetadata("Build Timestamp", Long.toString(BuildConstants.BUILD_UNIX_TIME));
+
+    Logger.recordMetadata("Git SHA", BuildConstants.GIT_SHA);
+    Logger.recordMetadata("Git Commit Time", BuildConstants.GIT_DATE);
+    Logger.recordMetadata("Git Branch", BuildConstants.GIT_BRANCH);
+    Logger.recordMetadata("Git Status", BuildConstants.DIRTY == 1 ? "Dirty" : "Clean");
+
+    Logger.recordMetadata("Event Name", DriverStation.getEventName());
 
     if (isReal()) {
       Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
@@ -99,7 +112,6 @@ public class Robot extends LoggedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    // m_robotContainer.intake.distOnboard.setAutomaticMode(false);
     m_robotContainer.climber.engageRatchet();
   }
 
