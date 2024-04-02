@@ -27,5 +27,7 @@ public class TeleopClimber extends Command {
         if (climberPower != 0 || (climber.getManualMotorPower() != 0 && climberPower == 0)) {
             climber.setElevatorPower(climberPower);
         }
+
     }
+
 }

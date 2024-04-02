@@ -24,5 +24,7 @@ public class TeleopElevator extends Command {
         if (elevatorPower != 0 || (elevator.getManualMotorPower() != 0 && elevatorPower == 0)) {
             elevator.setElevatorPower(elevatorPower);
         }
+
     }
+
 }

@@ -6,9 +6,9 @@ import frc.robot.OI;
 public class TeleopStartinterupptor extends Command {
 	@Override
 	public boolean isFinished() {
-		if (OI.isStartHeld()) {
+		if (OI.isStartHeld()){
 			return false;
-		}
+        }
 
 		return true;
 	}
