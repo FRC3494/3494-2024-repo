@@ -70,12 +70,15 @@ public final class NeoDriveControllerFactoryBuilder {
             checkNeoError(motor.setPeriodicFramePeriod(CANSparkMaxLowLevel.PeriodicFrame.kStatus2, 20), "Failed to set periodic status frame 2 rate");
             // Set neutral mode to brake
             motor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-
+            System.out.println("WHEEEL DIATERE------------------------------------------:"+moduleConfiguration.getWheelDiameter());
             // Setup encoder
             RelativeEncoder encoder = motor.getEncoder();
             double positionConversionFactor = Math.PI * moduleConfiguration.getWheelDiameter() * moduleConfiguration.getDriveReduction();
             encoder.setPositionConversionFactor(positionConversionFactor);
             encoder.setVelocityConversionFactor(positionConversionFactor / 60.0);
+
+            // encoder.setAverageDepth(2);
+            // encoder.setMeasurementPeriod(16);
 
             return new ControllerImplementation(motor, encoder);
         }
@@ -98,6 +101,7 @@ public final class NeoDriveControllerFactoryBuilder {
         @Override
         public double getDistanceTravelled() {
             return encoder.getPosition();
+            
         }
         @Override
         public double getVelocity() {

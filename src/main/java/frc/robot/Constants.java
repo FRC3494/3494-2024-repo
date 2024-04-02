@@ -45,7 +45,7 @@ public final class Constants {
       //ON ARRIVAL OFFSET: 266.00
       //on arivla  1st fix: 266.00+2-1.2-3.0
       //New Module OFFSET:
-      public static double STEER_OFFSET = Math.toRadians(180.0-30.8);
+      public static double STEER_OFFSET = Math.toRadians(180.0-30.8+2.401-1.2);
     }
 
     public static final class FrontRightModule {
@@ -56,7 +56,7 @@ public final class Constants {
 
       //ON ARRIVAL OFFSET: 55.501
       //THE REPLACEMENT:  -297.887-23.204
-      public static double STEER_OFFSET = Math.toRadians(55.501+5.2-4.809);
+      public static double STEER_OFFSET = Math.toRadians(-55.501+3.2+90.0+4.0-3.199);
     }
 
     public static final class BackLeftModule {
@@ -66,7 +66,7 @@ public final class Constants {
       public static int ENCODER_MOTOR_PORT = 1;
 
       //ON ARRIVAL OFFSET: 16.809
-      public static double STEER_OFFSET = Math.toRadians(16.809+0.3998-1.2);
+      public static double STEER_OFFSET = Math.toRadians(16.809-194.003+180+0.8+1.2+2.4);
     }
 
     public static final class BackRightModule {
@@ -77,7 +77,7 @@ public final class Constants {
 
       //ON ARRIVAL OFFSET: -65.203+180.0
       //THE REPLACEMENT: 180.0-4.8
-      public static double STEER_OFFSET = Math.toRadians(-65.203+180.0-1.2-2);
+      public static double STEER_OFFSET = Math.toRadians(180.0-4.8-1.19999-0.4);
     }
 
     public static final double TRACKWIDTH_METERS = 0.5222;
@@ -92,7 +92,7 @@ public final class Constants {
         new Translation2d(TRACKLENGTH_METERS / 2.0, TRACKWIDTH_METERS / 2.0),
         // Back right
         new Translation2d(-TRACKLENGTH_METERS / 2.0, TRACKWIDTH_METERS / 2.0));
-    public static final double MAX_VELOCITY_METERS_PER_SECOND = 3.6576f;
+    public static final double MAX_VELOCITY_METERS_PER_SECOND = 5.36448;//3.6576f;
     public static final double MAX_VOLTAGE = 12.0;
     public static final double MAX_STANDARD_DEVIATION_LIMELIGHT = 0.01;
   }
@@ -102,8 +102,8 @@ public final class Constants {
     public static final int SECONDARY_LEFT_CONTROLLER_PORT = 1;
     public static final int SECONDARY_RIGHT_CONTROLLER_PORT = 2;
     public static final int DIANNA_RUMBLER_PORT = 3;
-    public static final double DRIVE_SPEED = 3.5; // m/s
-    public static final double TURN_SPEED = 4.0;//1st match was 3.0 // 5.5 rad/s
+    public static final double DRIVE_SPEED = 5.0; // m/s
+    public static final double TURN_SPEED = 5.5;//PLAINFIELD:4.0;//1st match was 3.0 // 5.5 rad/s
 
     public static final double SLOW_DRIVE_SPEED = 1.5; // m/s
     public static final double SLOW_TURN_SPEED = 1.925; // rad/s
