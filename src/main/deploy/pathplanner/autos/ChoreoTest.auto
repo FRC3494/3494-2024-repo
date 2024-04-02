@@ -1,0 +1,67 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.4585449695587158,
+      "y": 7.324100971221924
+    },
+    "rotation": 89.95437383553926
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "To Amp Pos"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "NewPath.1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "NewPath.2"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 5.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "NewPath.3"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "choreo",
+  "choreoAuto": true
+}
