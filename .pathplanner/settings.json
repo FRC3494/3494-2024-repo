@@ -9,8 +9,7 @@
     "SIDESTUFF"
   ],
   "autoFolders": [
-    "choreo",
-    "SIDESTUFF"
+    "choreo"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
