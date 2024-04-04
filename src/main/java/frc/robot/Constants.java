@@ -5,6 +5,12 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.I2C;
 
 public final class Constants {
+  /**
+   * Defines how many seconds until the estimated end of 
+   * match the final routine should run
+   */
+  public static double END_OF_MATCH_ROUTINE_STARTING_TIME = 1.5;
+
   public static final class Presets {
     public static double testArm = 0;
     public static double testElevator = 0;
