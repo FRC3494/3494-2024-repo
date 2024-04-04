@@ -192,7 +192,7 @@ public class Drivetrain extends SubsystemBase {
 		double tx = LimelightHelpers.getTX("limelight-bottom");
 		if (tx != 0){
 			double noteYaw = 11.0 + tx;//wass 16+
-			noteYaw /= 16.0;
+			noteYaw /= 14.0;//16 seems to little with intake down
 			return noteYaw;
 		}
 		return 0;

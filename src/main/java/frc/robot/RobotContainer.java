@@ -8,6 +8,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Wrist.Wrist;
 import frc.robot.commands.AutoIntakePower;
 import frc.robot.commands.AutoNoteConfirm;
+import frc.robot.commands.AutoPickupNote;
 import frc.robot.commands.TeleopAinterupptor;
 import frc.robot.commands.TeleopArm;
 import frc.robot.commands.TeleopBackinterupptor;
@@ -107,6 +108,16 @@ public class RobotContainer {
     arm.setDefaultCommand(new TeleopArm(arm));
     wrist.setDefaultCommand(new TeleopWrist(wrist));
     intake.setDefaultCommand(new TeleopIntake(intake));
+    NamedCommands.registerCommand("VisionNoteGrab", new AutoPickupNote(drivetrain, intake, 10));
+    NamedCommands.registerCommand("To Store Pos", 
+      Commands.sequence(
+          new InstantCommand(() -> intake.inIntake = false),
+          new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.safeArm, 0)),
+          new WaitCommand(0.4),
+          new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.storeWrist, 0)),
+          new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.storeElevator, 0)),
+          new WaitCommand(0.65),
+          new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.storeArm, 0))));
     NamedCommands.registerCommand("SwerveZero",
         new TeleopDriveAutomated(drivetrain, 0, -0.3, 10.0));
     NamedCommands.registerCommand("Confirm Note",
@@ -141,7 +152,16 @@ public class RobotContainer {
         new WaitCommand(0.75),
         new InstantCommand(() -> intake.inIntake = true),
         new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.pickupWrist, 0))));
+    NamedCommands.registerCommand("Intake Pos", Commands.sequence(
+        new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.safeWrist, 0)),
+        new WaitCommand(0.75),
+        new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.pickupArm, 0)),
+        new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.pickupElevator, 0)),
+        new WaitCommand(0.75),
+        new InstantCommand(() -> intake.inIntake = true),
+        new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.pickupWrist, 0))));
     NamedCommands.registerCommand("Intake", new AutoIntakePower(intake, 1));
+    NamedCommands.registerCommand("Outtake", new AutoIntakePower(intake, -1));
     NamedCommands.registerCommand("Delayed Intake",
         Commands.sequence(new WaitCommand(1), new AutoIntakePower(intake, 1)));
     NamedCommands.registerCommand("Stop Intake", new AutoIntakePower(intake, 0));
@@ -160,7 +180,6 @@ public class RobotContainer {
     subsystemTab = Shuffleboard.getTab("Subsystems");
 
     subsystemTab.add("Auto Mode", autoChooser);
-
     robotPosition = new Field2d();
     robotPosition.setRobotPose(new Pose2d());
 
@@ -377,6 +396,14 @@ public class RobotContainer {
 
 
       )).schedule();
+    });
+    OI.ratchetEvent().rising().ifHigh(()->{
+      if(climber.rachetEngaged==true){
+        climber.disangageRachet();
+      }
+      else{
+        climber.engageRachet();
+      }
     });
     OI.autoTrap().rising().ifHigh(() -> Commands.sequence(
       new InstantCommand(() -> intake.inIntake = false),

@@ -112,6 +112,7 @@ public final class Constants {
   }
 
   public static final class Climber {
+    public static final int pwmServoPort = 6;
     public static final int mainMotor = 15;// 15
     public static int bottomMagnetSensorDIO = 9;
   }

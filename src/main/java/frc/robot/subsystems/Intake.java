@@ -14,15 +14,15 @@ import frc.robot.commands.TeleopRumble;
 
 import java.util.ArrayList;
 
-import com.revrobotics.*;
-import com.revrobotics.Rev2mDistanceSensor.Port;
+// import com.revrobotics.*;
+// import com.revrobotics.Rev2mDistanceSensor.Port;
 
 
 public class Intake extends SubsystemBase {
     CANSparkMax intakeMotor;
     double manualPower = 0;
     ColorSensorV3 leftIntakeColorSensor;
-    public Rev2mDistanceSensor distOnboard;
+    // public Rev2mDistanceSensor distOnboard;
     ArrayList currents =  new ArrayList<>();
     
     boolean hadNote = false;
@@ -33,8 +33,8 @@ public class Intake extends SubsystemBase {
     public boolean inIntake = false;
      
     public Intake(EventLoop eventloop) {
-        distOnboard = new Rev2mDistanceSensor(Port.kOnboard);
-        distOnboard.setAutomaticMode(true);
+        // distOnboard = new Rev2mDistanceSensor(Port.kOnboard);
+        // distOnboard.setAutomaticMode(true);
         this.eventLoop = eventloop;
         intakeMotor = new CANSparkMax(Constants.Intake.mainMotor, MotorType.kBrushless);
         intakeMotor.setIdleMode(IdleMode.kBrake);

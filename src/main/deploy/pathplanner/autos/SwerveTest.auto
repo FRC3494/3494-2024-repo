@@ -14,13 +14,13 @@
         {
           "type": "named",
           "data": {
-            "name": "SwerveZero"
+            "name": "Intake Pos"
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 1.0
+            "name": "VisionNoteGrab"
           }
         }
       ]
