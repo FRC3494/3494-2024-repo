@@ -227,7 +227,9 @@ public final class OI {
     public static BooleanEvent pickupPreset() {
         return leftButtonBoard.button(2, eventLoop);
     }
-
+    public static BooleanEvent ratchetEvent(){
+        return rightButtonBoard.button(5, eventLoop);
+    }
     public static BooleanEvent ampPreset() {
         return leftButtonBoard.button(1, eventLoop);
     }

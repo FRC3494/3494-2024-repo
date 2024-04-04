@@ -18,6 +18,9 @@ public class Climber extends SubsystemBase {
     public CANSparkMax mainMotor;
     public double manualPower = 0 ;
 
+    public RatchetServo rachetServo = new RatchetServo(Constants.Climber.pwmServoPort);
+    public boolean rachetEngaged = false;
+
     private DigitalInput bottomMagnetSensor;
     public Climber(){
         mainMotor = new CANSparkMax(Constants.Climber.mainMotor, MotorType.kBrushless);
@@ -27,6 +30,20 @@ public class Climber extends SubsystemBase {
         mainMotor.getPIDController().setOutputRange(-1, 1);
         mainMotor.getPIDController().setP(0.1);
         bottomMagnetSensor = new DigitalInput(Constants.Climber.bottomMagnetSensorDIO);
+    }
+    public void engageRachet() {
+        System.out.println("rachet to 0.5");
+        rachetServo.set(1.0);
+        rachetEngaged = true;
+    }
+
+    public void disangageRachet() {
+        System.out.println("rachet to 0");
+        rachetServo.set(0.0);
+        rachetEngaged = false;
+
+        double currentPosition = mainMotor.getEncoder().getPosition();
+        mainMotor.getPIDController().setReference(currentPosition - 2.0, CANSparkMax.ControlType.kPosition, 0);
     }
     public void setElevatorPower(double power){
         power = Math.max(Math.min(power, 1), -1);

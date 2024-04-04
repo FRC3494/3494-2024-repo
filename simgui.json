@@ -1,0 +1,47 @@
+{
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Field/Field": "Field2d",
+      "/Shuffleboard/Subsystems/Auto Mode": "String Chooser",
+      "/SmartDashboard/On-the-fly path": "Command"
+    },
+    "windows": {
+      "/Shuffleboard/Field/Field": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/Shuffleboard/Subsystems/Auto Mode": {
+        "window": {
+          "visible": true
+        }
+      }
+    }
+  },
+  "NetworkTables": {
+    "transitory": {
+      "Shuffleboard": {
+        "Field": {
+          "open": true
+        },
+        "Subsystems": {
+          "Auto Mode": {
+            "open": true,
+            "string[]##v_/Shuffleboard/Subsystems/Auto Mode/options": {
+              "open": true
+            }
+          },
+          "open": true
+        },
+        "open": true
+      }
+    }
+  },
+  "NetworkTables Info": {
+    "visible": true
+  },
+  "NetworkTables View": {
+    "visible": false
+  }
+}
