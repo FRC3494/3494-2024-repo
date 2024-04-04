@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.459,
-      "y": 7.324
+      "x": 1.4585449695587158,
+      "y": 7.324100971221924
     },
     "rotation": 89.95437383553926
   },
@@ -24,7 +24,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "234Preload.1"
+                  "pathName": "MIDGRAB.1"
                 }
               }
             ]
@@ -61,7 +61,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "234Preload.2"
+                  "pathName": "MIDGRAB.2"
                 }
               },
               {
@@ -71,19 +71,19 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 1.0
+                        "waitTime": 0.75
                       }
                     },
                     {
                       "type": "named",
                       "data": {
-                        "name": "Delayed Intake Pos"
+                        "name": "Intake Pos"
                       }
                     },
                     {
                       "type": "named",
                       "data": {
-                        "name": "Delayed Intake"
+                        "name": "Intake"
                       }
                     }
                   ]
@@ -105,28 +105,35 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 4.0
+                  "waitTime": 2.0
                 }
               }
             ]
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Stop Intake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "To Store Pos"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "234Preload.3"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stop Intake"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "To Store Pos"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "MIDGRAB.3"
+                }
+              }
+            ]
           }
         },
         {
@@ -146,7 +153,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 0.5
+                        "waitTime": 0.25
                       }
                     },
                     {
@@ -158,13 +165,13 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Delayed Intake Pos"
+                        "name": "Intake Pos"
                       }
                     },
                     {
                       "type": "named",
                       "data": {
-                        "name": "Delayed Intake"
+                        "name": "Intake"
                       }
                     }
                   ]
@@ -173,7 +180,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "234Preload.4"
+                  "pathName": "MIDGRAB.4"
                 }
               }
             ]
@@ -192,34 +199,47 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 4.0
+                  "waitTime": 2.0
                 }
               }
             ]
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Stop Intake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "To Store Pos"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "234Preload.5"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stop Intake"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "To Store Pos"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "MIDGRAB.5"
+                }
+              }
+            ]
           }
         },
         {
           "type": "parallel",
           "data": {
             "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "MIDGRAB.6"
+                }
+              },
               {
                 "type": "sequential",
                 "data": {
@@ -233,7 +253,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 0.5
+                        "waitTime": 0.25
                       }
                     },
                     {
@@ -245,22 +265,16 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "Delayed Intake Pos"
+                        "name": "Intake Pos"
                       }
                     },
                     {
                       "type": "named",
                       "data": {
-                        "name": "Delayed Intake"
+                        "name": "Intake"
                       }
                     }
                   ]
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "234Preload.6"
                 }
               }
             ]
@@ -279,22 +293,10 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 4.0
+                  "waitTime": 2.0
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Stop Intake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "To Store Pos"
           }
         }
       ]
