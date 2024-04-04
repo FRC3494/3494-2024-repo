@@ -4,15 +4,13 @@
 
 package frc.robot;
 
-import java.sql.Driver;
 import java.util.Optional;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.AutoPickupNote;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -24,6 +22,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  private boolean endOfMatchTriggered = false; 
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -47,12 +46,33 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     OI.update();
+
+    // Run the end of match subroutine
+    double timeTillEndOfMatch = Timer.getMatchTime();
+    boolean withinEndOfMatch =  timeTillEndOfMatch < Constants.END_OF_MATCH_ROUTINE_STARTING_TIME;
+
+    if (isTeleop() && withinEndOfMatch && !endOfMatchTriggered) {
+      endOfMatch();
+      endOfMatchTriggered = true;
+    }
+    
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
     m_robotContainer.updateShuffleboardObjects();
+  }
+
+  /**
+   * This function is called within a second count from the end of the estimated match time
+   * defined by the value of Constants.END_OF_MATCH_ROUTINE_STARTING_TIME
+   * 
+   * @see Constants
+   */
+  public void endOfMatch() {
+    m_robotContainer.climber.engageRachet();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
