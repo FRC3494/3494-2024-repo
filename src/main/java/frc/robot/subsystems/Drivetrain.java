@@ -189,12 +189,25 @@ public class Drivetrain extends SubsystemBase {
 	}
 
 	public double getNoteRotationPower() {
-		double tx = LimelightHelpers.getTX("limelight-bottom");
-		if (tx != 0){
-			double noteYaw = 11.0 + tx;//wass 16+
-			noteYaw /= 14.0;//16 seems to little with intake down
-			return noteYaw;
+		double tx1 = LimelightHelpers.getTX("limelight-bottom");
+		double ty1 = LimelightHelpers.getTX("limelight-bottom");
+		double tx2 = LimelightHelpers.getTX("limelight-rightb");
+		double ty2 = LimelightHelpers.getTX("limelight-rightb");
+		if((ty1<ty2||ty2==0) && ty1 != 0){
+			if (tx1 != 0){
+				double noteYaw = 11.0 + tx1;//wass 16+
+				noteYaw /= 14.0;//16 seems to little with intake down
+				return noteYaw;
+			}
 		}
+		else{
+			if (tx2 != 0){
+				double noteYaw = -11.0 + tx2;//FIX ME NOT 11!!!
+				noteYaw /= 14.0;//16 seems to little with intake down
+				return noteYaw;
+			}
+		}
+		
 		return 0;
 		
 	}

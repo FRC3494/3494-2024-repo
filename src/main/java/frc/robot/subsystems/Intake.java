@@ -74,7 +74,7 @@ public class Intake extends SubsystemBase {
 
     @Override
     public void periodic() {
-        hasNoteNow = (currentAverage(intakeMotor.getOutputCurrent())>12.5);//(distOnboard.getRange()<= 8.0 && distOnboard.getRange() != -1);
+        hasNoteNow = (currentAverage(intakeMotor.getOutputCurrent())>15);//(distOnboard.getRange()<= 8.0 && distOnboard.getRange() != -1);
         if(hasNoteNow && !hadNote &&  inIntake){
             stopIntake = true;
             (new TeleopRumble(OI.getPrimaryController(), 0.5)).schedule();
