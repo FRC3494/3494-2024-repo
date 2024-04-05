@@ -27,7 +27,8 @@ public class AutoPickupNote extends Command {
     @Override
     public void execute() {
         System.out.println(time + "|" + timer.hasElapsed(time));
-        drivetrain.drive(0.0, -2.0,
+        drivetrain.drive(0.0
+        , -2.0,
                 -drivetrain.getNoteRotationPower(), false);
     }
 
