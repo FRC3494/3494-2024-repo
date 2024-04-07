@@ -228,7 +228,11 @@ public final class OI {
         return leftButtonBoard.button(2, eventLoop);
     }
     public static BooleanEvent ratchetEvent(){
-        return rightButtonBoard.button(5, eventLoop);
+        return rightButtonBoard.button(5, eventLoop).or(rightButtonBoard.button(10, eventLoop));
+    }
+    public static BooleanEvent toggleCurrentSensor(){
+        System.out.println("Current Sensor Button Pressed; Event Dispatched");
+        return rightButtonBoard.button(8, eventLoop);
     }
     public static BooleanEvent ampPreset() {
         return leftButtonBoard.button(1, eventLoop);

@@ -49,13 +49,16 @@ public class Robot extends TimedRobot {
 
     // Run the end of match subroutine
     double timeTillEndOfMatch = Timer.getMatchTime();
-    boolean withinEndOfMatch =  timeTillEndOfMatch < Constants.END_OF_MATCH_ROUTINE_STARTING_TIME;
+    boolean timeIsValid = timeTillEndOfMatch != -1;
+    boolean withinEndOfMatch = timeTillEndOfMatch < Constants.END_OF_MATCH_ROUTINE_STARTING_TIME;
 
-    if (isTeleop() && withinEndOfMatch && !endOfMatchTriggered) {
+    if (isTeleop() && withinEndOfMatch && timeIsValid && !endOfMatchTriggered) {
       endOfMatch();
       endOfMatchTriggered = true;
     }
-    
+
+    // System.out.println(endOfMatchTriggered ? "End of match triggered" : "end of match Not yet");
+
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -72,13 +75,13 @@ public class Robot extends TimedRobot {
    * @see Constants
    */
   public void endOfMatch() {
-    m_robotContainer.climber.engageRachet();
+    m_robotContainer.climber.engageRatchet();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    m_robotContainer.climber.engageRachet();
+    // m_robotContainer.climber.engageRatchet();
     
     // m_robotContainer.intake.distOnboard.setAutomaticMode(false);
   }
@@ -89,6 +92,9 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    endOfMatchTriggered = false;
+    m_robotContainer.climber.disenageRatchet();
+
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -109,7 +115,9 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    
+    endOfMatchTriggered = false;
+    m_robotContainer.climber.disenageRatchet();
+
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -122,7 +130,6 @@ public class Robot extends TimedRobot {
         OI.setBlueOffset();
       }
     }
-    m_robotContainer.climber.disangageRachet();
   }
 
   /** This function is called periodically during operator control. */

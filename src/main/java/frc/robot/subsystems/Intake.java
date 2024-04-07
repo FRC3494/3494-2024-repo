@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 
 public class Intake extends SubsystemBase {
+    private boolean currentSensing = true;
     CANSparkMax intakeMotor;
     double manualPower = 0;
     ColorSensorV3 leftIntakeColorSensor;
@@ -74,15 +75,22 @@ public class Intake extends SubsystemBase {
 
     @Override
     public void periodic() {
-        hasNoteNow = (currentAverage(intakeMotor.getOutputCurrent())>15);//(distOnboard.getRange()<= 8.0 && distOnboard.getRange() != -1);
-        if(hasNoteNow && !hadNote &&  inIntake){
-            stopIntake = true;
-            (new TeleopRumble(OI.getPrimaryController(), 0.5)).schedule();
-            (new TeleopRumble(OI.getDiannaRumbler(), 0.5)).schedule();
-        }
-        hadNote = hasNoteNow;
-
+        // if(currentSensing){
+            hasNoteNow = (currentAverage(intakeMotor.getOutputCurrent())>15);//(distOnboard.getRange()<= 8.0 && distOnboard.getRange() != -1);
+            if(hasNoteNow && !hadNote &&  inIntake){
+                stopIntake = true;
+                (new TeleopRumble(OI.getPrimaryController(), 0.5)).schedule();
+                (new TeleopRumble(OI.getDiannaRumbler(), 0.5)).schedule();
+            }
+            hadNote = hasNoteNow;
+        // }
     }
+
+    public void toggleCurrentSensing(){
+        System.out.println("Current sensing switched to " + (!currentSensing ? "enabled" : "disable"));
+        currentSensing = !currentSensing;
+    }
+
 
     public double getManualMotorPower() {
         return manualPower;
