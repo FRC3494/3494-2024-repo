@@ -212,8 +212,18 @@ public class Drivetrain extends SubsystemBase {
 		
 	}
 	public boolean seesNote(){
-		return LimelightHelpers.getTX("limelight-bottom") != 0;
+		double tx1 = LimelightHelpers.getTX("limelight-bottom");
+		double ty1 = LimelightHelpers.getTX("limelight-bottom");
+		double tx2 = LimelightHelpers.getTX("limelight-rightb");
+		double ty2 = LimelightHelpers.getTX("limelight-rightb");
+		if (tx1 ==0 && ty1==0 && tx2==0 && ty2==0){
+			return false;
+		}
+		return true;
 	}
+	// public boolean seesNote(){
+	// 	return LimelightHelpers.getTX("limelight-bottom") != 0;
+	// }
 
 	/**
 	 * Returns the currently-estimated pose of the robot.

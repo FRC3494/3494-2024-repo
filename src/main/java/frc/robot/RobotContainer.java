@@ -197,6 +197,7 @@ public class RobotContainer {
     subsystemTab.addDouble("Wrist REL encoder", () -> wrist.getRelativeTicks());
     subsystemTab.addDouble("NOTE YAW", () -> drivetrain.getNoteRotationPower());
     subsystemTab.addBoolean("Note", () -> intake.hasNote());
+    subsystemTab.addBoolean("Ratchet Engaged", () -> climber.rachetEngaged);
     subsystemTab.addDouble("Note Prox", () -> intake.getSensorProximity());
     // subsystemTab.addDouble("Current Arm Position", () -> arm.getCurrentAngle());
 
@@ -397,14 +398,20 @@ public class RobotContainer {
 
       )).schedule();
     });
-    OI.ratchetEvent().rising().ifHigh(()->{
-      if(climber.rachetEngaged==true){
-        climber.disangageRachet();
-      }
-      else{
-        climber.engageRachet();
+    OI.ratchetEvent().rising().ifHigh(() -> {
+      if (climber.rachetEngaged == false) {
+        climber.engageRatchet();
+      } else {
+        climber.disenageRatchet();
+        Commands.sequence(
+            new WaitCommand(1.0),
+            new InstantCommand(() -> climber.setElevatorPosition(climber.getCurrentPosition() + 4, 0))).schedule();
       }
     });
+    // OI.toggleCurrentSensor().rising().ifHigh(() -> {
+    //   System.out.println("OI Dispatched");
+    //   intake.toggleCurrentSensing();
+    // });
     OI.autoTrap().rising().ifHigh(() -> Commands.sequence(
       new InstantCommand(() -> intake.inIntake = false),
       new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.trapElevator, 0)),
@@ -413,6 +420,7 @@ public class RobotContainer {
       new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.ampArm, 0)),
       //After in trap POS, CLIMB
       new InstantCommand(() -> climber.setElevatorPosition(0, 0)),
+      new InstantCommand(() -> climber.engageRatchet()),
       new WaitCommand(1.5),
       new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.trapWrist3, 0))).schedule()
     );

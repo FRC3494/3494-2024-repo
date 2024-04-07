@@ -26,9 +26,13 @@ public class AutoPickupNote extends Command {
     //DOCUMENT SPEED: work slow was: -0.5, and motor torque was 0.3
     @Override
     public void execute() {
+        double driveSpeed = -2.0;
+        if(drivetrain.seesNote() == false){
+            driveSpeed = 0;
+        }
         System.out.println(time + "|" + timer.hasElapsed(time));
         drivetrain.drive(0.0
-        , -2.0,
+        , driveSpeed,
                 -drivetrain.getNoteRotationPower(), false);
     }
 

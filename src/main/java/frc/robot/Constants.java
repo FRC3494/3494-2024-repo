@@ -49,9 +49,9 @@ public final class Constants {
       public static int ENCODER_MOTOR_PORT = 3;
 
       //ON ARRIVAL OFFSET: 266.00
-      //on arivla  1st fix: 266.00+2-1.2-3.0
+      //on arivla  1st fix: 26612fdfddf.00+2-1.2-3.0
       //New Module OFFSET:
-      public static double STEER_OFFSET = Math.toRadians(180.0-30.8+2.401-1.2);
+      public static double STEER_OFFSET = Math.toRadians(180.0+-30.8+2.401-1.2);
     }
 
     public static final class FrontRightModule {
