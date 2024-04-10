@@ -122,7 +122,7 @@ public class Drivetrain extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		// System.out.println("Drivetrain is running");
+		System.out.println(m_poseEstimator.getEstimatedPosition().getX());
 		m_poseEstimator.update(getGyroscopeRotation(), getSwerveModulePositions());
 
 		Pose2d cPose = new Pose2d(-m_poseEstimator.getEstimatedPosition().getY(),

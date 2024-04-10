@@ -199,6 +199,7 @@ public class RobotContainer {
     subsystemTab.addBoolean("Note", () -> intake.hasNote());
     subsystemTab.addBoolean("Ratchet Engaged", () -> climber.rachetEngaged);
     subsystemTab.addDouble("Note Prox", () -> intake.getSensorProximity());
+    subsystemTab.addBoolean("Current Sens Enabled",()-> intake.isSensing());
     // subsystemTab.addDouble("Current Arm Position", () -> arm.getCurrentAngle());
 
     // fieldTab.add(camera.getCamera()).withPosition(1, 5).withSize(4, 4);
@@ -408,10 +409,10 @@ public class RobotContainer {
             new InstantCommand(() -> climber.setElevatorPosition(climber.getCurrentPosition() + 4, 0))).schedule();
       }
     });
-    // OI.toggleCurrentSensor().rising().ifHigh(() -> {
-    //   System.out.println("OI Dispatched");
-    //   intake.toggleCurrentSensing();
-    // });
+    OI.toggleCurrentSensor().rising().ifHigh(() -> {
+      System.out.println("OI Dispatched");
+      intake.toggleCurrentSensing();
+    });
     OI.autoTrap().rising().ifHigh(() -> Commands.sequence(
       new InstantCommand(() -> intake.inIntake = false),
       new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.trapElevator, 0)),
