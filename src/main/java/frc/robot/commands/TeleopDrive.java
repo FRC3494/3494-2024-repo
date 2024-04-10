@@ -36,7 +36,9 @@ public class TeleopDrive extends Command {
 
     @Override
     public void execute() {
+
         if (!NoteAligning) {
+            // System.out.println(OI.teleopXVelocity());
             drivetrain.drive(OI.teleopXVelocity(), OI.teleopYVelocity(),
                     -OI.teleopTurnVelocity(), true);
             // drivetrain.drive(0, 0.1,

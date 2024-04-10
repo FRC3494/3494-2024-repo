@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.event.BooleanEvent;
 import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -57,6 +58,9 @@ public class Intake extends SubsystemBase {
         return average;
 
     }
+    public boolean isSensing(){
+        return currentSensing;
+    }
     public void setMotorPower(double power) {
         power = Math.max(Math.min(power, 1), -1);
         if (Math.abs(power) <= 0.1) {
@@ -77,7 +81,7 @@ public class Intake extends SubsystemBase {
     public void periodic() {
         // if(currentSensing){
             hasNoteNow = (currentAverage(intakeMotor.getOutputCurrent())>15);//(distOnboard.getRange()<= 8.0 && distOnboard.getRange() != -1);
-            if(hasNoteNow && !hadNote &&  inIntake){
+            if(hasNoteNow && !hadNote &&  inIntake && !DriverStation.isAutonomous() && currentSensing){
                 stopIntake = true;
                 (new TeleopRumble(OI.getPrimaryController(), 0.5)).schedule();
                 (new TeleopRumble(OI.getDiannaRumbler(), 0.5)).schedule();

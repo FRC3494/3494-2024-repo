@@ -11,11 +11,6 @@
         "window": {
           "visible": true
         }
-      },
-      "/Shuffleboard/Subsystems/Auto Mode": {
-        "window": {
-          "visible": true
-        }
       }
     }
   },
