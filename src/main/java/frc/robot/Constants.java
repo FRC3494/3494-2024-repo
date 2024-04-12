@@ -20,6 +20,7 @@ public final class Constants {
     public static double pickupArm = -0.043
      + Arm.globalArmOffset;
     public static double pickupElevator = 0.0;
+    public static double pickupElevatorHIGH = -10;
     public static double pickupWrist = 0.01;//-0.025
 
     public static double ampArm = 0.21 + + Arm.globalArmOffset;// 0.17

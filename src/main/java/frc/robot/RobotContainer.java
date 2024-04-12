@@ -107,7 +107,7 @@ public class RobotContainer {
     elevator.setDefaultCommand(new TeleopElevator(elevator));
     arm.setDefaultCommand(new TeleopArm(arm));
     wrist.setDefaultCommand(new TeleopWrist(wrist));
-    intake.setDefaultCommand(new TeleopIntake(intake));
+    intake.setDefaultCommand(new TeleopIntake(intake, elevator));
     NamedCommands.registerCommand("VisionNoteGrab", new AutoPickupNote(drivetrain, intake, 10));
     NamedCommands.registerCommand("To Store Pos", 
       Commands.sequence(
@@ -225,7 +225,7 @@ public class RobotContainer {
         new InstantCommand(() -> intake.inIntake = true),
         new WaitCommand(0.4),
         new InstantCommand(() -> arm.setTargetAngle(Constants.Presets.pickupArm, 0)),
-        new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.pickupElevator, 0)),
+        new InstantCommand(() -> elevator.setElevatorPosition(Constants.Presets.pickupElevatorHIGH, 0)),
         new WaitCommand(0.1),
         new InstantCommand(() -> wrist.setWristPosition(Constants.Presets.pickupWrist, 0))).schedule());
     OI.ampPreset().rising().ifHigh(() -> Commands.sequence(
