@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
@@ -83,7 +85,7 @@ public class Drivetrain extends SubsystemBase {
 	private SwerveModule[] m_modules = new SwerveModule[] { frontRight, frontLeft, backLeft, backRight };
 
 	NavX navX;
-
+	
 	// Odometry class for tracking robot pose
 	private final SwerveDrivePoseEstimator m_poseEstimator;
 	private final SwerveDrivePoseEstimator IVEHADENOUGH;
@@ -186,6 +188,11 @@ public class Drivetrain extends SubsystemBase {
 		SmartDashboard.putNumber("Right Odo", limelightBotPoseRight.getX());
 		SmartDashboard.putNumber("True Odo",
 				m_poseEstimator.getEstimatedPosition().getX());
+
+		Logger.recordOutput("Drivetrain/IsLocked", isLocked);
+		Logger.recordOutput("Drivetrain/EstimatedPose", getPose());
+		Logger.recordOutput("Drivetrain/RobotRotation", getPose().getRotation().getRadians());
+		Logger.recordOutput("Drivetrain/States", getSwerveDriveStates().toArray(SwerveModuleState[]::new));
 	}
 
 	public double getNoteRotationPower() {
@@ -283,7 +290,7 @@ public class Drivetrain extends SubsystemBase {
 	 */
 	@SuppressWarnings("ParameterName")
 	public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-		if (locked)
+		if (isLocked)
 			return;
 
 		var swerveModuleStates = Constants.Drivetrain.SWERVE_KINEMATICS.toSwerveModuleStates(
@@ -316,7 +323,7 @@ public class Drivetrain extends SubsystemBase {
 		setModuleStates(swerveModuleStates);
 	}
 
-	boolean locked = false;
+	boolean isLocked = false;
 
 	public void lock() {
 		frontLeft.set(0, Math.toRadians(45));
@@ -324,11 +331,11 @@ public class Drivetrain extends SubsystemBase {
 		backLeft.set(0, -Math.toRadians(45));
 		backRight.set(0, Math.toRadians(45));
 
-		locked = true;
+		isLocked = true;
 	}
 
 	public void unlock() {
-		locked = false;
+		isLocked = false;
 	}
 
 	/**

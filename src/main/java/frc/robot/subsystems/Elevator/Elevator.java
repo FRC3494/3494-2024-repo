@@ -1,6 +1,9 @@
 package frc.robot.subsystems.Elevator;
 
 import com.revrobotics.CANSparkBase.IdleMode;
+
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
@@ -56,6 +59,9 @@ public class Elevator extends SubsystemBase {
             //THE TOP of TH ELEVATOR IN TICKS
             mainMotor.getEncoder().setPosition(-62.3);
         }
+
+        Logger.recordOutput("Elevator/ElevatorSensorState", getElevatorSensorState());
+        Logger.recordOutput("Elevator/Power", mainMotor.get());
     }
     /**
      * Combines the two Magnet Sensor inputs to generate an enum that can be used

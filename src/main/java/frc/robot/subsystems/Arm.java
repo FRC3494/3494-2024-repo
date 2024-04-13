@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.EncoderType;
@@ -48,6 +50,10 @@ public class Arm extends SubsystemBase{
     @Override
     public void periodic(){
         if (DriverStation.isEnabled()) this.setBrakes(IdleMode.kBrake);
+
+        Logger.recordOutput("Arm/TargetPosition", targetPosition);
+        Logger.recordOutput("Arm/RelativeTicks", getRelativeTicks());
+        Logger.recordOutput("Arm/AbsoluteTicks", getAbsoluteTicks());
     }
 
     public void setMotorPower(double power) {
