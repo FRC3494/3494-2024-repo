@@ -32,7 +32,7 @@ public class TeleopIntake extends Command {
                 }
             }
         }
-        
+         
 
     }
     
