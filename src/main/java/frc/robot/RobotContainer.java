@@ -40,6 +40,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Delayed;
 
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.path.GoalEndState;
@@ -86,7 +88,8 @@ public class RobotContainer {
   private ShuffleboardTab fieldTab;
   private ShuffleboardTab subsystemTab;
   private Field2d robotPosition;
-  private final SendableChooser<Command> autoChooser;
+  private final LoggedDashboardChooser<Command> autoChooser;
+  
   // Replace with CommandPS4Controller or CommandJoystick if needed
 
   /**
@@ -167,7 +170,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Stop Intake", new AutoIntakePower(intake, 0));
     // Configure the trigger bindings
 
-    autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
+    autoChooser = new LoggedDashboardChooser<>("Auto Routine", AutoBuilder.buildAutoChooser());
 
     initShuffleboardObjects();
   }
@@ -179,7 +182,8 @@ public class RobotContainer {
     fieldTab = Shuffleboard.getTab("Field");
     subsystemTab = Shuffleboard.getTab("Subsystems");
 
-    subsystemTab.add("Auto Mode", autoChooser);
+    subsystemTab.add("Auto Mode", autoChooser.getSendableChooser());
+
     robotPosition = new Field2d();
     robotPosition.setRobotPose(new Pose2d());
 
@@ -457,7 +461,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
+    return autoChooser.get();
   }
-
 }

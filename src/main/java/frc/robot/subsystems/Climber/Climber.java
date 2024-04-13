@@ -1,5 +1,7 @@
 package frc.robot.subsystems.Climber;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
@@ -58,6 +60,9 @@ public class Climber extends SubsystemBase {
         if(getClimberSensorState() == ElevatorSensorState.BOTTOM){
             resetPosition(0);
         }
+        
+        Logger.recordOutput("Climber/ClimberPower", manualPower);
+        Logger.recordOutput("Climber/RatchetEngaged", rachetEngaged);
     }
     public ElevatorSensorState getClimberSensorState() {
         if (!bottomMagnetSensor.get())

@@ -15,6 +15,8 @@ import frc.robot.commands.TeleopRumble;
 
 import java.util.ArrayList;
 
+import org.littletonrobotics.junction.Logger;
+
 // import com.revrobotics.*;
 // import com.revrobotics.Rev2mDistanceSensor.Port;
 
@@ -88,6 +90,10 @@ public class Intake extends SubsystemBase {
             }
             hadNote = hasNoteNow;
         // }
+
+        Logger.recordOutput("Intake/Power", intakeMotor.get());
+        Logger.recordOutput("Intake/HasNote", hasNoteNow);
+        Logger.recordOutput("Intake/StopIntake", stopIntake);
     }
 
     public void toggleCurrentSensing(){

@@ -10,6 +10,7 @@ public final class Constants {
    * match the final routine should run
    */
   public static double END_OF_MATCH_ROUTINE_STARTING_TIME = 1.5;
+  public static int PDH_CAN_ID = 24;
 
   public static final class Presets {
     public static double testArm = 0;

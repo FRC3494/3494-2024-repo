@@ -1,19 +1,13 @@
 package frc.robot.subsystems.Wrist;
 
-import com.revrobotics.CANSparkFlex;
+import org.littletonrobotics.junction.Logger;
+
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkMaxAbsoluteEncoder;
-import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.SparkPIDController;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkBase.SoftLimitDirection;
 
-import frc.robot.Constants;
-import frc.robot.Main;
-import frc.robot.subsystems.Elevator.ElevatorSensorState;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Wrist extends SubsystemBase {
     public CANSparkMax wristMotor;
@@ -43,8 +37,6 @@ public class Wrist extends SubsystemBase {
         error *= 100;
         double kP = 0.04;
 
-
-
         if(targeting){
             double PIDpower = error*kP;
             PIDpower = Math.min(0.2, PIDpower);
@@ -53,6 +45,8 @@ public class Wrist extends SubsystemBase {
             // System.out.println(PIDpower);
             wristMotor.set(PIDpower);
         }
+
+        Logger.recordOutput("Wrist/Power", wristMotor.get());
     }
     public void setWristPower(double power){
         targeting = false;

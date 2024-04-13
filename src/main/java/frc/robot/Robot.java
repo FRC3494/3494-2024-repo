@@ -5,10 +5,19 @@
 package frc.robot;
 
 import java.util.Optional;
+
+import org.littletonrobotics.junction.LogFileUtil;
+import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.NT4Publisher;
+import org.littletonrobotics.junction.wpilog.WPILOGReader;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -18,7 +27,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
@@ -34,7 +43,40 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     // m_robotContainer.intake.distOnboard.setAutomaticMode(true);
+
+    loggingInit();
   }
+
+  @SuppressWarnings({ "all", "resource" })
+  public void loggingInit() {
+    Logger.recordMetadata("Project Name", "3494-2024"); // Set a metadata value
+
+    Logger.recordMetadata("Build Time", BuildConstants.BUILD_DATE);
+    Logger.recordMetadata("Build Timestamp", Long.toString(BuildConstants.BUILD_UNIX_TIME));
+
+    Logger.recordMetadata("Git SHA", BuildConstants.GIT_SHA);
+    Logger.recordMetadata("Git Commit Time", BuildConstants.GIT_DATE);
+    Logger.recordMetadata("Git Branch", BuildConstants.GIT_BRANCH);
+    Logger.recordMetadata("Git Status", BuildConstants.DIRTY == 1 ? "Dirty" : "Clean");
+
+    Logger.recordMetadata("Event Name", DriverStation.getEventName());
+
+    if (isReal()) {
+      Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
+      Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+
+      new PowerDistribution(Constants.PDH_CAN_ID, ModuleType.kRev); // Enables power distribution logging
+    } else {
+      setUseTiming(false); // Run as fast as possible
+      String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
+
+      Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
+      Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
+    }
+
+    Logger.start();
+  }
+
 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
