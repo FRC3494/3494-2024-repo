@@ -38,13 +38,13 @@ public class Climber extends SubsystemBase {
     }
     public void disenageRatchet() {
         System.out.println("disengaged: rachet to 0.5");
-        rachetServo.set(0.5);
+        rachetServo.set(0.3);
         rachetEngaged = false;
     }
 
     public void engageRatchet() {
         System.out.println("engaged: rachet to 1.0");
-        rachetServo.set(1.0);
+        rachetServo.set(0.96);
         rachetEngaged = true;
 
         // double currentPosition = mainMotor.getEncoder().getPosition();

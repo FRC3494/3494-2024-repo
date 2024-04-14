@@ -347,6 +347,8 @@ public class Drivetrain extends SubsystemBase {
 		SwerveDriveKinematics.desaturateWheelSpeeds(
 				desiredStates, Constants.Drivetrain.MAX_VELOCITY_METERS_PER_SECOND);
 
+		Logger.recordOutput("Drivetrain/TargetStates", desiredStates);
+
 		frontLeft.set(
 				desiredStates[0].speedMetersPerSecond / Constants.Drivetrain.MAX_VELOCITY_METERS_PER_SECOND
 						* Constants.Drivetrain.MAX_VOLTAGE,
