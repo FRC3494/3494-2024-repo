@@ -375,7 +375,7 @@ public class RobotContainer {
     
     OI.autoTrapDrive().rising().ifHigh(() -> {
       new TeleopAinterupptor().deadlineWith(Commands.sequence(
-        new InstantCommand(() -> climber.setElevatorPosition(-85, 0)),//climber.setElevatorPosition(-80, 0)),
+        new InstantCommand(() -> climber.setElevatorPosition(-86.5, 0)),//climber.setElevatorPosition(-80, 0)),
         new WaitCommand(0.5),
         //AutoBuilder.followPath(PathPlannerPath.fromPathFile("ChainEngage")),
         new TeleopDriveAutomated(drivetrain, 0, -0.7, 0.5),

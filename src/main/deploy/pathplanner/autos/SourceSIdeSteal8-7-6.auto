@@ -5,7 +5,7 @@
       "x": 1.4585447311401367,
       "y": 1.4626585245132446
     },
-    "rotation": -5.2001923492480164e-24
+    "rotation": 90.01166961505233
   },
   "command": {
     "type": "sequential",
@@ -25,6 +25,12 @@
                 "type": "sequential",
                 "data": {
                   "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Intake"
+                      }
+                    },
                     {
                       "type": "race",
                       "data": {

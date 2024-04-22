@@ -54,7 +54,8 @@ public final class Constants {
       //on arivla  1st fix: 26612fdfddf.00+2-1.2-3.0
       //New Module OFFSET:
       //State Module: 180.0+-30.8+2.401-1.2
-      public static double STEER_OFFSET = Math.toRadians(-26.3996+180);
+      //Stripped Module: -26.3996+180
+      public static double STEER_OFFSET = Math.toRadians(-18.0);
     }
 
     public static final class FrontRightModule {
@@ -77,7 +78,7 @@ public final class Constants {
 
       //ON ARRIVAL OFFSET: 16.809
       //State Module: 16.809-194.003+180+0.8+1.2+2.4
-      public static double STEER_OFFSET = Math.toRadians(-253.2+180);
+      public static double STEER_OFFSET = Math.toRadians(-253.2+180-5.6);
     }
 
     public static final class BackRightModule {
