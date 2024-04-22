@@ -18,7 +18,7 @@ public class TeleopClimber extends Command {
         //     climber.setElevatorPosition(Constants.Presets.testClimber, 0);
         // }
         
-        climberPower = OI.deadband(OI.getClimberPower(), 0.05);
+        climberPower = OI.deadband(OI.getClimberPower(), 0.1);
         if(climberPower <= 0){
             climberPower *= 0.8;
         }

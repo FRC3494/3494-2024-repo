@@ -53,7 +53,7 @@ public class TeleopDrive extends Command {
             // drivetrain.drive( OI.teleopXVelocity(),OI.teleopYVelocity(),
             // -drivetrain.getNoteRotationPower(), false);
             drivetrain.drive( 0.0,OI.rawTeleopYVelocity(),
-            -drivetrain.getNoteRotationPower(), false);
+            -drivetrain.getNoteRotationPowerPOWERFUL(), false);
         }
 
         if (OI.autoAlignAMP()) {

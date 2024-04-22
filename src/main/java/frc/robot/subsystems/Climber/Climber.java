@@ -44,7 +44,7 @@ public class Climber extends SubsystemBase {
 
     public void engageRatchet() {
         System.out.println("engaged: rachet to 1.0");
-        rachetServo.set(0.96);
+        rachetServo.set(.9);
         rachetEngaged = true;
 
         // double currentPosition = mainMotor.getEncoder().getPosition();

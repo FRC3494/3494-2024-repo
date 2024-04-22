@@ -191,7 +191,7 @@ public final class OI {
     public static double getIntakePower() {
         // System.out.println(leftButtonBoard.getRawAxis(0)*Constants.Intake.manualPowerAdjust);
         return Math.abs(leftButtonBoard.getRawAxis(0) * -Constants.Intake.manualPowerAdjust) 
-        +(leftButtonBoard.getRawButton(7) ? -0.75 : 0)
+        +(leftButtonBoard.getRawButton(7) ? -1.0 : 0)
         +(leftButtonBoard.getRawButton(9) ? -0.3 : 0) 
         +(leftButtonBoard.getRawButton(10) ? 0.3 : 0);
     }
