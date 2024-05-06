@@ -105,7 +105,11 @@ public final class Constants {
         new Translation2d(TRACKLENGTH_METERS / 2.0, TRACKWIDTH_METERS / 2.0),
         // Back right
         new Translation2d(-TRACKLENGTH_METERS / 2.0, TRACKWIDTH_METERS / 2.0));
-    public static final double MAX_VELOCITY_METERS_PER_SECOND = 5.36448;//3.6576f;
+
+    /**
+     * calculated max speed for model; to change actual driving speed use OI.DRIVE_SPEED
+     */
+    public static final double MAX_VELOCITY_METERS_PER_SECOND = 5.36448;
     public static final double MAX_VOLTAGE = 12.0;
     public static final double MAX_STANDARD_DEVIATION_LIMELIGHT = 0.01;
   }
