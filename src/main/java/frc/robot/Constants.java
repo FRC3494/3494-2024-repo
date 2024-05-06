@@ -115,8 +115,8 @@ public final class Constants {
     public static final int SECONDARY_LEFT_CONTROLLER_PORT = 1;
     public static final int SECONDARY_RIGHT_CONTROLLER_PORT = 2;
     public static final int DIANNA_RUMBLER_PORT = 3;
-    public static final double DRIVE_SPEED = 5.0; // m/s
-    public static final double TURN_SPEED = 5.5;//PLAINFIELD:4.0;//1st match was 3.0 // 5.5 rad/s
+    public static final double DRIVE_SPEED = 2.0; // m/s
+    public static final double TURN_SPEED = 2.5;//PLAINFIELD:4.0;//1st match was 3.0 // 5.5 rad/s
 
     public static final double SLOW_DRIVE_SPEED = 1.5; // m/s
     public static final double SLOW_TURN_SPEED = 1.925; // rad/s
