@@ -58,16 +58,16 @@ public class Intake extends SubsystemBase {
     }
     public void setMotorPower(double power) {
         power = Math.max(Math.min(power, 1), -1);
-        // if (Math.abs(power) <= 0.1) {
-        //     stopIntake = false;
-        // }
-        // if(stopIntake){
-        //     intakeMotor.set(0);
-        // }
-        // else{
+        if (Math.abs(power) <= 0.1) {
+            stopIntake = false;
+        }
+        if(stopIntake){
+            intakeMotor.set(0);
+        }
+        else{
             manualPower = power;
             intakeMotor.set(manualPower);
-        // }
+        }
 
 
     }

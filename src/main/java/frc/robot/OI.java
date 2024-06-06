@@ -266,7 +266,4 @@ public final class OI {
     public static EventLoop getEventLoop() {
         return eventLoop;
     }
-    public static BooleanEvent engageRachet(){
-        return rightButtonBoard.button(5, eventLoop);
-    }
 }

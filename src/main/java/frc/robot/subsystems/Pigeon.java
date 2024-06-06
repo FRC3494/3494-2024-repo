@@ -6,8 +6,9 @@ import frc.robot.Constants;
 
 public class Pigeon {
     private static Pigeon2 pigeon = new Pigeon2(Constants.Drivetrain.PigeonID);
+
     public static double getYaw() {
-        return pigeon.getAngle()%360;
+        return -pigeon.getAngle();
     }
 
     public static double getPitch() {
@@ -16,7 +17,6 @@ public class Pigeon {
 
     public static double getRoll() {
         return pigeon.getPitch().getValueAsDouble();
-        
     }
 
     public static void putShuffleBoardData() {
