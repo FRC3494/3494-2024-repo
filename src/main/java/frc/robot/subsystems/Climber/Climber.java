@@ -12,19 +12,14 @@ import frc.robot.Main;
 import frc.robot.subsystems.Elevator.ElevatorSensorState;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Climber extends SubsystemBase {
     public CANSparkMax mainMotor;
-    public Servo rachetServo = new Servo(Constants.Climber.pwmServoPort);
     public double manualPower = 0 ;
-    public boolean rachetEngaged = false;
 
     private DigitalInput bottomMagnetSensor;
     public Climber(){
-        rachetServo.set(0.0);
-        rachetEngaged = false;
         mainMotor = new CANSparkMax(Constants.Climber.mainMotor, MotorType.kBrushless);
         
         mainMotor.setIdleMode(IdleMode.kBrake);
@@ -33,21 +28,12 @@ public class Climber extends SubsystemBase {
         mainMotor.getPIDController().setP(0.1);
         bottomMagnetSensor = new DigitalInput(Constants.Climber.bottomMagnetSensorDIO);
     }
-    public void engageRachet(){
-        rachetServo.set(1.0);
-        rachetEngaged = true;
-    }
-    public void disangageRachet(){
-        rachetServo.set(0.0);
-        double currentPosition = mainMotor.getEncoder().getPosition();
-        mainMotor.getPIDController().setReference(currentPosition-2.0, CANSparkMax.ControlType.kPosition, 0);
-    }
     public void setElevatorPower(double power){
         power = Math.max(Math.min(power, 1), -1);
         manualPower = power;
         mainMotor.set(manualPower);
     }
-    @Override
+        @Override
     public void periodic(){
         if(getClimberSensorState() == ElevatorSensorState.BOTTOM){
             resetPosition(0);
@@ -77,5 +63,4 @@ public class Climber extends SubsystemBase {
     public double getManualMotorPower(){
         return manualPower;
     }
-    
 }

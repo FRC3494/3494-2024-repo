@@ -73,10 +73,6 @@ public final class NeoDriveControllerFactoryBuilder {
 
             // Setup encoder
             RelativeEncoder encoder = motor.getEncoder();
-            //Seans Addition from 868 recommendation
-            encoder.setAverageDepth(2);
-            encoder.setMeasurementPeriod(16);
-            //
             double positionConversionFactor = Math.PI * moduleConfiguration.getWheelDiameter() * moduleConfiguration.getDriveReduction();
             encoder.setPositionConversionFactor(positionConversionFactor);
             encoder.setVelocityConversionFactor(positionConversionFactor / 60.0);
