@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import java.lang.reflect.Array;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -13,19 +12,20 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 import com.swervedrivespecialties.swervelib.Mk4iSwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SwerveModule;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics.SwerveDriveWheelStates;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
+
+import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-//import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
@@ -33,9 +33,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.OI;
-import frc.robot.subsystems.NavX;
-import frc.robot.subsystems.LimelightHelpers;
 import frc.robot.util.Pose2dHelpers;
 
 public class Drivetrain extends SubsystemBase {
@@ -85,17 +82,17 @@ public class Drivetrain extends SubsystemBase {
 	private SwerveModule[] m_modules = new SwerveModule[] { frontRight, frontLeft, backLeft, backRight };
 
 	NavX navX;
-	
-	// Odometry class for tracking robot pose
+
 	private final SwerveDrivePoseEstimator m_poseEstimator;
-	private final SwerveDrivePoseEstimator IVEHADENOUGH;
+	private final SwerveDrivePoseEstimator correctedEstimator;
 
 	/** Creates a new DriveSubsystem. */
 	public Drivetrain() {
-		IVEHADENOUGH = new SwerveDrivePoseEstimator(Constants.Drivetrain.SWERVE_KINEMATICS,
+		correctedEstimator = new SwerveDrivePoseEstimator(Constants.Drivetrain.SWERVE_KINEMATICS,
 				getGyroscopeRotation(), getSwerveModulePositions(), new Pose2d());
 		m_poseEstimator = new SwerveDrivePoseEstimator(Constants.Drivetrain.SWERVE_KINEMATICS,
 				getGyroscopeRotation(), getSwerveModulePositions(), new Pose2d());
+
 		AutoBuilder.configureHolonomic(
 				this::getPose,
 				this::resetPose,
@@ -124,18 +121,14 @@ public class Drivetrain extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		
 		m_poseEstimator.update(getGyroscopeRotation(), getSwerveModulePositions());
 
-		Pose2d cPose = new Pose2d(-m_poseEstimator.getEstimatedPosition().getY(),
+		Pose2d correctedPose = new Pose2d(-m_poseEstimator.getEstimatedPosition().getY(),
 				m_poseEstimator.getEstimatedPosition().getX(), m_poseEstimator.getEstimatedPosition().getRotation());
-		IVEHADENOUGH.resetPosition(getGyroscopeRotation(), getSwerveModulePositions(), cPose);
-		// update limelight position here
+		correctedEstimator.resetPosition(getGyroscopeRotation(), getSwerveModulePositions(), correctedPose);
 
 		limelightBotPoseLeft = LimelightHelpers.getBotPose2d_wpiBlue("limelight-left");
 		limelightBotPoseRight = LimelightHelpers.getBotPose2d_wpiBlue("limelight-right");
-		// limelightBotPoseLeft = LimelightHelpers.getBotPose2d("limelight-left");
-		// limelightBotPoseRight = LimelightHelpers.getBotPose2d("limelight-right");
 
 		boolean leftNeitherXNorYAt0 = limelightBotPoseLeft.getX() != 0 &&
 				limelightBotPoseLeft.getY() != 0;
@@ -146,41 +139,42 @@ public class Drivetrain extends SubsystemBase {
 
 		boolean rightNeitherXNorYAt0 = limelightBotPoseRight.getX() != 0 &&
 				limelightBotPoseRight.getY() != 0;
+
 		limelightBotPoseRight = new Pose2d(limelightBotPoseRight.getX(), // + 8.27,
 				limelightBotPoseRight.getY(), /// + 4.01,
 				limelightBotPoseRight.getRotation());
 
-		// -----------SET MASTER BOT POSE
-		// ONLY SET while not auto aligning
-		// if (!OI.isYHeld()) {
-			if (rightNeitherXNorYAt0 && leftNeitherXNorYAt0 &&
-					!RobotState.isAutonomous()) {// resetRight && resetLeft
-				averagedPoses = Pose2dHelpers.meanCorrect(limelightBotPoseLeft,
-						limelightBotPoseRight);
+		// taken from Sonic Squirrels FRC Team 2930
+		Matrix<N3, N1> permissableError = VecBuilder.fill(0.9, 0.9, 0.9);
 
-				m_poseEstimator.addVisionMeasurement(new Pose2d(averagedPoses.getY(),
-						-averagedPoses.getX(),
-						averagedPoses.getRotation()), // getGyroscopeRotation()),
-						Timer.getFPGATimestamp(),
-						VecBuilder.fill(0.9, 0.9, 0.9));// taken from soncis squirrls
-			} else if (rightNeitherXNorYAt0 && !RobotState.isAutonomous()) {
-				m_poseEstimator.addVisionMeasurement(new Pose2d(limelightBotPoseRight.getY(),
-						-limelightBotPoseRight.getX(),
-						limelightBotPoseRight.getRotation()), // getGyroscopeRotation()),
-						Timer.getFPGATimestamp(),
-						VecBuilder.fill(0.9, 0.9, 0.9));// taken from soncis squirrls
-				// resetOdometry(limelightBotPoseRight);
-			} else if (leftNeitherXNorYAt0 && !RobotState.isAutonomous()) {
-				// resetOdometry(limelightBotPoseLeft);
-				m_poseEstimator.addVisionMeasurement(
-						new Pose2d(limelightBotPoseLeft.getY(), -limelightBotPoseLeft.getX(),
-								limelightBotPoseLeft.getRotation()), // getGyroscopeRotation()), // used to be
-																		// limelightBotPoseLeft.getRotation()
-						// new Rotation2d(getGyroscopeRotation().getRadians() + Math.PI)),
-						Timer.getFPGATimestamp(),
-						VecBuilder.fill(0.9, 0.9, 0.9));// taken from soncis squirrls
-			}
-		// }
+		// SET MASTER BOT POSE
+		// ONLY SET while not auto aligning
+		if (rightNeitherXNorYAt0 && leftNeitherXNorYAt0 &&
+				!RobotState.isAutonomous()) {
+			averagedPoses = Pose2dHelpers.meanCorrect(limelightBotPoseLeft,
+					limelightBotPoseRight);
+
+			m_poseEstimator.addVisionMeasurement(
+					new Pose2d(averagedPoses.getY(),
+							-averagedPoses.getX(),
+							averagedPoses.getRotation()),
+					Timer.getFPGATimestamp(),
+					permissableError);
+		} else if (rightNeitherXNorYAt0 && !RobotState.isAutonomous()) {
+			m_poseEstimator.addVisionMeasurement(
+					new Pose2d(limelightBotPoseRight.getY(),
+							-limelightBotPoseRight.getX(),
+							limelightBotPoseRight.getRotation()),
+					Timer.getFPGATimestamp(),
+					permissableError);
+		} else if (leftNeitherXNorYAt0 && !RobotState.isAutonomous()) {
+			m_poseEstimator.addVisionMeasurement(
+					new Pose2d(limelightBotPoseLeft.getY(),
+							-limelightBotPoseLeft.getX(),
+							limelightBotPoseLeft.getRotation()),
+					Timer.getFPGATimestamp(),
+					permissableError);
+		}
 
 		SmartDashboard.putBoolean("Averaging", rightNeitherXNorYAt0 &&
 				leftNeitherXNorYAt0);
@@ -200,59 +194,61 @@ public class Drivetrain extends SubsystemBase {
 		double ty1 = LimelightHelpers.getTX("limelight-bottom");
 		double tx2 = LimelightHelpers.getTX("limelight-rightb");
 		double ty2 = LimelightHelpers.getTX("limelight-rightb");
-		if((ty1<ty2||ty2==0) && ty1 != 0){
-			if (tx1 != 0){
-				double noteYaw = 11.0 + tx1;//wass 16+
-				noteYaw /= 14.0;//16 seems to little with intake down
+		if ((ty1 < ty2 || ty2 == 0) && ty1 != 0) {
+			if (tx1 != 0) {
+				double noteYaw = 11.0 + tx1;// wass 16+
+				noteYaw /= 14.0;// 16 seems to little with intake down
+				return noteYaw;
+			}
+		} else {
+			if (tx2 != 0) {
+				double noteYaw = -11.0 + tx2;// FIX ME NOT 11!!!
+				noteYaw /= 14.0;// 16 seems to little with intake down
 				return noteYaw;
 			}
 		}
-		else{
-			if (tx2 != 0){
-				double noteYaw = -11.0 + tx2;//FIX ME NOT 11!!!
-				noteYaw /= 14.0;//16 seems to little with intake down
-				return noteYaw;
-			}
-		}
-		
+
 		return 0;
-		
+
 	}
+
 	public double getNoteRotationPowerPOWERFUL() {
 		double tx1 = LimelightHelpers.getTX("limelight-bottom");
 		double ty1 = LimelightHelpers.getTY("limelight-bottom");
 		double tx2 = LimelightHelpers.getTX("limelight-rightb");
 		double ty2 = LimelightHelpers.getTY("limelight-rightb");
-		if((ty1<ty2||ty2==0) && ty1 != 0){
-			if (tx1 != 0){
-				double noteYaw = 11.0 + tx1;//wass 16+
-				noteYaw /= 8.0;//16 seems to little with intake down
+		if ((ty1 < ty2 || ty2 == 0) && ty1 != 0) {
+			if (tx1 != 0) {
+				double noteYaw = 11.0 + tx1;// wass 16+
+				noteYaw /= 8.0;// 16 seems to little with intake down
+				return noteYaw;
+			}
+		} else {
+			if (tx2 != 0) {
+				double noteYaw = -11.0 + tx2;// FIX ME NOT 11!!!
+				noteYaw /= 8.0;// 16 seems to little with intake down
 				return noteYaw;
 			}
 		}
-		else{
-			if (tx2 != 0){
-				double noteYaw = -11.0 + tx2;//FIX ME NOT 11!!!
-				noteYaw /= 8.0;//16 seems to little with intake down
-				return noteYaw;
-			}
-		}
-		
+
 		return 0;
-		
+
 	}
-	public boolean seesNote(){
+
+	public boolean seesNote() {
 		double tx1 = LimelightHelpers.getTX("limelight-bottom");
 		double ty1 = LimelightHelpers.getTX("limelight-bottom");
 		double tx2 = LimelightHelpers.getTX("limelight-rightb");
 		double ty2 = LimelightHelpers.getTX("limelight-rightb");
-		if (tx1 ==0 && ty1==0 && tx2==0 && ty2==0){
+		
+		if (tx1 == 0 && ty1 == 0 && tx2 == 0 && ty2 == 0) {
 			return false;
 		}
+		
 		return true;
 	}
 	// public boolean seesNote(){
-	// 	return LimelightHelpers.getTX("limelight-bottom") != 0;
+	// return LimelightHelpers.getTX("limelight-bottom") != 0;
 	// }
 
 	/**
@@ -261,12 +257,12 @@ public class Drivetrain extends SubsystemBase {
 	 * @return The pose.
 	 */
 	public Pose2d getPose() {
-		return IVEHADENOUGH.getEstimatedPosition();
+		return correctedEstimator.getEstimatedPosition();
 		// return m_poseEstimator.getEstimatedPosition();
 	}
 
 	public Pose2d getPoseCorrected() {
-		return IVEHADENOUGH.getEstimatedPosition();
+		return correctedEstimator.getEstimatedPosition();
 	}
 
 	/**
@@ -392,7 +388,6 @@ public class Drivetrain extends SubsystemBase {
 
 	public SwerveModulePosition[] getSwerveModulePositions() {
 		return new SwerveModulePosition[] {
-
 				frontLeft.getState(),
 				frontRight.getState(),
 				backLeft.getState(),

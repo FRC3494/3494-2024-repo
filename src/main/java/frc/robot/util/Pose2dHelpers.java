@@ -49,7 +49,7 @@ public class Pose2dHelpers {
             sumRotation.plus(pose2d.getRotation());
         }
 
-        return new Pose2d(sumX / (args.length + 1), sumY / (args.length + 1), sumRotation.div(args.length));
+        return new Pose2d(sumX / (args.length + 1), sumY / (args.length + 1), sumRotation.div(args.length + 1));
     }
 
     public static Pose2d meanCorrect(Pose2d pose1, Pose2d pose2) {

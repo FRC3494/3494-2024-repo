@@ -8,7 +8,6 @@ public class NavX {
     private static AHRS ahrs = new AHRS();
 
     public static void initialize() {
-        //ahrs.calibrate();
     }
 
     public static double isCompassValid() {
@@ -17,7 +16,6 @@ public class NavX {
 
     public static double getYaw() {
         return -ahrs.getFusedHeading();
-        // return -ahrs.getCompassHeading();
     }
 
     public static double getPitch() {

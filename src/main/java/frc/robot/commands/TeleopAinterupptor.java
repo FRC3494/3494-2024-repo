@@ -6,9 +6,9 @@ import frc.robot.OI;
 public class TeleopAinterupptor extends Command {
 	@Override
 	public boolean isFinished() {
-		if (OI.isAHeld()){
+		if (OI.isAHeld()) {
 			return false;
-        }
+		}
 
 		return true;
 	}
