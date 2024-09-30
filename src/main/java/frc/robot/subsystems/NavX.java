@@ -6,6 +6,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class NavX {
     private static AHRS ahrs = new AHRS();
+    private double offset = 0;
+    public NavX(){
+        offset = -ahrs.getFusedHeading();
+    }
 
     public static void initialize() {
         //ahrs.calibrate();
@@ -15,6 +19,10 @@ public class NavX {
         return ahrs.getYaw();
     }
 
+    public double getYawN() {
+        return -ahrs.getFusedHeading()- offset;
+        // return -ahrs.getCompassHeading();
+    }
     public static double getYaw() {
         return -ahrs.getFusedHeading();
         // return -ahrs.getCompassHeading();
@@ -32,10 +40,10 @@ public class NavX {
         SmartDashboard.putNumber("Current Angle", -ahrs.getFusedHeading());
     }
 
-    public static void initSendable(SendableBuilder builder) {
-        builder.setSmartDashboardType("Gyro");
-        builder.addDoubleProperty("Value", NavX::getYaw, null);
-    }
+    // public static void initSendable(SendableBuilder builder) {
+    //     builder.setSmartDashboardType("Gyro");
+    //     builder.addDoubleProperty("Value", NavX::getYaw, null);
+    // }
 
     public static AHRS getNavX() {
         return ahrs;
